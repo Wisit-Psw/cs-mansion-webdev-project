@@ -25,4 +25,3 @@ export const BillData = [
         "BillDate": "2023-09-11T17:00:00.000Z"
     },
 ]
-export default teamColor;
