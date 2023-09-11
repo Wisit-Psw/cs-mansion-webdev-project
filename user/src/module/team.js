@@ -1,19 +1,8 @@
-import { defineStore } from "pinia"
-
-export const teamColor = defineStore('team', {
-  state: () => ({ 
+export const teamColor = { 
     bgColor : "white",
     textColor:"#242424", 
     menuColor:"#00aa9f",//,
-    menuShadowColor:"#00aa9fb3",
+    menuShadowColor:"rgba(75, 192, 192, 0.2)",
     menuSelectedColor:"#b8c2cc",
-  }),
-  actions: {
-    setInfo(Team){
-      this.bgColor = info.bgColor
-      this.textColor = info.textColor
-    }
   }
-})
-
 export default teamColor;

@@ -1,17 +1,19 @@
 <script setup>
 import { reactive } from 'vue';
 
-const menuReactive = reactive({isShow:false});
+const menuReactive = reactive({ isShow: false });
 
-const onMenuIconClick = () =>{
-    if(menuReactive.isShow){
+const onMenuIconClick = () => {
+    if (menuReactive.isShow) {
         menuReactive.isShow = false;
         document.getElementById("Menu").style.display = "none";
         document.getElementById("logout").style.display = "none";
-    }else{
+        document.getElementById("icon").style.transform = "rotate(0deg)";
+    } else {
         menuReactive.isShow = true;
         document.getElementById("Menu").style.display = "block";
         document.getElementById("logout").style.display = "flex";
+        document.getElementById("icon").style.transform = "rotate(90deg)";
     }
 }
 </script>
@@ -20,7 +22,7 @@ const onMenuIconClick = () =>{
     <div class="navContainer">
         <div class="logo">
             <p class="text">cs mansion</p>
-            <div class="icon" @click="onMenuIconClick">
+            <div class="icon" @click="onMenuIconClick" id="icon">
                 <div></div>
                 <div></div>
                 <div></div>
@@ -30,6 +32,11 @@ const onMenuIconClick = () =>{
             <router-link to="/">
                 <div class="menu-wrap">
                     หน้าแรก
+                </div>
+            </router-link>
+            <router-link to="/bill">
+                <div class="menu-wrap">
+                    รายการรอยืนยัน
                 </div>
             </router-link>
             <router-link to="/bill">
@@ -54,8 +61,10 @@ const onMenuIconClick = () =>{
             </router-link>
         </div>
         <router-link to="/login">
-            <div class="logout-wrap" id="logout">
-                ออกจากระบบ
+            <div class="logoutContainer" id="logout">
+                <div class="logoutText-wrap">
+                    ออกจากระบบ
+                </div>
             </div>
         </router-link>
     </div>
@@ -81,31 +90,39 @@ const onMenuIconClick = () =>{
     border-radius: 0.3rem;
     color: white;
     margin-bottom: 0.5rem;
+    box-shadow: 0px 0px 2px 2.5px var(--menuShadowColor);
 }
 
 .logo>.text,
 .icon {
     margin: 0 0.5rem;
+    transition: all 100ms;
 }
-.icon{
+
+.icon {
     width: 1.5rem;
-    height:1.5rem;
+    height: 1.5rem;
 }
-.icon > div {
+
+.icon>div {
     height: 5px;
-    width:100%;
+    width: 100%;
     background-color: white;
     border-radius: 3rem;
     margin: 3px auto;
 }
+
 .menu-list {
+    width: 80%;
+    left: 9%;
     height: fit-content;
     display: none;
-    margin: 0 auto;
+    position: fixed;
+    background-color: var(--bgColor);
 }
 
 .menu-wrap {
-    width: 80%;
+    width: 100%;
     height: 2rem;
     color: var(--textColor);
     align-items: center;
@@ -121,42 +138,66 @@ const onMenuIconClick = () =>{
     cursor: pointer;
 }
 
-.logout-wrap {
-    width: 80%;
+.logoutContainer {
+    width: 83%;
+    left: 9%;
+    height: fit-content;
+    display: none;
+    position: fixed;
+    background-color: var(--bgColor);
+    top: 22.5rem;
+    border-radius: 0.2rem;
+}
+
+.logoutText-wrap {
+    width: 100%;
     height: 2rem;
     color: var(--textColor);
-    display: none;
     align-items: center;
-    padding: 0.5rem;
-    padding-bottom: 0;
-    border-radius: 0.2rem;
+    display: flex;
     justify-content: space-around;
+    padding: 0.5rem;
+    border-radius: 0.2rem;
     margin: 0 auto;
 }
 
-.logout-wrap:hover {
+.logoutContainer:hover {
     background-color: var(--menuSelectedColor);
     cursor: pointer;
 }
+
 
 @media screen and (min-width:826px) {
     .logo {
         justify-content: space-around;
     }
-    .icon{
-        display:none;
+
+    .icon {
+        display: none;
     }
+
     .menu-list {
+        width: 80%;
         height: 80vh;
         display: block;
+        position: relative;
     }
 
     .menu-wrap {
         justify-content: left;
+        padding:0 0.5rem 0 -0.5rem;
     }
 
-    .logout-wrap {
+    .logoutContainer {
+        width: 80%;
         justify-content: left;
         display: block;
+        position: relative;
+        top: 0rem;
     }
-}</style>
+
+    .logoutText-wrap {
+        justify-content: left;
+    }
+}
+</style>

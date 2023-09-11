@@ -3,7 +3,7 @@
 
 <template>
   <div class="container">
-    Info
+    Room
   </div>
 </template>
 
