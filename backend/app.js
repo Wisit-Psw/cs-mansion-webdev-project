@@ -35,12 +35,12 @@ app.use((req, res, next) => {
 
 app.post("/api/login", async (req, res) => {
   
-  const receivedData = JSON.parse(atob(req.body.body));
+  // const receivedData = JSON.parse(atob(req.body.body));
 
   try {
     con.connect(function(err) {
       if (err) throw err;
-      con.query("SELECT * FROM admin",  (err, result) => {
+      con.query("SELECT * FROM bill",  (err, result) => {
         if (err) throw err;
         // var response = result
         res.send(result)
@@ -70,7 +70,16 @@ app.post("/api/login", async (req, res) => {
 });
 
 //----------------------------------get---------------------------------
-
+app.get("/api/Exdata", async (req, res) => {
+    con.connect((err) => {
+      if (err) throw err;
+      con.query("SELECT * FROM bill",  (err, result) => {
+        con.end();
+        if (err) throw err;
+        res.send(result)
+      });
+    });
+});
 app.listen(port, () => {
   console.log(`Listening at http://localhost:${port}`);
 });
