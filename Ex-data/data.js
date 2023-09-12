@@ -6,7 +6,7 @@ export const BillData = [
         "BillElectricUnit": 100,
         "BillTotalPrice": 4500,
         "BillStatusID": 3,
-        "BillDate": "2023-09-11T17:00:00.000Z"
+        "BillDate": "2023:09"
     },{
         "BillID": 2,
         "RentingID": 1,
@@ -14,7 +14,7 @@ export const BillData = [
         "BillElectricUnit": 100,
         "BillTotalPrice": 4500,
         "BillStatusID": 3,
-        "BillDate": "2023-09-11T17:00:00.000Z"
+        "BillDate": "2023:09"
     },{
         "BillID": 3,
         "RentingID": 1,
@@ -22,7 +22,7 @@ export const BillData = [
         "BillElectricUnit": 100,
         "BillTotalPrice": 4500,
         "BillStatusID": 3,
-        "BillDate": "2023-09-11T17:00:00.000Z"
+        "BillDate": "2023:09"
     },
 ]
 
@@ -214,7 +214,7 @@ export const RentingData = [
         "RoomID": "1001",
         "UserID": "1122233445661",
         "InternetPackID": 2,
-        "RentingStart": "2023-09-12T03:43:43.000Z",
+        "RentingStart": "2023:09:12",
         "RentingEnd": null,
         "RoomPrice": 3700,
         "RoomDetail": "27 ตรม. ห้องแอร์ ",
@@ -233,8 +233,8 @@ export const RentedData = [
         "RoomID": "1002",
         "UserID": "1122233445660",
         "InternetPackID": null,
-        "RentingStart": "2022-09-14T03:44:29.000Z",
-        "RentingEnd": "2023-09-11T17:00:00.000Z",
+        "RentingStart": "2022:09:14",
+        "RentingEnd": "2023:09",
         "RoomPrice": 3200,
         "RoomDetail": "27 ตรม. พัดลม",
         "RoomSize": 27,
@@ -249,7 +249,7 @@ export const RentedData = [
         "RoomID": "1001",
         "UserID": "1122233445661",
         "InternetPackID": 2,
-        "RentingStart": "2023-09-12T03:43:43.000Z",
+        "RentingStart": "2023:09:12",
         "RentingEnd": null,
         "RoomPrice": 3700,
         "RoomDetail": "27 ตรม. ห้องแอร์ ",
@@ -265,8 +265,8 @@ export const RentedData = [
         "RoomID": "1001",
         "UserID": "1122233445660",
         "InternetPackID": null,
-        "RentingStart": "2022-09-11T20:09:10.000Z",
-        "RentingEnd": "2023-09-11T17:00:00.000Z",
+        "RentingStart": "2022:09:11",
+        "RentingEnd": "2023-09",
         "RoomPrice": 3700,
         "RoomDetail": "27 ตรม. ห้องแอร์ ",
         "RoomSize": 27,
