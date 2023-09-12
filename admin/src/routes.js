@@ -3,6 +3,7 @@ import Bill from "./pages/Bill.vue"
 import Room from "./pages/Room.vue"
 import User from "./pages/User.vue"
 import CreateBill from "./pages/CreateBill.vue"
+import RentedHistory from "./pages/RentedHistory.vue"
 import PageNotFound from "./pages/PageNotFound.vue"
 import Login from "./pages/Login.vue"
 export const routes = [
@@ -26,7 +27,10 @@ export const routes = [
         path: '/user', component: User,
     },
     {
-        path: '/createbill', component: CreateBill,
+        path: '/create-bill', component: CreateBill,
+    },
+    {
+        path: '/rented-history', component: RentedHistory,
     },
     {
         path: '/login', component: Login,

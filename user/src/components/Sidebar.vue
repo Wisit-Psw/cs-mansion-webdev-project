@@ -103,7 +103,6 @@ const onMenuIconClick = () => {
     height: fit-content;
     display: none;
     position: fixed;
-    background-color: var(--bgColor);
 }
 
 .menu-wrap {
@@ -116,6 +115,7 @@ const onMenuIconClick = () => {
     padding: 0.5rem;
     border-radius: 0.2rem;
     margin: 0 auto;
+    background-color: var(--bgColor);
 }
 
 .menu-wrap:hover {
@@ -124,13 +124,13 @@ const onMenuIconClick = () => {
 }
 
 .logoutContainer {
-    width: 83%;
+    width: 82%;
     left: 9%;
     height: fit-content;
     display: none;
     position: fixed;
     background-color: var(--bgColor);
-    top: 22.5rem;
+    top: 13.5rem;
     border-radius: 0.2rem;
 }
 

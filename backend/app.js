@@ -12,6 +12,13 @@ var con = mysql.createConnection({
   password: "",
   database: "cs-mansion"
 });
+
+// Establish the MySQL connection
+con.connect((err) => {
+  if (err) throw err;
+  console.log("Connected to MySQL database");
+});
+
 const corsOptions = {
   origin: "http://127.0.0.1:3000",
   optionsSuccessStatus: 200,
@@ -34,52 +41,46 @@ app.use((req, res, next) => {
 });
 
 app.post("/api/login", async (req, res) => {
-  
-  // const receivedData = JSON.parse(atob(req.body.body));
-
-  try {
-    con.connect(function(err) {
-      if (err) throw err;
-      con.query("SELECT * FROM bill",  (err, result) => {
-        if (err) throw err;
-        // var response = result
-        res.send(result)
-        console.log(receivedData);
-        // if (response) {
-        //   req.session.user = { Username: response.Username };
-        //   res.send({ response: btoa(JSON.stringify(response)), status: "success" });
-        // } else {
-        //   res.send({
-        //     ///////////////////////////
-        //     response: "fail to query",
-        //     //////////////////////////
-        //     status: "Error",
-        //   });
-        // }
-      });
-    });
-    
-  } catch (e) {
-    res.send({
-      ///////////////////////////////
-      response: "Internal Server Error",
-      ///////////////////////////////
-      status: "Error",
-    });
-  }
+  // Handle your login logic here
 });
 
 //----------------------------------get---------------------------------
-app.get("/api/Exdata", async (req, res) => {
-    con.connect((err) => {
-      if (err) throw err;
-      con.query("SELECT * FROM bill",  (err, result) => {
-        con.end();
-        if (err) throw err;
-        res.send(result)
-      });
-    });
+app.get("/api/Exdata/bill", async (req, res) => {
+  con.query("SELECT * FROM bill", (err, result) => {
+    if (err) throw err;
+    res.send(result);
+  });
 });
+
+app.get("/api/Exdata/user", async (req, res) => {
+  con.query("SELECT * FROM user", (err, result) => {
+    if (err) throw err;
+    res.send(result);
+  });
+});
+
+app.get("/api/Exdata/room", async (req, res) => {
+  con.query("SELECT * FROM room", (err, result) => {
+    if (err) throw err;
+    res.send(result);
+  });
+});
+
+app.get("/api/Exdata/renting", async (req, res) => {
+  con.query("SELECT * FROM renting INNER JOIN room ON room.RoomID = renting.RoomID INNER JOIN user ON user.UserID = renting.UserID WHERE renting.RentingEnd IS NULL", (err, result) => {
+    if (err) throw err;
+    res.send(result);
+  });
+});
+
+app.get("/api/Exdata/renting/CreateBill", async (req, res) => {
+  con.query("SELECT * FROM renting INNER JOIN room ON room.RoomID = renting.RoomID INNER JOIN user ON user.UserID = renting.UserID ORDER BY renting.RentingID DESC;", (err, result) => {
+    if (err) throw err;
+    res.send(result);
+  });
+});
+
+//SELECT * FROM `room` LEFT JOIN `renting` ON room.RoomID = renting.RoomID WHERE renting.RentingEnd IS NULL;
 app.listen(port, () => {
   console.log(`Listening at http://localhost:${port}`);
 });

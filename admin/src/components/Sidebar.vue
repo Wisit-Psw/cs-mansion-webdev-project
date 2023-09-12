@@ -54,9 +54,14 @@ const onMenuIconClick = () => {
                     ผู้เช่า
                 </div>
             </router-link>
-            <router-link to="/createbill">
+            <router-link to="/create-bill">
                 <div class="menu-wrap">
                     สร้างบิล
+                </div>
+            </router-link>
+            <router-link to="/rented-history">
+                <div class="menu-wrap">
+                    รายการเช่าห้องพัก
                 </div>
             </router-link>
         </div>
@@ -118,7 +123,6 @@ const onMenuIconClick = () => {
     height: fit-content;
     display: none;
     position: fixed;
-    background-color: var(--bgColor);
 }
 
 .menu-wrap {
@@ -131,6 +135,7 @@ const onMenuIconClick = () => {
     padding: 0.5rem;
     border-radius: 0.2rem;
     margin: 0 auto;
+    background-color: var(--bgColor);
 }
 
 .menu-wrap:hover {
@@ -139,13 +144,13 @@ const onMenuIconClick = () => {
 }
 
 .logoutContainer {
-    width: 83%;
+    width: 82%;
     left: 9%;
     height: fit-content;
     display: none;
     position: fixed;
     background-color: var(--bgColor);
-    top: 22.5rem;
+    top: 25.5rem;
     border-radius: 0.2rem;
 }
 
