@@ -1,4 +1,4 @@
-var mysql = require('mysql');
+var mysql = require("mysql");
 const express = require("express");
 const bodyParser = require("body-parser");
 const session = require("express-session");
@@ -10,7 +10,7 @@ var con = mysql.createConnection({
   host: "localhost",
   user: "root",
   password: "",
-  database: "cs-mansion"
+  database: "cs-mansion",
 });
 
 // Establish the MySQL connection
@@ -51,7 +51,15 @@ app.get("/api/Exdata/bill", async (req, res) => {
     res.send(result);
   });
 });
-
+app.get("/api/Exdata/billdata", async (req, res) => {
+  con.query(
+    "SELECT bill.BillID,bill.RentingID,bill.BillWaterUnit,bill.BillElectricUnit,bill.BillTotalPrice,bill.BillStatusID,bill.BillDate,renting.RoomID,renting.InternetPackID FROM bill INNER JOIN renting ON bill.RentingID = renting.RentingID INNER JOIN user ON renting.UserID = user.UserID",
+    (err, result) => {
+      if (err) throw err;
+      res.send(result);
+    }
+  );
+});
 app.get("/api/Exdata/user", async (req, res) => {
   con.query("SELECT * FROM user", (err, result) => {
     if (err) throw err;
@@ -67,17 +75,23 @@ app.get("/api/Exdata/room", async (req, res) => {
 });
 
 app.get("/api/Exdata/renting", async (req, res) => {
-  con.query("SELECT * FROM renting INNER JOIN room ON room.RoomID = renting.RoomID INNER JOIN user ON user.UserID = renting.UserID WHERE renting.RentingEnd IS NULL", (err, result) => {
-    if (err) throw err;
-    res.send(result);
-  });
+  con.query(
+    "SELECT * FROM renting INNER JOIN room ON room.RoomID = renting.RoomID INNER JOIN user ON user.UserID = renting.UserID WHERE renting.RentingEnd IS NULL",
+    (err, result) => {
+      if (err) throw err;
+      res.send(result);
+    }
+  );
 });
 
 app.get("/api/Exdata/renting/CreateBill", async (req, res) => {
-  con.query("SELECT * FROM renting INNER JOIN room ON room.RoomID = renting.RoomID INNER JOIN user ON user.UserID = renting.UserID ORDER BY renting.RentingID DESC;", (err, result) => {
-    if (err) throw err;
-    res.send(result);
-  });
+  con.query(
+    "SELECT * FROM renting INNER JOIN room ON room.RoomID = renting.RoomID INNER JOIN user ON user.UserID = renting.UserID ORDER BY renting.RentingID DESC;",
+    (err, result) => {
+      if (err) throw err;
+      res.send(result);
+    }
+  );
 });
 
 //SELECT * FROM `room` LEFT JOIN `renting` ON room.RoomID = renting.RoomID WHERE renting.RentingEnd IS NULL;

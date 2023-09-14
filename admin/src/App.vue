@@ -7,7 +7,9 @@ import { teamColor } from './module/team.js';
   <div class="container" :style="`--bgColor:${teamColor.bgColor};
       --textColor:${teamColor.textColor};
       --menuColor:${teamColor.menuColor};
+      --btnColor:${teamColor.btnColor};
       --menuShadowColor:${teamColor.menuShadowColor};
+      --menuGradientColor:${teamColor.menuGradientColor};
       --menuSelectedColor:${teamColor.menuSelectedColor};`">
     <aside class="navContainer">
       <Sidebar />
@@ -42,12 +44,13 @@ import { teamColor } from './module/team.js';
 
   .navContainer {
     width: 20vw;
-    height: 100dvh;
+    height: 98dvh;
   }
 
   .page {
     width: 80vw;
-    padding: 1rem;
+    padding: 1rem 1rem ;
+    overflow-y:hidden;
   }
 }
 </style>

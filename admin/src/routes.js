@@ -1,5 +1,6 @@
 import HomePage from "./pages/HomePage.vue"
 import Bill from "./pages/Bill.vue"
+import waitingbill from "./pages/waitingbill.vue"
 import Room from "./pages/Room.vue"
 import User from "./pages/User.vue"
 import CreateBill from "./pages/CreateBill.vue"
@@ -19,6 +20,9 @@ export const routes = [
     },
     {
         path: '/bill', component: Bill,
+    },
+    {
+        path: '/waitingbill', component: waitingbill,
     },
     {
         path: '/room', component: Room,

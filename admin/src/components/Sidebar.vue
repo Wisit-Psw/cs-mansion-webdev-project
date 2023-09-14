@@ -39,7 +39,7 @@ const onMenuIconClick = () => {
                     รายการรอยืนยัน
                 </div>
             </router-link>
-            <router-link to="/bill">
+            <router-link to="/waitingbill">
                 <div class="menu-wrap">
                     บิลค่าเช่า
                 </div>

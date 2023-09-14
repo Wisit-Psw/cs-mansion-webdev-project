@@ -33,7 +33,7 @@ import DoughnutChart from '../components/DoughnutChart.vue';
 }
 
 .header {
-  font-size: 1.5rem;
+  font-size: 2rem;
   font-weight: 1000;
   margin-top: 0.5rem;
   display: none;
@@ -42,7 +42,7 @@ import DoughnutChart from '../components/DoughnutChart.vue';
 .lineChart {
   width: 90%;
   height: 25vh;
-  margin: 1rem auto;
+  margin: 2rem auto;
   border-radius:0.5rem;
   padding:0.5rem;
   box-shadow: 0px 0px 2px 2.5px var(--menuShadowColor);
@@ -67,7 +67,6 @@ import DoughnutChart from '../components/DoughnutChart.vue';
   .lineChart {
     width: 70%;
     height: 35vh;
-    margin: 1rem auto;
   }
   .doughnutChart{
     width: 100%;

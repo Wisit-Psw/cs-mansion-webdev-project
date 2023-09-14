@@ -4,25 +4,201 @@ export const BillData = [
         "RentingID": 1,
         "BillWaterUnit": 10,
         "BillElectricUnit": 100,
-        "BillTotalPrice": 4500,
-        "BillStatusID": 3,
-        "BillDate": "2023:09"
+        "BillTotalPrice": 5200,
+        "BillStatusID": 2,
+        "BillDate": "2023:09",
+        "RoomID": "1201",
+        "InternetPackID": 1
     },{
         "BillID": 2,
         "RentingID": 1,
         "BillWaterUnit": 10,
         "BillElectricUnit": 100,
-        "BillTotalPrice": 4500,
-        "BillStatusID": 3,
-        "BillDate": "2023:09"
+        "BillTotalPrice": 5200,
+        "BillStatusID": 2,
+        "BillDate": "2023:09",
+        "RoomID": "1201",
+        "InternetPackID": 1
     },{
         "BillID": 3,
         "RentingID": 1,
         "BillWaterUnit": 10,
         "BillElectricUnit": 100,
-        "BillTotalPrice": 4500,
-        "BillStatusID": 3,
-        "BillDate": "2023:09"
+        "BillTotalPrice": 5200,
+        "BillStatusID": 2,
+        "BillDate": "2023:09",
+        "RoomID": "1201",
+        "InternetPackID": 1
+    },{
+        "BillID": 4,
+        "RentingID": 1,
+        "BillWaterUnit": 10,
+        "BillElectricUnit": 100,
+        "BillTotalPrice": 5200,
+        "BillStatusID": 2,
+        "BillDate": "2023:09",
+        "RoomID": "1201",
+        "InternetPackID": 1
+    },{
+        "BillID": 5,
+        "RentingID": 1,
+        "BillWaterUnit": 10,
+        "BillElectricUnit": 100,
+        "BillTotalPrice": 5200,
+        "BillStatusID": 2,
+        "BillDate": "2023:09",
+        "RoomID": "1201",
+        "InternetPackID": 1
+    },{
+        "BillID": 6,
+        "RentingID": 1,
+        "BillWaterUnit": 10,
+        "BillElectricUnit": 100,
+        "BillTotalPrice": 5200,
+        "BillStatusID": 2,
+        "BillDate": "2023:09",
+        "RoomID": "1201",
+        "InternetPackID": 1
+    },{
+        "BillID": 7,
+        "RentingID": 1,
+        "BillWaterUnit": 10,
+        "BillElectricUnit": 100,
+        "BillTotalPrice": 5200,
+        "BillStatusID": 2,
+        "BillDate": "2023:09",
+        "RoomID": "1201",
+        "InternetPackID": 1
+    },{
+        "BillID": 8,
+        "RentingID": 1,
+        "BillWaterUnit": 10,
+        "BillElectricUnit": 100,
+        "BillTotalPrice": 5200,
+        "BillStatusID": 2,
+        "BillDate": "2023:09",
+        "RoomID": "1201",
+        "InternetPackID": 1
+    },{
+        "BillID": 9,
+        "RentingID": 1,
+        "BillWaterUnit": 10,
+        "BillElectricUnit": 100,
+        "BillTotalPrice": 5200,
+        "BillStatusID": 2,
+        "BillDate": "2023:09",
+        "RoomID": "1201",
+        "InternetPackID": 1
+    },{
+        "BillID": 10,
+        "RentingID": 1,
+        "BillWaterUnit": 10,
+        "BillElectricUnit": 100,
+        "BillTotalPrice": 5200,
+        "BillStatusID": 2,
+        "BillDate": "2023:09",
+        "RoomID": "1201",
+        "InternetPackID": 1
+    },{
+        "BillID": 1,
+        "RentingID": 1,
+        "BillWaterUnit": 10,
+        "BillElectricUnit": 100,
+        "BillTotalPrice": 5200,
+        "BillStatusID": 2,
+        "BillDate": "2023:09",
+        "RoomID": "1201",
+        "InternetPackID": 1
+    },{
+        "BillID": 2,
+        "RentingID": 1,
+        "BillWaterUnit": 10,
+        "BillElectricUnit": 100,
+        "BillTotalPrice": 5200,
+        "BillStatusID": 2,
+        "BillDate": "2023:09",
+        "RoomID": "1201",
+        "InternetPackID": 1
+    },{
+        "BillID": 3,
+        "RentingID": 1,
+        "BillWaterUnit": 10,
+        "BillElectricUnit": 100,
+        "BillTotalPrice": 5200,
+        "BillStatusID": 2,
+        "BillDate": "2023:09",
+        "RoomID": "1201",
+        "InternetPackID": 1
+    },{
+        "BillID": 4,
+        "RentingID": 1,
+        "BillWaterUnit": 10,
+        "BillElectricUnit": 100,
+        "BillTotalPrice": 5200,
+        "BillStatusID": 2,
+        "BillDate": "2023:09",
+        "RoomID": "1201",
+        "InternetPackID": 1
+    },{
+        "BillID": 5,
+        "RentingID": 1,
+        "BillWaterUnit": 10,
+        "BillElectricUnit": 100,
+        "BillTotalPrice": 5200,
+        "BillStatusID": 2,
+        "BillDate": "2023:09",
+        "RoomID": "1201",
+        "InternetPackID": 1
+    },{
+        "BillID": 6,
+        "RentingID": 1,
+        "BillWaterUnit": 10,
+        "BillElectricUnit": 100,
+        "BillTotalPrice": 5200,
+        "BillStatusID": 2,
+        "BillDate": "2023:09",
+        "RoomID": "1201",
+        "InternetPackID": 1
+    },{
+        "BillID": 7,
+        "RentingID": 1,
+        "BillWaterUnit": 10,
+        "BillElectricUnit": 100,
+        "BillTotalPrice": 5200,
+        "BillStatusID": 2,
+        "BillDate": "2023:09",
+        "RoomID": "1201",
+        "InternetPackID": 1
+    },{
+        "BillID": 8,
+        "RentingID": 1,
+        "BillWaterUnit": 10,
+        "BillElectricUnit": 100,
+        "BillTotalPrice": 5200,
+        "BillStatusID": 2,
+        "BillDate": "2023:09",
+        "RoomID": "1201",
+        "InternetPackID": 1
+    },{
+        "BillID": 9,
+        "RentingID": 1,
+        "BillWaterUnit": 10,
+        "BillElectricUnit": 100,
+        "BillTotalPrice": 5200,
+        "BillStatusID": 2,
+        "BillDate": "2023:09",
+        "RoomID": "1201",
+        "InternetPackID": 1
+    },{
+        "BillID": 10,
+        "RentingID": 1,
+        "BillWaterUnit": 10,
+        "BillElectricUnit": 100,
+        "BillTotalPrice": 5200,
+        "BillStatusID": 2,
+        "BillDate": "2023:09",
+        "RoomID": "1201",
+        "InternetPackID": 1
     },
 ]
 
@@ -276,4 +452,27 @@ export const RentedData = [
         "UserPhone": "0614077850",
         "UserAddress": "1/1 วงสว่าง บางซื่อ กทม."
     }
+]
+
+export const RoomStatus = [
+    {
+        "RoomStatusID ": "1",
+        "RoomStatusName": "ห้องว่าง"
+    },{
+        "RoomStatusID ": "2",
+        "RoomStatusName": "มีผู้เช่า"
+    },
+]
+
+export const BillStatus = [
+    {
+        "BillStatusID ": "1",
+        "BillStatusName": "ยังไม่จ่าย"
+    },{
+        "BillStatusID ": "2",
+        "BillStatusName": "รอยืนยัน"
+    },{
+        "BillStatusID ": "3",
+        "BillStatusName": "จ่ายแล้ว"
+    },
 ]
