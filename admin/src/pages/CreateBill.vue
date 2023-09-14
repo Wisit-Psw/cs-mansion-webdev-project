@@ -9,15 +9,15 @@ import { BillData, RoomData, BillStatus } from "../../../Ex-data/data.js"
     </header>
     <div class="filterBar">
       <div class="filter-wrap">
-        <label for="RoomID">เลห้อง: </label>
+        <label for="RoomID">เลขห้อง: </label>
         <select name="RoomID" id="RoomIDFilter">
           <option value="All">ทั้งหมด</option>
           <option v-for="(item, index) in RoomData" :key="index" :value="item.RoomID">{{ item.RoomID }}</option>
         </select>
       </div>
       <div class="filter-wrap">
-        <label for="RoomID">สถานะ: </label>
-        <select name="RoomID" id="RoomIDFilter">
+        <label for="status">สถานะ: </label>
+        <select name="status" id="RoomIDFilter">
           <option value="All">ทั้งหมด</option>
           <option v-for="(item, index) in BillStatus" :key="index" :value="item.BillStatusID">{{ item.BillStatusName }}
           </option>
@@ -66,7 +66,7 @@ import { BillData, RoomData, BillStatus } from "../../../Ex-data/data.js"
 }
 
 .filterBar {
-  width: 80%;
+  width: 95%;
   display: flex;
   margin: 0 auto;
   font-size: 1rem;
@@ -107,7 +107,7 @@ import { BillData, RoomData, BillStatus } from "../../../Ex-data/data.js"
 }
 
 .table {
-  width: 90%;
+  width: 95%;
   font-size: 1rem;
   border-spacing: 0;
   text-align: center;
@@ -117,12 +117,15 @@ import { BillData, RoomData, BillStatus } from "../../../Ex-data/data.js"
 
 .thead {
   color: var(--bgColor);
+  border-radius: 0.5rem 0.5rem 0 0;
   background-color: var(--menuColor);
 }
 
 .tbody {
   max-height: 75dvh;
   overflow-y: auto;
+  border-radius:0 0 0.5rem 0.5rem ;
+
 }
 
 .tr {
@@ -213,7 +216,9 @@ import { BillData, RoomData, BillStatus } from "../../../Ex-data/data.js"
   .filter-wrap>select {
     padding: 0 2rem;
   }
-
+  .table{
+    width: 90%;
+  }
   .th {
     font-size: 1.5rem;
   }

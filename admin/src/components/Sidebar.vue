@@ -4,6 +4,7 @@ import { reactive } from 'vue';
 const menuReactive = reactive({ isShow: false });
 
 const onMenuIconClick = () => {
+    if (window.innerWidth >= 826){console.log(window.innerWidth); return}
     if (menuReactive.isShow) {
         menuReactive.isShow = false;
         document.getElementById("Menu").style.display = "none";
@@ -29,43 +30,43 @@ const onMenuIconClick = () => {
             </div>
         </div>
         <div class="menu-list" id="Menu">
-            <router-link to="/">
+            <router-link to="/" :onclick="onMenuIconClick">
                 <div class="menu-wrap">
                     หน้าแรก
                 </div>
             </router-link>
-            <router-link to="/bill">
+            <router-link to="/waitingbill" :onclick="onMenuIconClick">
                 <div class="menu-wrap">
                     รายการรอยืนยัน
                 </div>
             </router-link>
-            <router-link to="/waitingbill">
+            <router-link to="/bill" :onclick="onMenuIconClick">
                 <div class="menu-wrap">
                     บิลค่าเช่า
                 </div>
             </router-link>
-            <router-link to="/room">
+            <router-link to="/room" :onclick="onMenuIconClick">
                 <div class="menu-wrap">
                     ห้องพัก
                 </div>
             </router-link>
-            <router-link to="/user">
+            <router-link to="/user" :onclick="onMenuIconClick">
                 <div class="menu-wrap">
                     ผู้เช่า
                 </div>
             </router-link>
-            <router-link to="/create-bill">
+            <router-link to="/create-bill" :onclick="onMenuIconClick">
                 <div class="menu-wrap">
                     สร้างบิล
                 </div>
             </router-link>
-            <router-link to="/rented-history">
+            <router-link to="/rented-history" :onclick="onMenuIconClick">
                 <div class="menu-wrap">
                     รายการเช่าห้องพัก
                 </div>
             </router-link>
         </div>
-        <router-link to="/login">
+        <router-link to="/login" :onclick="onMenuIconClick">
             <div class="logoutContainer" id="logout">
                 <div class="logoutText-wrap">
                     ออกจากระบบ
@@ -84,7 +85,7 @@ const onMenuIconClick = () => {
 }
 
 .logo {
-    width: 90%;
+    width: 95%;
     height: 3rem;
     margin: 1rem auto;
     display: flex;
@@ -172,8 +173,9 @@ const onMenuIconClick = () => {
 }
 
 
-@media screen and (min-width:826px) {
+@media screen and (min-width:825px) {
     .logo {
+        width: 90%;
         justify-content: space-around;
     }
 

@@ -1,5 +1,5 @@
 <script setup>
-import { BillData, RoomData, BillStatus } from "../../../Ex-data/data.js"
+import {  RoomData, RoomStatus } from "../../../Ex-data/data.js"
 </script>
 
 <template>
@@ -9,7 +9,7 @@ import { BillData, RoomData, BillStatus } from "../../../Ex-data/data.js"
     </header>
     <div class="filterBar">
       <div class="filter-wrap">
-        <label for="RoomID">เลห้อง: </label>
+        <label for="RoomID">เลขห้อง: </label>
         <select name="RoomID" id="RoomIDFilter">
           <option value="All">ทั้งหมด</option>
           <option v-for="(item, index) in RoomData" :key="index" :value="item.RoomID">{{ item.RoomID }}</option>
@@ -19,7 +19,7 @@ import { BillData, RoomData, BillStatus } from "../../../Ex-data/data.js"
         <label for="RoomID">สถานะ: </label>
         <select name="RoomID" id="RoomIDFilter">
           <option value="All">ทั้งหมด</option>
-          <option v-for="(item, index) in BillStatus" :key="index" :value="item.BillStatusID">{{ item.BillStatusName }}
+          <option v-for="(item, index) in RoomStatus" :key="index" :value="item.RoomStatusID">{{ item.RoomStatusName }}
           </option>
         </select>
       </div>
@@ -29,20 +29,22 @@ import { BillData, RoomData, BillStatus } from "../../../Ex-data/data.js"
       <div class="thead">
         <div class="tr">
           <div class="th roomNumber">เลขห้อง</div>
-          <div class="th date">วันที่</div>
-          <div class="th totalPrice">ราคารวม</div>
+          <div class="th date">ราคา</div>
+          <div class="th totalPrice">ประเภท</div>
           <div class="th status">สถานะ</div>
           <div class="th detail">รายละเอียด</div>
+          <div class="th edit">แก้ไข</div>
         </div>
       </div>
       <div class="tbody">
-        <div v-for="(item, index) in BillData" :key="index" class="dataTable tr">
+        <div v-for="(item, index) in RoomData" :key="index" class="dataTable tr">
           <div class="td roomNumber">{{ item.RoomID }}</div>
-          <div class="td date">{{ item.BillDate }}</div>
-          <div class="td totalPrice">{{ item.BillTotalPrice }}</div>
-          <div class="td status">{{ item.BillStatusID }}</div>
-          <div class="td detail">
-            <div class="detailBTN">รายละเอียด</div>
+          <div class="td date">{{ item.RoomPrice }}</div>
+          <div class="td totalPrice">{{ item.RoomTypeID }}</div>
+          <div class="td status">{{ item.RoomStatusID }}</div>
+          <div class="td detail">{{ item.RoomDetail }}</div>
+          <div class="td edit">
+            <div class="editBTN">แก้ไข</div>
           </div>
         </div>
       </div>
@@ -66,7 +68,7 @@ import { BillData, RoomData, BillStatus } from "../../../Ex-data/data.js"
 }
 
 .filterBar {
-  width: 80%;
+  width: 95%;
   display: flex;
   margin: 0 auto;
   font-size: 1rem;
@@ -78,7 +80,7 @@ import { BillData, RoomData, BillStatus } from "../../../Ex-data/data.js"
   box-shadow: 0px 3px 2px var(--menuSelectedColor);
 }
 
-.detailBTN {
+.editBTN {
   margin: 0 auto;
   color: white;
   cursor: pointer;
@@ -107,7 +109,7 @@ import { BillData, RoomData, BillStatus } from "../../../Ex-data/data.js"
 }
 
 .table {
-  width: 90%;
+  width: 95%;
   font-size: 1rem;
   border-spacing: 0;
   text-align: center;
@@ -117,12 +119,15 @@ import { BillData, RoomData, BillStatus } from "../../../Ex-data/data.js"
 
 .thead {
   color: var(--bgColor);
+  border-radius: 0.5rem 0.5rem 0 0;
   background-color: var(--menuColor);
 }
 
 .tbody {
   max-height: 75dvh;
   overflow-y: auto;
+  border-radius:0 0 0.5rem 0.5rem ;
+
 }
 
 .tr {
@@ -155,11 +160,17 @@ import { BillData, RoomData, BillStatus } from "../../../Ex-data/data.js"
 .roomNumber,
 .date,
 .totalPrice,
+.detail,
 .status {
   width: 20%;
+  margin:auto 0;
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
-.detail {
+.edit {
   width: 20%;
 }
 
@@ -213,7 +224,10 @@ import { BillData, RoomData, BillStatus } from "../../../Ex-data/data.js"
   .filter-wrap>select {
     padding: 0 2rem;
   }
-
+  .table{
+    width: 90%;
+  }
+  
   .th {
     font-size: 1.5rem;
   }

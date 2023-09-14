@@ -9,7 +9,7 @@ import { BillData, RoomData, BillStatus } from "../../../Ex-data/data.js"
     </header>
     <div class="filterBar">
       <div class="filter-wrap">
-        <label for="RoomID">เลห้อง: </label>
+        <label for="RoomID">เลขห้อง: </label>
         <select name="RoomID" id="RoomIDFilter">
           <option value="All">ทั้งหมด</option>
           <option v-for="(item, index) in RoomData" :key="index" :value="item.RoomID">{{ item.RoomID }}</option>
