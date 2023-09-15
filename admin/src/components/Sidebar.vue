@@ -65,6 +65,11 @@ const onMenuIconClick = () => {
                     รายการเช่าห้องพัก
                 </div>
             </router-link>
+            <router-link to="/detail" :onclick="onMenuIconClick">
+                <div class="menu-wrap">
+                    รายละเอียดหอพัก
+                </div>
+            </router-link>
         </div>
         <router-link to="/login" :onclick="onMenuIconClick">
             <div class="logoutContainer" id="logout">
@@ -151,7 +156,7 @@ const onMenuIconClick = () => {
     display: none;
     position: fixed;
     background-color: var(--bgColor);
-    top: 25.5rem;
+    top: 28.5rem;
     border-radius: 0.2rem;
 }
 

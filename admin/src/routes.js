@@ -6,6 +6,7 @@ import User from "./pages/User.vue"
 import CreateBill from "./pages/CreateBill.vue"
 import RentedHistory from "./pages/RentedHistory.vue"
 import PageNotFound from "./pages/PageNotFound.vue"
+import Detail from "./pages/Detail.vue"
 import Login from "./pages/Login.vue"
 export const routes = [
     // {
@@ -35,6 +36,9 @@ export const routes = [
     },
     {
         path: '/rented-history', component: RentedHistory,
+    },
+    {
+        path: '/detail', component: Detail,
     },
     {
         path: '/login', component: Login,
