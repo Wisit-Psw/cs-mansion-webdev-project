@@ -16,6 +16,20 @@ import { BillData, RoomData, BillStatus } from "../../../Ex-data/data.js"
         </select>
       </div>
       <div class="filter-wrap">
+        <label for="RoomID">ปี: </label>
+        <select name="RoomID" id="RoomIDFilter">
+          <option value="All">ทั้งหมด</option>
+          <option v-for="(item, index) in BillData" :key="index" :value="item.BillDate">{{ item.BillDate }}</option>
+        </select>
+      </div>
+      <div class="filter-wrap">
+        <label for="RoomID">เดือน: </label>
+        <select name="RoomID" id="RoomIDFilter">
+          <option value="All">ทั้งหมด</option>
+          <option v-for="(item, index) in BillData" :key="index" :value="item.BillDate">{{ item.BillDate }}</option>
+        </select>
+      </div>
+      <div class="filter-wrap">
         <label for="status">สถานะ: </label>
         <select name="status" id="RoomIDFilter">
           <option value="All">ทั้งหมด</option>
