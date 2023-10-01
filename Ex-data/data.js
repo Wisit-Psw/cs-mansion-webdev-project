@@ -39,6 +39,7 @@ export const BillData = [
         "BillElectricUnit": 100,
         "BillTotalPrice": 5200,
         "BillStatusID": 2,
+        "BillStatusName": "รอยืนยัน",
         "BillDate": "2023:09",
         "RoomID": "1201",
         "InternetPackID": 1
@@ -49,6 +50,7 @@ export const BillData = [
         "BillElectricUnit": 100,
         "BillTotalPrice": 5200,
         "BillStatusID": 2,
+        "BillStatusName": "รอยืนยัน",
         "BillDate": "2023:09",
         "RoomID": "1201",
         "InternetPackID": 1
@@ -59,6 +61,7 @@ export const BillData = [
         "BillElectricUnit": 100,
         "BillTotalPrice": 5200,
         "BillStatusID": 2,
+        "BillStatusName": "รอยืนยัน",
         "BillDate": "2023:09",
         "RoomID": "1201",
         "InternetPackID": 1
@@ -69,6 +72,7 @@ export const BillData = [
         "BillElectricUnit": 100,
         "BillTotalPrice": 5200,
         "BillStatusID": 2,
+        "BillStatusName": "รอยืนยัน",
         "BillDate": "2023:09",
         "RoomID": "1201",
         "InternetPackID": 1
@@ -79,6 +83,7 @@ export const BillData = [
         "BillElectricUnit": 100,
         "BillTotalPrice": 5200,
         "BillStatusID": 2,
+        "BillStatusName": "รอยืนยัน",
         "BillDate": "2023:09",
         "RoomID": "1201",
         "InternetPackID": 1
@@ -89,6 +94,7 @@ export const BillData = [
         "BillElectricUnit": 100,
         "BillTotalPrice": 5200,
         "BillStatusID": 2,
+        "BillStatusName": "รอยืนยัน",
         "BillDate": "2023:09",
         "RoomID": "1201",
         "InternetPackID": 1
@@ -99,6 +105,7 @@ export const BillData = [
         "BillElectricUnit": 100,
         "BillTotalPrice": 5200,
         "BillStatusID": 2,
+        "BillStatusName": "รอยืนยัน",
         "BillDate": "2023:09",
         "RoomID": "1201",
         "InternetPackID": 1
@@ -381,7 +388,10 @@ export const RoomData = [
         "RoomDetail": "27 ตรม. ห้องแอร์ ",
         "RoomSize": 27,
         "RoomTypeID": 2,
-        "RoomStatusID": 2
+        "RoomTypeName": "ห้องแอร์",
+        "RoomStatusID": 2,
+        "RoomStatusName": "มีผู้เช่า"
+        
     },
     {
         "RoomID": "1002",
@@ -389,7 +399,9 @@ export const RoomData = [
         "RoomDetail": "27 ตรม. พัดลม",
         "RoomSize": 27,
         "RoomTypeID": 1,
-        "RoomStatusID": 1
+        "RoomTypeName": "พัดลม",
+        "RoomStatusID": 1,
+        "RoomStatusName": "ห้องว่าง"
     },
     {
         "RoomID": "1003",
@@ -397,7 +409,9 @@ export const RoomData = [
         "RoomDetail": "27 ตรม. พัดลม",
         "RoomSize": 27,
         "RoomTypeID": 1,
-        "RoomStatusID": 1
+        "RoomTypeName": "พัดลม",
+        "RoomStatusID": 1,
+        "RoomStatusName": "ห้องว่าง"
     },
     {
         "RoomID": "1004",
@@ -405,7 +419,9 @@ export const RoomData = [
         "RoomDetail": "27 ตรม. พัดลม",
         "RoomSize": 27,
         "RoomTypeID": 1,
-        "RoomStatusID": 1
+        "RoomTypeName": "พัดลม",
+        "RoomStatusID": 1,
+        "RoomStatusName": "ห้องว่าง"
     },
     {
         "RoomID": "1005",
@@ -413,7 +429,9 @@ export const RoomData = [
         "RoomDetail": "27 ตรม. พัดลม",
         "RoomSize": 27,
         "RoomTypeID": 1,
-        "RoomStatusID": 1
+        "RoomTypeName": "พัดลม",
+        "RoomStatusID": 1,
+        "RoomStatusName": "ห้องว่าง"
     },
     {
         "RoomID": "1006",
@@ -421,7 +439,9 @@ export const RoomData = [
         "RoomDetail": "27 ตรม. พัดลม",
         "RoomSize": 27,
         "RoomTypeID": 1,
-        "RoomStatusID": 1
+        "RoomTypeName": "พัดลม",
+        "RoomStatusID": 1,
+        "RoomStatusName": "ห้องว่าง"
     },
     {
         "RoomID": "1007",
@@ -429,7 +449,9 @@ export const RoomData = [
         "RoomDetail": "27 ตรม. พัดลม",
         "RoomSize": 27,
         "RoomTypeID": 1,
-        "RoomStatusID": 1
+        "RoomTypeName": "พัดลม",
+        "RoomStatusID": 1,
+        "RoomStatusName": "ห้องว่าง"
     },
     {
         "RoomID": "1008",
@@ -437,7 +459,9 @@ export const RoomData = [
         "RoomDetail": "27 ตรม. พัดลม",
         "RoomSize": 27,
         "RoomTypeID": 1,
-        "RoomStatusID": 1
+        "RoomTypeName": "พัดลม",
+        "RoomStatusID": 1,
+        "RoomStatusName": "ห้องว่าง"
     },
     {
         "RoomID": "1009",
@@ -445,7 +469,9 @@ export const RoomData = [
         "RoomDetail": "27 ตรม. พัดลม",
         "RoomSize": 27,
         "RoomTypeID": 1,
-        "RoomStatusID": 1
+        "RoomTypeName": "พัดลม",
+        "RoomStatusID": 1,
+        "RoomStatusName": "ห้องว่าง"
     },
     {
         "RoomID": "1010",
@@ -453,7 +479,9 @@ export const RoomData = [
         "RoomDetail": "27 ตรม. พัดลม",
         "RoomSize": 27,
         "RoomTypeID": 1,
-        "RoomStatusID": 1
+        "RoomTypeName": "พัดลม",
+        "RoomStatusID": 1,
+        "RoomStatusName": "ห้องว่าง"
     },
     {
         "RoomID": "2001",
@@ -461,7 +489,9 @@ export const RoomData = [
         "RoomDetail": "27 ตรม. ห้องแอร์ ",
         "RoomSize": 27,
         "RoomTypeID": 2,
-        "RoomStatusID": 2
+        "RoomTypeName": "ห้องแอร์",
+        "RoomStatusID": 2,
+        "RoomStatusName": "มีผู้เช่า"
     },
     {
         "RoomID": "2002",
@@ -469,7 +499,9 @@ export const RoomData = [
         "RoomDetail": "27 ตรม. พัดลม",
         "RoomSize": 27,
         "RoomTypeID": 1,
-        "RoomStatusID": 1
+        "RoomTypeName": "พัดลม",
+        "RoomStatusID": 1,
+        "RoomStatusName": "ห้องว่าง"
     },
     {
         "RoomID": "2003",
@@ -477,7 +509,9 @@ export const RoomData = [
         "RoomDetail": "27 ตรม. พัดลม",
         "RoomSize": 27,
         "RoomTypeID": 1,
-        "RoomStatusID": 1
+        "RoomTypeName": "พัดลม",
+        "RoomStatusID": 1,
+        "RoomStatusName": "ห้องว่าง"
     },
     {
         "RoomID": "2004",
@@ -485,7 +519,9 @@ export const RoomData = [
         "RoomDetail": "27 ตรม. พัดลม",
         "RoomSize": 27,
         "RoomTypeID": 1,
-        "RoomStatusID": 1
+        "RoomTypeName": "พัดลม",
+        "RoomStatusID": 1,
+        "RoomStatusName": "ห้องว่าง"
     },
     {
         "RoomID": "2005",
@@ -493,7 +529,9 @@ export const RoomData = [
         "RoomDetail": "27 ตรม. พัดลม",
         "RoomSize": 27,
         "RoomTypeID": 1,
-        "RoomStatusID": 1
+        "RoomTypeName": "พัดลม",
+        "RoomStatusID": 1,
+        "RoomStatusName": "ห้องว่าง"
     },
     {
         "RoomID": "2006",
@@ -501,7 +539,9 @@ export const RoomData = [
         "RoomDetail": "27 ตรม. พัดลม",
         "RoomSize": 27,
         "RoomTypeID": 1,
-        "RoomStatusID": 1
+        "RoomTypeName": "พัดลม",
+        "RoomStatusID": 1,
+        "RoomStatusName": "ห้องว่าง"
     },
     {
         "RoomID": "2007",
@@ -509,7 +549,9 @@ export const RoomData = [
         "RoomDetail": "27 ตรม. พัดลม",
         "RoomSize": 27,
         "RoomTypeID": 1,
-        "RoomStatusID": 1
+        "RoomTypeName": "พัดลม",
+        "RoomStatusID": 1,
+        "RoomStatusName": "ห้องว่าง"
     },
     {
         "RoomID": "2008",
@@ -517,7 +559,9 @@ export const RoomData = [
         "RoomDetail": "27 ตรม. พัดลม",
         "RoomSize": 27,
         "RoomTypeID": 1,
-        "RoomStatusID": 1
+        "RoomTypeName": "พัดลม",
+        "RoomStatusID": 1,
+        "RoomStatusName": "ห้องว่าง"
     },
     {
         "RoomID": "2009",
@@ -525,7 +569,9 @@ export const RoomData = [
         "RoomDetail": "27 ตรม. พัดลม",
         "RoomSize": 27,
         "RoomTypeID": 1,
-        "RoomStatusID": 1
+        "RoomTypeName": "พัดลม",
+        "RoomStatusID": 1,
+        "RoomStatusName": "ห้องว่าง"
     },
     {
         "RoomID": "2010",
@@ -533,7 +579,9 @@ export const RoomData = [
         "RoomDetail": "27 ตรม. พัดลม",
         "RoomSize": 27,
         "RoomTypeID": 1,
-        "RoomStatusID": 1
+        "RoomTypeName": "พัดลม",
+        "RoomStatusID": 1,
+        "RoomStatusName": "ห้องว่าง"
     }
 ]
 

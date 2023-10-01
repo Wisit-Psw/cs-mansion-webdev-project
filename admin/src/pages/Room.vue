@@ -40,8 +40,8 @@ import {  RoomData, RoomStatus } from "../../../Ex-data/data.js"
         <div v-for="(item, index) in RoomData" :key="index" class="dataTable tr">
           <div class="td roomNumber">{{ item.RoomID }}</div>
           <div class="td date">{{ item.RoomPrice }}</div>
-          <div class="td totalPrice">{{ item.RoomTypeID }}</div>
-          <div class="td status">{{ item.RoomStatusID }}</div>
+          <div class="td totalPrice">{{ item.RoomTypeName }}</div>
+          <div class="td status">{{ item.RoomStatusName }}</div>
           <div class="td detail">{{ item.RoomDetail }}</div>
           <div class="td edit">
             <div class="editBTN">แก้ไข</div>
