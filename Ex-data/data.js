@@ -697,3 +697,21 @@ export const Roomtype = [
         "RoomTypeName": "ห้องแอร์"
     },
 ]
+export const MansionDetail = [
+    {
+        DetailID: 0,
+        DetailName: "ค่าส่วนกลาง",
+        DetailPrice: 100,
+        MDSID: 1,
+    },{
+        DetailID: 1,
+        DetailName: "ค่าไฟ/หน่วยละ",
+        DetailPrice: 7,
+        MDSID: 1,
+    },{
+        DetailID: 2,
+        DetailName: "ค่าน้ำ/หน่วยละ",
+        DetailPrice: 18.5,
+        MDSID: 1,
+    }
+]
