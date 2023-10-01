@@ -36,7 +36,7 @@ const onMenuIconClick = () => {
             </router-link>
             <router-link to="/bill">
                 <div class="menu-wrap">
-                    บิลค่าเช่า
+                    ประวัติบิล
                 </div>
             </router-link>
             <router-link to="/info">

@@ -93,6 +93,8 @@ import {  RentingData } from "../../../Ex-data/data.js"
 .topic{
   font-size: 1.2rem;
   margin-bottom: 0.5%;
+  color: var(--menuColor);
+  font-weight: bold;
 }
 
 .tr {
