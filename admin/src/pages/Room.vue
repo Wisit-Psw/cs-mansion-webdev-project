@@ -5,7 +5,7 @@ import {  RoomData, RoomStatus } from "../../../Ex-data/data.js"
 <template>
   <div class="container">
     <header class="header">
-      รายการรอยืนยัน:
+      ห้องพัก:
     </header>
     <div class="filterBar">
       <div class="filter-wrap">

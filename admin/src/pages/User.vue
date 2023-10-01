@@ -1,11 +1,11 @@
 <script setup>
-import { BillData, RoomData, BillStatus } from "../../../Ex-data/data.js"
+import { RentingData,BillData, RoomData, BillStatus } from "../../../Ex-data/data.js"
 </script>
 
 <template>
   <div class="container">
     <header class="header">
-      รายการรอยืนยัน:
+      ผู้เช่า:
     </header>
     <div class="filterBar">
       <div class="filter-wrap">
@@ -28,19 +28,19 @@ import { BillData, RoomData, BillStatus } from "../../../Ex-data/data.js"
     <div class="table">
       <div class="thead">
         <div class="tr">
-          <div class="th roomNumber">เลขห้อง</div>
-          <div class="th date">วันที่</div>
-          <div class="th totalPrice">ราคารวม</div>
-          <div class="th status">สถานะ</div>
+          <div class="th roomNumber">ชื่อผู้เช่า</div>
+          <div class="th date">เบอร์โทรศัพท์</div>
+          <div class="th totalPrice">ที่อยู่</div>
+          <div class="th status">ห้อง</div>
           <div class="th detail">รายละเอียด</div>
         </div>
       </div>
       <div class="tbody">
-        <div v-for="(item, index) in BillData" :key="index" class="dataTable tr">
-          <div class="td roomNumber">{{ item.RoomID }}</div>
-          <div class="td date">{{ item.BillDate }}</div>
-          <div class="td totalPrice">{{ item.BillTotalPrice }}</div>
-          <div class="td status">{{ item.BillStatusID }}</div>
+        <div v-for="(item, index) in RentingData" :key="index" class="dataTable tr">
+          <div class="td roomNumber">{{ item.UserName }}</div>
+          <div class="td date">{{ item.UserPhone }}</div>
+          <div class="td totalPrice">{{ item.UserAddress }}</div>
+          <div class="td status">{{ item.RoomID }}</div>
           <div class="td detail">
             <div class="detailBTN">รายละเอียด</div>
           </div>

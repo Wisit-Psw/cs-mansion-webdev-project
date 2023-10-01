@@ -3,7 +3,7 @@
 
 <template>
   <div class="container">
-    Login
+    รายละเอียดหอพัก:
   </div>
 </template>
 

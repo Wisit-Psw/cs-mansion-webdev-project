@@ -5,7 +5,7 @@ import { BillData, RoomData, BillStatus } from "../../../Ex-data/data.js"
 <template>
   <div class="container">
     <header class="header">
-      รายการรอยืนยัน:
+      บิลค่าเช่า:
     </header>
     <div class="filterBar">
       <div class="filter-wrap">

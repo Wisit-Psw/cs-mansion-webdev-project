@@ -5,7 +5,8 @@ export const BillData = [
         "BillWaterUnit": 10,
         "BillElectricUnit": 100,
         "BillTotalPrice": 5200,
-        "BillStatusID": 2,
+        "BillStatusID": 1,
+        "BillStatusName": "ยังไม่จ่าย",
         "BillDate": "2023:09",
         "RoomID": "1201",
         "InternetPackID": 1
@@ -16,6 +17,7 @@ export const BillData = [
         "BillElectricUnit": 100,
         "BillTotalPrice": 5200,
         "BillStatusID": 2,
+        "BillStatusName": "รอยืนยัน",
         "BillDate": "2023:09",
         "RoomID": "1201",
         "InternetPackID": 1
@@ -25,7 +27,8 @@ export const BillData = [
         "BillWaterUnit": 10,
         "BillElectricUnit": 100,
         "BillTotalPrice": 5200,
-        "BillStatusID": 2,
+        "BillStatusID": 3,
+        "BillStatusName": "จ่ายแล้ว",
         "BillDate": "2023:09",
         "RoomID": "1201",
         "InternetPackID": 1
@@ -624,5 +627,15 @@ export const BillStatus = [
     },{
         "BillStatusID ": "3",
         "BillStatusName": "จ่ายแล้ว"
+    },
+]
+
+export const Roomtype = [
+    {
+        "RoomTypeID ": "1",
+        "RoomTypeName": "พัดลม"
+    },{
+        "RoomTypeID ": "1",
+        "RoomTypeName": "ห้องแอร์"
     },
 ]
