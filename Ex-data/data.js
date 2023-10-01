@@ -116,6 +116,7 @@ export const BillData = [
         "BillElectricUnit": 100,
         "BillTotalPrice": 5200,
         "BillStatusID": 2,
+        "BillStatusName": "รอยืนยัน",
         "BillDate": "2023:09",
         "RoomID": "1201",
         "InternetPackID": 1
@@ -126,6 +127,7 @@ export const BillData = [
         "BillElectricUnit": 100,
         "BillTotalPrice": 5200,
         "BillStatusID": 2,
+        "BillStatusName": "รอยืนยัน",
         "BillDate": "2023:09",
         "RoomID": "1201",
         "InternetPackID": 1
@@ -136,6 +138,7 @@ export const BillData = [
         "BillElectricUnit": 100,
         "BillTotalPrice": 5200,
         "BillStatusID": 2,
+        "BillStatusName": "รอยืนยัน",
         "BillDate": "2023:09",
         "RoomID": "1201",
         "InternetPackID": 1
@@ -146,6 +149,7 @@ export const BillData = [
         "BillElectricUnit": 100,
         "BillTotalPrice": 5200,
         "BillStatusID": 2,
+        "BillStatusName": "รอยืนยัน",
         "BillDate": "2023:09",
         "RoomID": "1201",
         "InternetPackID": 1
@@ -156,6 +160,7 @@ export const BillData = [
         "BillElectricUnit": 100,
         "BillTotalPrice": 5200,
         "BillStatusID": 2,
+        "BillStatusName": "รอยืนยัน",
         "BillDate": "2023:09",
         "RoomID": "1201",
         "InternetPackID": 1
@@ -166,6 +171,7 @@ export const BillData = [
         "BillElectricUnit": 100,
         "BillTotalPrice": 5200,
         "BillStatusID": 2,
+        "BillStatusName": "รอยืนยัน",
         "BillDate": "2023:09",
         "RoomID": "1201",
         "InternetPackID": 1
@@ -176,6 +182,7 @@ export const BillData = [
         "BillElectricUnit": 100,
         "BillTotalPrice": 5200,
         "BillStatusID": 2,
+        "BillStatusName": "รอยืนยัน",
         "BillDate": "2023:09",
         "RoomID": "1201",
         "InternetPackID": 1
@@ -186,6 +193,7 @@ export const BillData = [
         "BillElectricUnit": 100,
         "BillTotalPrice": 5200,
         "BillStatusID": 2,
+        "BillStatusName": "รอยืนยัน",
         "BillDate": "2023:09",
         "RoomID": "1201",
         "InternetPackID": 1
@@ -196,6 +204,7 @@ export const BillData = [
         "BillElectricUnit": 100,
         "BillTotalPrice": 5200,
         "BillStatusID": 2,
+        "BillStatusName": "รอยืนยัน",
         "BillDate": "2023:09",
         "RoomID": "1201",
         "InternetPackID": 1
@@ -206,6 +215,7 @@ export const BillData = [
         "BillElectricUnit": 100,
         "BillTotalPrice": 5200,
         "BillStatusID": 2,
+        "BillStatusName": "รอยืนยัน",
         "BillDate": "2023:09",
         "RoomID": "1201",
         "InternetPackID": 1
