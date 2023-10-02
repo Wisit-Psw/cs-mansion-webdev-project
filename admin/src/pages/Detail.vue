@@ -1,11 +1,10 @@
 <script setup>
 import {MansionDetail} from '../../../Ex-data/data'
-
 </script>
 
 <template>
-  <div class="container">
-    <header class="header">รายละเอียดหอพัก:</header>
+  <header class="header">รายละเอียดหอพัก:</header>
+ <div class="container">
     <div class="table-wrap">
       <div class="tableBox" v-for="(item, index) in MansionDetail" :key="index">
         <div class="table">
@@ -15,7 +14,7 @@ import {MansionDetail} from '../../../Ex-data/data'
             </div>
           </div>
           <div class="tbody">
-            <div class="td detail">{{ item?.Price }}</div>
+            <div class="td detail">{{ item?.DetailPrice}}</div>
             <div class="td edit">
               <div class="editBTN">แก้ไข</div>
             </div>
@@ -31,6 +30,7 @@ import {MansionDetail} from '../../../Ex-data/data'
   width: 100%;
   height: 100%;
   display: block;
+  margin-left: 20rem; /*ทำให้อยุ่ตรงกลาง*/
 }
 
 .header {
@@ -40,7 +40,7 @@ import {MansionDetail} from '../../../Ex-data/data'
   display: none;
 }
 .tableBox{
-  width: 15rem;
+  width: 13rem;
 }
 .table-wrap {
   display: block;
@@ -49,7 +49,8 @@ import {MansionDetail} from '../../../Ex-data/data'
 }
 
 .editBTN {
-  margin: 0 auto;
+  /* margin: 0 auto; */
+  margin-left: 12rem ;
   color: white;
   cursor: pointer;
   font-weight: bold;
@@ -80,15 +81,18 @@ import {MansionDetail} from '../../../Ex-data/data'
   border-radius: 0.5rem 0.5rem 0 0;
   background-color: var(--menuColor);
   width: 100%;
+ 
 }
 
 .tbody {
   border-radius: 0 0 0.5rem 0.5rem;
   display: flex;
+  padding: 0.5rem; /**/ 
 }
 
 .tr {
   display: flex;
+  margin-left: 0.5rem; /*เพิ่มระยะห่างdetailname */
 }
 
 
@@ -96,23 +100,23 @@ import {MansionDetail} from '../../../Ex-data/data'
   display: flex;
   align-items: center;
   justify-content: space-around;
+ 
 }
 
-.tbody > :nth-child(even) {
+/* .tbody > :nth-child(even) {
   background-color: rgb(233, 232, 232);
-}
+} */
 
 .tbody > .tr > .td {
   padding: 0.5rem 0.5rem;
 }
 
-.roomNumber,
-.date,
-.totalPrice,
+
 .detail,
 .edit {
   width: 20%;
 }
+
 
 @media screen and (min-width: 826px) {
   .header {
@@ -138,6 +142,7 @@ import {MansionDetail} from '../../../Ex-data/data'
 
   .th {
     font-size: 1.5rem;
+    
   }
 }
 </style>
