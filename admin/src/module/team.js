@@ -8,3 +8,4 @@ export const teamColor = {
     btnColor:"rgb(255, 171, 16)",
   }
 export default teamColor;
+

@@ -1,36 +1,54 @@
 <script setup>
-import {MansionDetail} from '../../../Ex-data/data'
+import { MansionDetail } from '../../../Ex-data/data';
+import DetailBox from '../components/DetailBox.vue';
+// // import  onMounted from 'vue';
+// import switchModule from './module/swith.js';
+
+// const { onModeChange } = defineEmits(['onModeChange']);
 </script>
 
 <template>
   <header class="header">รายละเอียดหอพัก:</header>
- <div class="container">
+  <div class="container">
     <div class="table-wrap">
       <div class="tableBox" v-for="(item, index) in MansionDetail" :key="index">
-        <div class="table">
-          <div class="thead">
-            <div class="tr">
-              {{ item?.DetailName }}
-            </div>
-          </div>
-          <div class="tbody">
-            <div class="td detail">{{ item?.DetailPrice}}</div>
-            <div class="td edit">
-              <div class="editBTN">แก้ไข</div>
-            </div>
-          </div>
+        <DetailBox :DetailName="item.DetailName" :DetailPrice="item.DetailPrice" />
+        <div class="toggle-container" >
+          <div class="toggle-circle" ></div>
         </div>
       </div>
+
     </div>
   </div>
 </template>
 
 <style scoped>
+.toggle-container {
+  width: 2.5rem;
+  height: 1.2rem;
+  border: 1px solid var(--menuColor);
+  border-radius: 1rem;
+  background-color: white;
+  position: absolute;
+  margin-top: 0.3rem;
+  margin-left: 15rem;
+  top: 14%;
+  transition: all 0.2s ease-out;
+}
+.toggle-circle{
+  width: 1rem;
+  height: 1rem;
+  border: 1px solid var(--menuColor);
+  border-radius: 50%;
+  transition: all 0.2s ease-out;
+  position: relative;
+}
+
 .container {
   width: 100%;
   height: 100%;
   display: block;
-  margin-left: 20rem; /*ทำให้อยุ่ตรงกลาง*/
+
 }
 
 .header {
@@ -39,82 +57,20 @@ import {MansionDetail} from '../../../Ex-data/data'
   margin-top: 0.5rem;
   display: none;
 }
-.tableBox{
-  width: 13rem;
+
+.tableBox {
+  width: 20rem;
 }
+
 .table-wrap {
-  display: block;
+  display: flex;
   flex-wrap: wrap;
 
 }
 
-.editBTN {
-  /* margin: 0 auto; */
-  margin-left: 12rem ;
-  color: white;
-  cursor: pointer;
-  font-weight: bold;
-  width: fit-content;
-  padding: 0.2rem 0.5rem;
-  background-color: var(--btnColor);
-  border-radius: 0.3rem;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-
-.table {
-  width: 30rem;
-  font-size: 1rem;
-  border-spacing: 0;
-  text-align: center;
-  margin: 1rem auto 0 auto;
-  border-collapse: collapse;
-  /* เพิ่ม ขอบให้กล่อง */
-  border-radius: 0.3rem;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  box-shadow: 2px 2px 2px 2px var(--menuSelectedColor);
-}
-
-.thead {
-  color: var(--bgColor);
-  border-radius: 0.5rem 0.5rem 0 0;
-  background-color: var(--menuColor);
-  width: 100%;
- 
-}
-
-.tbody {
-  border-radius: 0 0 0.5rem 0.5rem;
-  display: flex;
-  padding: 0.5rem; /**/ 
-}
-
-.tr {
-  display: flex;
-  margin-left: 0.5rem; /*เพิ่มระยะห่างdetailname */
-}
-
-
-.td {
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
- 
-}
-
-/* .tbody > :nth-child(even) {
-  background-color: rgb(233, 232, 232);
-} */
-
-.tbody > .tr > .td {
-  padding: 0.5rem 0.5rem;
-}
-
-
-.detail,
-.edit {
-  width: 20%;
+.open .toggle-container {
+  /* สไตล์เมื่อ toggle เปิด */
+  border-color: green; /* ตัวอย่างสีเขียว */
 }
 
 
@@ -123,26 +79,7 @@ import {MansionDetail} from '../../../Ex-data/data'
     display: block;
   }
 
-  .table {
-    font-size: 1.2rem;
-  }
-
-  .tbody {
-    max-height: 70dvh;
-    overflow-y: auto;
-  }
 }
 
-@media screen and (min-width: 1200px) {
-
-
-  .table {
-    width: 90%;
-  }
-
-  .th {
-    font-size: 1.5rem;
-    
-  }
-}
+@media screen and (min-width: 1200px) {}
 </style>
