@@ -40,7 +40,7 @@ import { BillData, RoomData, BillStatus } from "../../../Ex-data/data.js"
           <div class="td roomNumber">{{ item.RoomID }}</div>
           <div class="td date">{{ item.BillDate }}</div>
           <div class="td totalPrice">{{ item.BillTotalPrice }}</div>
-          <div class="td status">{{ item.BillStatusID }}</div>
+          <div class="td status">{{ item.BillStatusName }}</div>
           <div class="td detail">
             <div class="detailBTN">รายละเอียด</div>
           </div>
