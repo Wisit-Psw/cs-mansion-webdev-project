@@ -6,7 +6,12 @@ defineProps(["DetailName", "DetailPrice"])
   <div class="table">
     <div class="thead">
       <div class="tr">
-        {{ DetailName }}
+      <div class="th">
+          {{ DetailName }}
+        </div>
+        <div class="toggle-container">
+          <div class="toggle-circle"></div>
+        </div>
       </div>
     </div>
     <div class="tbody">
@@ -18,7 +23,26 @@ defineProps(["DetailName", "DetailPrice"])
   </div>
 </template>
 <style scoped>
+.toggle-container {
+  width: 10%;
+  height: 2.5%;
+  border: 1px solid var(--menuColor);
+  border-radius: 10px;
+  background-color: white;
+  position: relative;
+  margin-top: 1%;
+  margin-left: 17%;
+  transition: all 0.2s ease-out;
+}
 
+.toggle-circle {
+  width: 1rem;
+  height: 1rem;
+  border: 1px solid var(--menuColor);
+  border-radius: 50%;
+  transition: all 0.2s ease-out;
+  position: relative;
+}
 
 .editBTN {
   margin-right: 1rem;
@@ -28,54 +52,55 @@ defineProps(["DetailName", "DetailPrice"])
   width: fit-content;
   padding: 0.2rem 0.5rem;
   background-color: var(--btnColor);
-  border-radius: 0.3rem;
+  border-radius: 0.5rem;
   white-space: nowrap;
   text-overflow: ellipsis;
   height: fit-content;
 }
 
 .table {
-  width: 30rem;
-  font-size: 1rem;
-  border-spacing: 0;
-  text-align: center;
-  margin: 1rem auto 0 auto;
-  border-collapse: collapse;
-  /* เพิ่ม ขอบให้กล่อง */
-  border-radius: 0.3rem;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+  width: 30%;
+  border-radius: 0.5rem;
   box-shadow: 2px 2px 2px 2px var(--menuSelectedColor);
+  margin: 1rem auto 0 auto;
 }
 
 .thead {
   color: var(--bgColor);
   border-radius: 0.5rem 0.5rem 0 0;
   background-color: var(--menuColor);
-  width: 100%;
-
 }
 
 .tbody {
   border-radius: 0 0 0.5rem 0.5rem;
+  justify-content: space-around;
+  margin: 0 auto;
   display: flex;
-  width: 100%;
-  align-items: center;
-
-
 }
+
 
 .tr {
   display: flex;
-  margin-left: 0.5rem;
+  padding-top: 0.5%;
   /*เพิ่มระยะห่างdetailname */
 }
 
 
 .td {
-  display: flex;
+  text-align: left;
+  margin-left: 5%;
+  padding-top: 1%;
+  padding-bottom: 1%;
+  width: 50%;
 }
 
+.th {
+  padding: 0.2rem 1.5rem;
+  width: fit-content;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-around;
+}
 
 
 .tbody>.tr>.td {
@@ -84,34 +109,25 @@ defineProps(["DetailName", "DetailPrice"])
 
 
 .detail {
-  width: 80%;
+  width: 70%;
   padding: 0.5rem 1rem;
 }
 
 .edit {
-  width: 20%;
+  width: 30%;
 }
 
 
 @media screen and (min-width: 826px) {
-
-
   .table {
     font-size: 1.2rem;
   }
 
-  .tbody {
-    max-height: 70dvh;
-    overflow-y: auto;
-  }
 }
 
 @media screen and (min-width: 1200px) {
 
-
-  .table {
-    width: 90%;
-  }
+  
 
 }
 </style>

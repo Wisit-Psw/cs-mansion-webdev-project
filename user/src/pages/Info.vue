@@ -76,6 +76,7 @@ hr{
   width: 95%;
   align-items: center;
 }
+
 .header {
   font-size: 2rem;
   font-weight: 1000;
@@ -132,14 +133,6 @@ hr{
 
 
 
-.topic {
-  font-size: 1.2rem;
-  margin-bottom: 0.5%;
-  color: var(--menuColor);
-  font-weight: bold;
-  margin-left: 2.5%;
-  background-color: var();
-}
 
 .tr {
   display: flex;
