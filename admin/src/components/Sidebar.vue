@@ -178,7 +178,7 @@ const onMenuIconClick = () => {
 }
 
 
-@media screen and (min-width:825px) {
+@media screen and (min-width:826px) {
     .logo {
         width: 90%;
         justify-content: space-around;

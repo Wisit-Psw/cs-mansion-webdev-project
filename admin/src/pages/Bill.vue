@@ -179,7 +179,7 @@ import { BillData, RoomData, BillStatus } from "../../../Ex-data/data.js"
 .detail {
   width: 20%;
 }
-
+/* กลาง */
 @media screen and (min-width:826px) {
   .header {
     display: block;
@@ -188,22 +188,23 @@ import { BillData, RoomData, BillStatus } from "../../../Ex-data/data.js"
   .filterBar {
     margin: 0 auto;
     font-size: 1.2rem;
-    width: fit-content;
+    min-width: fit-content;
     padding: 0.2rem 0.5rem;
   }
 
   .filter-wrap {
-    margin: 0.5rem 3rem;
+    margin: 0.5rem 0rem;
+    padding: 0.1rem 0.3rem;
   }
 
   .filter-wrap>label {
-    margin-right: 0.5rem;
+    margin-right: 0rem;
   }
 
   .filter-wrap>select {
     font-size: 1rem;
-    padding: 0 1.5rem;
-    border-radius: 0.5rem;
+    width: 5.5rem;
+    padding: 0 0.5rem;
     border-color: var(--menuColor);
   }
 
@@ -220,15 +221,17 @@ import { BillData, RoomData, BillStatus } from "../../../Ex-data/data.js"
     overflow-y: auto;
   }
 }
-
+/* ใหญ่ */
 @media screen and (min-width:1200px) {
+
   .filterBar {
     width: 60%;
     min-width: 800px;
   }
 
   .filter-wrap>select {
-    padding: 0 2rem;
+    padding: 0 1.5rem;
+    width: 7.5rem;
   }
   .table{
     width: 90%;
