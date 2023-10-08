@@ -1,39 +1,80 @@
 <script setup>
-import { BillData, RoomData, BillStatus } from "../../../Ex-data/data.js"
+
+import { BillData, RoomData, BillStatus } from "../../../Ex-data/data.js";
+import BillDeatailBoxVue from "../components/BillDeatailBox.vue";
+const isEdit = {}
+
+const onDetailBTNClick = (id) => {
+  const Element = document.getElementById(id);
+  if (Element.style.display == "flex") {
+    Element.style.display = "none";
+  } else {
+    Element.style.display = "flex";
+  }
+};
+const onEditBTNClick = (index) => {
+  console.log(index,isEdit,isEdit[index])
+  // console.log("before"+isEdit[index])
+  isEdit[index] = !isEdit[index]
+  // console.log("after"+isEdit[index])
+  console.log(index,isEdit,isEdit[index])
+}
+const logDate = ()=>{console.log( document.getElementById('date').value )}
 </script>
 
 <template>
   <div class="container">
-    <header class="header">
-      บิลค่าเช่า:
-    </header>
+    <header class="header">บิลค่าเช่า:</header>
     <div class="filterBar">
       <div class="filter-wrap">
         <label for="RoomID">เลขห้อง: </label>
         <select name="RoomID" id="RoomIDFilter">
           <option value="All">ทั้งหมด</option>
-          <option v-for="(item, index) in RoomData" :key="index" :value="item.RoomID">{{ item.RoomID }}</option>
+          <option
+            v-for="(item, index) in RoomData"
+            :key="index"
+            :value="item.RoomID"
+          >
+            {{ item.RoomID }}
+          </option>
         </select>
       </div>
       <div class="filter-wrap">
         <label for="RoomID">ปี: </label>
         <select name="RoomID" id="RoomIDFilter">
           <option value="All">ทั้งหมด</option>
-          <option v-for="(item, index) in BillData" :key="index" :value="item.BillDate">{{ item.BillDate }}</option>
+          <option
+            v-for="(item, index) in BillData"
+            :key="index"
+            :value="item.BillDate"
+          >
+            {{ item.BillDate }}
+          </option>
         </select>
       </div>
       <div class="filter-wrap">
         <label for="RoomID">เดือน: </label>
         <select name="RoomID" id="RoomIDFilter">
           <option value="All">ทั้งหมด</option>
-          <option v-for="(item, index) in BillData" :key="index" :value="item.BillDate">{{ item.BillDate }}</option>
+          <option
+            v-for="(item, index) in BillData"
+            :key="index"
+            :value="item.BillDate"
+          >
+            {{ item.BillDate }}
+          </option>
         </select>
       </div>
       <div class="filter-wrap">
         <label for="status">สถานะ: </label>
         <select name="status" id="RoomIDFilter">
           <option value="All">ทั้งหมด</option>
-          <option v-for="(item, index) in BillStatus" :key="index" :value="item.BillStatusID">{{ item.BillStatusName }}
+          <option
+            v-for="(item, index) in BillStatus"
+            :key="index"
+            :value="item.BillStatusID"
+          >
+            {{ item.BillStatusName }}
           </option>
         </select>
       </div>
@@ -50,19 +91,13 @@ import { BillData, RoomData, BillStatus } from "../../../Ex-data/data.js"
         </div>
       </div>
       <div class="tbody">
-        <div v-for="(item, index) in BillData" :key="index" class="dataTable tr">
-          <div class="td roomNumber">{{ item.RoomID }}</div>
-          <div class="td date">{{ item.BillDate }}</div>
-          <div class="td totalPrice">{{ item.BillTotalPrice }}</div>
-          <div class="td status">{{ item.BillStatusName }}</div>
-          <div class="td detail">
-            <div class="detailBTN">รายละเอียด</div>
-          </div>
+        <div class="Trow" v-for="(item, index) in BillData" :key="index">
+          <BillDeatailBoxVue :item="item"/>
         </div>
       </div>
     </div>
-
   </div>
+  <input type="date" name="" id="date" @change="logDate()">
 </template>
 
 <style scoped>
@@ -98,7 +133,7 @@ import { BillData, RoomData, BillStatus } from "../../../Ex-data/data.js"
   cursor: pointer;
   font-weight: bold;
   width: fit-content;
-  padding: 0.2rem 0.5rem;
+  padding: 0.1rem 0.3rem;
   background-color: var(--btnColor);
   border-radius: 0.3rem;
   white-space: nowrap;
@@ -109,11 +144,11 @@ import { BillData, RoomData, BillStatus } from "../../../Ex-data/data.js"
   padding: 0.2rem;
 }
 
-.filter-wrap>label {
+.filter-wrap > label {
   margin-right: 0rem;
 }
 
-.filter-wrap>select {
+.filter-wrap > select {
   font-size: 0.8rem;
   padding: 0 0.2rem;
   border-radius: 0.5rem;
@@ -138,12 +173,12 @@ import { BillData, RoomData, BillStatus } from "../../../Ex-data/data.js"
 .tbody {
   max-height: 75dvh;
   overflow-y: auto;
-  border-radius:0 0 0.5rem 0.5rem ;
-
+  border-radius: 0 0 0.5rem 0.5rem;
 }
 
 .tr {
   display: flex;
+  padding: 0.2rem 0.5rem;
 }
 
 .th {
@@ -154,18 +189,17 @@ import { BillData, RoomData, BillStatus } from "../../../Ex-data/data.js"
   align-items: center;
   justify-content: space-around;
 }
-
 .td {
   display: flex;
   align-items: center;
   justify-content: space-around;
 }
 
-.tbody>:nth-child(even) {
+.tbody > :nth-child(even) {
   background-color: rgb(233, 232, 232);
 }
 
-.tbody>.tr>.td {
+.tbody > .tr > .td {
   padding: 0.5rem 0.5rem;
 }
 
@@ -180,7 +214,7 @@ import { BillData, RoomData, BillStatus } from "../../../Ex-data/data.js"
   width: 20%;
 }
 /* กลาง */
-@media screen and (min-width:826px) {
+@media screen and (min-width: 826px) {
   .header {
     display: block;
   }
@@ -197,11 +231,11 @@ import { BillData, RoomData, BillStatus } from "../../../Ex-data/data.js"
     padding: 0.1rem 0.3rem;
   }
 
-  .filter-wrap>label {
+  .filter-wrap > label {
     margin-right: 0rem;
   }
 
-  .filter-wrap>select {
+  .filter-wrap > select {
     font-size: 1rem;
     width: 5.5rem;
     padding: 0 0.5rem;
@@ -222,21 +256,21 @@ import { BillData, RoomData, BillStatus } from "../../../Ex-data/data.js"
   }
 }
 /* ใหญ่ */
-@media screen and (min-width:1200px) {
-
+@media screen and (min-width: 1200px) {
   .filterBar {
     width: 60%;
     min-width: 800px;
   }
 
-  .filter-wrap>select {
+  .filter-wrap > select {
     padding: 0 1.5rem;
     width: 7.5rem;
   }
-  .table{
+  .table {
     width: 90%;
   }
   .th {
     font-size: 1.5rem;
   }
-}</style>
+}
+</style>

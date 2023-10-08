@@ -1,10 +1,7 @@
 <script setup>
 import { MansionDetail } from '../../../Ex-data/data';
 import DetailBox from '../components/DetailBox.vue';
-// // import  onMounted from 'vue';
-// import switchModule from './module/swith.js';
-// v-for="(item, index) in MansionDetail" :key="index"
-// const { onModeChange } = defineEmits(['onModeChange']);
+
 </script>
 
 <template>
@@ -32,28 +29,28 @@ import DetailBox from '../components/DetailBox.vue';
   display: none;
 }
 
-.tableBox {
-  margin-bottom: 2%;
-  /* width: 70%; */
-}
-
 .table-wrap {
-  /* display: flex; */
+  display: block;
+  margin: 0 auto;
+  width: fit-content;
 }
-
-.open .toggle-container {
-  /* สไตล์เมื่อ toggle เปิด */
-  border-color: green;
-  /* ตัวอย่างสีเขียว */
-}
-
 
 @media screen and (min-width: 826px) {
   .header {
     display: block;
   }
+  .table-wrap {
+  display: flex;
+  margin: 0;
+}
 
 }
 
-@media screen and (min-width: 1200px) {}
+@media screen and (min-width: 1200px) {
+
+  .table-wrap {
+    display: flex;
+    margin: 0;
+  }
+}
 </style>
