@@ -13,13 +13,13 @@ const onDetailBTNClick = (id) => {
   }
 };
 const onEditBTNClick = (index) => {
-  console.log(index,isEdit,isEdit[index])
+  console.log(index, isEdit, isEdit[index])
   // console.log("before"+isEdit[index])
   isEdit[index] = !isEdit[index]
   // console.log("after"+isEdit[index])
-  console.log(index,isEdit,isEdit[index])
+  console.log(index, isEdit, isEdit[index])
 }
-const logDate = ()=>{console.log( document.getElementById('date').value )}
+const logDate = () => { console.log(document.getElementById('date').value) }
 </script>
 
 <template>
@@ -30,11 +30,7 @@ const logDate = ()=>{console.log( document.getElementById('date').value )}
         <label for="RoomID">เลขห้อง: </label>
         <select name="RoomID" id="RoomIDFilter">
           <option value="All">ทั้งหมด</option>
-          <option
-            v-for="(item, index) in RoomData"
-            :key="index"
-            :value="item.RoomID"
-          >
+          <option v-for="(item, index) in RoomData" :key="index" :value="item.RoomID">
             {{ item.RoomID }}
           </option>
         </select>
@@ -43,11 +39,7 @@ const logDate = ()=>{console.log( document.getElementById('date').value )}
         <label for="RoomID">ปี: </label>
         <select name="RoomID" id="RoomIDFilter">
           <option value="All">ทั้งหมด</option>
-          <option
-            v-for="(item, index) in BillData"
-            :key="index"
-            :value="item.BillDate"
-          >
+          <option v-for="(item, index) in BillData" :key="index" :value="item.BillDate">
             {{ item.BillDate }}
           </option>
         </select>
@@ -56,11 +48,7 @@ const logDate = ()=>{console.log( document.getElementById('date').value )}
         <label for="RoomID">เดือน: </label>
         <select name="RoomID" id="RoomIDFilter">
           <option value="All">ทั้งหมด</option>
-          <option
-            v-for="(item, index) in BillData"
-            :key="index"
-            :value="item.BillDate"
-          >
+          <option v-for="(item, index) in BillData" :key="index" :value="item.BillDate">
             {{ item.BillDate }}
           </option>
         </select>
@@ -69,11 +57,7 @@ const logDate = ()=>{console.log( document.getElementById('date').value )}
         <label for="status">สถานะ: </label>
         <select name="status" id="RoomIDFilter">
           <option value="All">ทั้งหมด</option>
-          <option
-            v-for="(item, index) in BillStatus"
-            :key="index"
-            :value="item.BillStatusID"
-          >
+          <option v-for="(item, index) in BillStatus" :key="index" :value="item.BillStatusID">
             {{ item.BillStatusName }}
           </option>
         </select>
@@ -92,7 +76,7 @@ const logDate = ()=>{console.log( document.getElementById('date').value )}
       </div>
       <div class="tbody">
         <div class="Trow" v-for="(item, index) in BillData" :key="index">
-          <BillDeatailBoxVue :item="item"/>
+          <BillDeatailBoxVue :item="item" />
         </div>
       </div>
     </div>
@@ -144,11 +128,11 @@ const logDate = ()=>{console.log( document.getElementById('date').value )}
   padding: 0.2rem;
 }
 
-.filter-wrap > label {
+.filter-wrap>label {
   margin-right: 0rem;
 }
 
-.filter-wrap > select {
+.filter-wrap>select {
   font-size: 0.8rem;
   padding: 0 0.2rem;
   border-radius: 0.5rem;
@@ -176,6 +160,23 @@ const logDate = ()=>{console.log( document.getElementById('date').value )}
   border-radius: 0 0 0.5rem 0.5rem;
 }
 
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #b6b5b5;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #dbdada;
+}
+
 .tr {
   display: flex;
   padding: 0.2rem 0.5rem;
@@ -189,17 +190,18 @@ const logDate = ()=>{console.log( document.getElementById('date').value )}
   align-items: center;
   justify-content: space-around;
 }
+
 .td {
   display: flex;
   align-items: center;
   justify-content: space-around;
 }
 
-.tbody > :nth-child(even) {
+.tbody> :nth-child(even) {
   background-color: rgb(233, 232, 232);
 }
 
-.tbody > .tr > .td {
+.tbody>.tr>.td {
   padding: 0.5rem 0.5rem;
 }
 
@@ -213,6 +215,7 @@ const logDate = ()=>{console.log( document.getElementById('date').value )}
 .detail {
   width: 20%;
 }
+
 /* กลาง */
 @media screen and (min-width: 826px) {
   .header {
@@ -231,11 +234,11 @@ const logDate = ()=>{console.log( document.getElementById('date').value )}
     padding: 0.1rem 0.3rem;
   }
 
-  .filter-wrap > label {
+  .filter-wrap>label {
     margin-right: 0rem;
   }
 
-  .filter-wrap > select {
+  .filter-wrap>select {
     font-size: 1rem;
     width: 5.5rem;
     padding: 0 0.5rem;
@@ -255,6 +258,7 @@ const logDate = ()=>{console.log( document.getElementById('date').value )}
     overflow-y: auto;
   }
 }
+
 /* ใหญ่ */
 @media screen and (min-width: 1200px) {
   .filterBar {
@@ -262,13 +266,15 @@ const logDate = ()=>{console.log( document.getElementById('date').value )}
     min-width: 800px;
   }
 
-  .filter-wrap > select {
-    padding: 0 1.5rem;
+  .filter-wrap>select {
+    padding: 0 0.5rem;
     width: 7.5rem;
   }
+
   .table {
     width: 90%;
   }
+
   .th {
     font-size: 1.5rem;
   }

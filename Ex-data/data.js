@@ -7,7 +7,7 @@ export const BillData = [
         "BillTotalPrice": 5200,
         "BillStatusID": 1,
         "BillStatusName": "ยังไม่จ่าย",
-        "BillDate": "2023:09",
+        "BillDate": "01-09-2023",
         "RoomID": "1201",
         "InternetPackID": 1
     },{
@@ -18,7 +18,7 @@ export const BillData = [
         "BillTotalPrice": 5200,
         "BillStatusID": 2,
         "BillStatusName": "รอยืนยัน",
-        "BillDate": "2023:09",
+        "BillDate": "01-09-2023",
         "RoomID": "1201",
         "InternetPackID": 1
     },{
@@ -29,7 +29,7 @@ export const BillData = [
         "BillTotalPrice": 5200,
         "BillStatusID": 3,
         "BillStatusName": "จ่ายแล้ว",
-        "BillDate": "2023:09",
+        "BillDate": "01-09-2023",
         "RoomID": "1201",
         "InternetPackID": 1
     },{
@@ -40,7 +40,7 @@ export const BillData = [
         "BillTotalPrice": 5200,
         "BillStatusID": 2,
         "BillStatusName": "รอยืนยัน",
-        "BillDate": "2023:09",
+        "BillDate": "01-09-2023",
         "RoomID": "1201",
         "InternetPackID": 1
     },{
@@ -51,7 +51,7 @@ export const BillData = [
         "BillTotalPrice": 5200,
         "BillStatusID": 2,
         "BillStatusName": "รอยืนยัน",
-        "BillDate": "2023:09",
+        "BillDate": "01-09-2023",
         "RoomID": "1201",
         "InternetPackID": 1
     },{
@@ -62,7 +62,7 @@ export const BillData = [
         "BillTotalPrice": 5200,
         "BillStatusID": 2,
         "BillStatusName": "รอยืนยัน",
-        "BillDate": "2023:09",
+        "BillDate": "01-09-2023",
         "RoomID": "1201",
         "InternetPackID": 1
     },{
@@ -73,7 +73,7 @@ export const BillData = [
         "BillTotalPrice": 5200,
         "BillStatusID": 2,
         "BillStatusName": "รอยืนยัน",
-        "BillDate": "2023:09",
+        "BillDate": "01-09-2023",
         "RoomID": "1201",
         "InternetPackID": 1
     },{
@@ -84,7 +84,7 @@ export const BillData = [
         "BillTotalPrice": 5200,
         "BillStatusID": 2,
         "BillStatusName": "รอยืนยัน",
-        "BillDate": "2023:09",
+        "BillDate": "01-09-2023",
         "RoomID": "1201",
         "InternetPackID": 1
     },{
@@ -95,7 +95,7 @@ export const BillData = [
         "BillTotalPrice": 5200,
         "BillStatusID": 2,
         "BillStatusName": "รอยืนยัน",
-        "BillDate": "2023:09",
+        "BillDate": "01-09-2023",
         "RoomID": "1201",
         "InternetPackID": 1
     },{
@@ -106,7 +106,7 @@ export const BillData = [
         "BillTotalPrice": 5200,
         "BillStatusID": 2,
         "BillStatusName": "รอยืนยัน",
-        "BillDate": "2023:09",
+        "BillDate": "01-09-2023",
         "RoomID": "1201",
         "InternetPackID": 1
     },{
@@ -117,7 +117,7 @@ export const BillData = [
         "BillTotalPrice": 5200,
         "BillStatusID": 2,
         "BillStatusName": "รอยืนยัน",
-        "BillDate": "2023:09",
+        "BillDate": "01-09-2023",
         "RoomID": "1201",
         "InternetPackID": 1
     },{
@@ -128,7 +128,7 @@ export const BillData = [
         "BillTotalPrice": 5200,
         "BillStatusID": 2,
         "BillStatusName": "รอยืนยัน",
-        "BillDate": "2023:09",
+        "BillDate": "01-09-2023",
         "RoomID": "1201",
         "InternetPackID": 1
     },{
@@ -139,7 +139,7 @@ export const BillData = [
         "BillTotalPrice": 5200,
         "BillStatusID": 2,
         "BillStatusName": "รอยืนยัน",
-        "BillDate": "2023:09",
+        "BillDate": "01-09-2023",
         "RoomID": "1201",
         "InternetPackID": 1
     },{
@@ -150,7 +150,7 @@ export const BillData = [
         "BillTotalPrice": 5200,
         "BillStatusID": 2,
         "BillStatusName": "รอยืนยัน",
-        "BillDate": "2023:09",
+        "BillDate": "01-09-2023",
         "RoomID": "1201",
         "InternetPackID": 1
     },{
@@ -161,7 +161,7 @@ export const BillData = [
         "BillTotalPrice": 5200,
         "BillStatusID": 2,
         "BillStatusName": "รอยืนยัน",
-        "BillDate": "2023:09",
+        "BillDate": "01-09-2023",
         "RoomID": "1201",
         "InternetPackID": 1
     },{
@@ -172,7 +172,7 @@ export const BillData = [
         "BillTotalPrice": 5200,
         "BillStatusID": 2,
         "BillStatusName": "รอยืนยัน",
-        "BillDate": "2023:09",
+        "BillDate": "01-09-2023",
         "RoomID": "1201",
         "InternetPackID": 1
     },{
@@ -183,7 +183,7 @@ export const BillData = [
         "BillTotalPrice": 5200,
         "BillStatusID": 2,
         "BillStatusName": "รอยืนยัน",
-        "BillDate": "2023:09",
+        "BillDate": "01-09-2023",
         "RoomID": "1201",
         "InternetPackID": 1
     },{
@@ -194,7 +194,7 @@ export const BillData = [
         "BillTotalPrice": 5200,
         "BillStatusID": 2,
         "BillStatusName": "รอยืนยัน",
-        "BillDate": "2023:09",
+        "BillDate": "01-09-2023",
         "RoomID": "1201",
         "InternetPackID": 1
     },{
@@ -205,7 +205,7 @@ export const BillData = [
         "BillTotalPrice": 5200,
         "BillStatusID": 2,
         "BillStatusName": "รอยืนยัน",
-        "BillDate": "2023:09",
+        "BillDate": "01-09-2023",
         "RoomID": "1201",
         "InternetPackID": 1
     },{
@@ -216,7 +216,7 @@ export const BillData = [
         "BillTotalPrice": 5200,
         "BillStatusID": 2,
         "BillStatusName": "รอยืนยัน",
-        "BillDate": "2023:09",
+        "BillDate": "01-09-2023",
         "RoomID": "1201",
         "InternetPackID": 1
     },
