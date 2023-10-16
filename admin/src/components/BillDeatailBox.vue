@@ -7,6 +7,7 @@ const isDetailShow = reactive({ state: false });
 
 const onDetailBTNClick = () => {
   isDetailShow.state = !isDetailShow.state;
+  isEdit.state = false;
 };
 const onEditBTNClick = () => {
   isEdit.state = !isEdit.state;
@@ -14,11 +15,16 @@ const onEditBTNClick = () => {
 const logDate = () => {
   console.log(document.getElementById("date").value);
 };
+const submit = (event) => {
+  event.preventDefault();
+  console.log(event.target.expensesUnit[0].id);
+  isEdit.state = false;
+}
 </script>
 
 <template>
-  <!-- data ถ้า edit state เป็น false -->
-  <div class="dataTable tr" v-if="!isEdit.state">
+  <!-- data ถ้า edit state เป็น false ( เมื่อยังไม่กด edit )-->
+  <div class="dataTable tr">
     <div class="td roomNumber">{{ props.item.RoomID }}</div>
     <div class="td date">{{ props.item.BillDate }}</div>
     <div class="td totalPrice">{{ props.item.BillTotalPrice }}</div>
@@ -27,28 +33,69 @@ const logDate = () => {
       <div class="detailBTN">รายละเอียด</div>
     </div>
   </div>
-  <!-- data ถ้า edit state เป็น true -->
-  <div class="dataTable tr" v-else>
-    <input class="td roomNumber" :value="props.item.RoomID" disabled />
-    <input class="td date" :value="props.item.BillDate" disabled />
-    <input class="td totalPrice" :value="props.item.BillTotalPrice" />
-    <input class="td status" :value="props.item.BillStatusName" />
-    <!-- BTN detail  -->
-    <div class="td detail" @click="onDetailBTNClick()">
-      <div class="detailBTN">รายละเอียด</div>
-    </div>
-  </div>
+
   <!-- show -->
-  <div style="width: 100%; text-align: center" v-if="isDetailShow.state">
-    <div class="td detail" @click="onEditBTNClick()" v-if="!isEdit.state">
-      <div class="detailBTN">edit</div>
+  <div style="width: 100%; text-align: center" v-if="isDetailShow.state && !isEdit.state">
+    <div class="dataTable tr" style="width: 40%; justify-content:space-between; margin:0 auto;">
+      <div class="td waterUnit">จำนวนยูนิตน้ำ</div>
+      <div class="td waterUnit">{{ props.item.BillWaterUnit }}</div>
     </div>
-    <div class="td detail" @click="onEditBTNClick()" v-if="isEdit.state">
-      <div class="detailBTN">submit</div>
+    <div class="dataTable tr" style="width: 40%; justify-content:space-between; margin:0 auto;">
+      <div class="td electricUnit">จำนวนยูนิตไฟ</div>
+      <div class="td electricUnit">{{ props.item.BillElectricUnit }}</div>
     </div>
-    <div class="td detail" @click="onEditBTNClick()" v-if="isEdit.state">
-      <div class="detailBTN">cancle</div>
+
+    <div class="dataTable tr" style="width: 40%; justify-content:space-between; margin:0 auto;"
+      v-for="(expen, index) in props.item.Expenses" :key="index">
+      <div class="td expensesUnit">{{ expen.ExpenTitle }}</div>
+      <div class="td expensesUnit">{{ expen.ExpenPrice }}</div>
     </div>
+    <div class="dataTable tr" style="width: 40%; justify-content:space-around; margin:0 auto;">
+
+      <div class="td detail" @click="onEditBTNClick()" v-if="!isEdit.state">
+        <div class="detailBTN" style="font-size: 1rem;">แก้ไข</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div style="width: 100%; text-align: center" v-if="isDetailShow.state && isEdit.state">
+    <form @submit="submit">
+      <div class="dataTable tr" style="width: 40%; justify-content:space-between; margin:0 auto;">
+        <div class="td waterUnit">จำนวนยูนิตน้ำ</div>
+        <input name="waterUnit" class="td waterUnit" style="height: 70%; width: 20%; font-size: 1rem;"
+          :value="props.item.BillWaterUnit">
+      </div>
+      <div class="dataTable tr" style="width: 40%; justify-content:space-between; margin:0 auto;">
+        <div class="td electricUnit">จำนวนยูนิตไฟ</div>
+        <input name="electricUnit" class="td electricUnit" style="height: 70%; width: 20%; font-size: 1rem;"
+          :value="props.item.BillElectricUnit">
+      </div>
+      <div class="dataTable tr" style="width: 40%; justify-content:space-between; margin:0 auto;"
+        v-for="(expen, index) in props.item.Expenses" :key="index">
+        <div class="td expensesUnit">{{ expen.ExpenTitle }}</div>
+        <input name="expensesUnit" :id="expen.ExpenID" class="td expensesUnit"
+          style="height: 70%; width: 20%; font-size: 1rem;" :value="expen.ExpenPrice">
+      </div>
+
+      <div class="dataTable tr" style="width: 40%; justify-content:space-between; margin:0 auto;"
+        v-if="isDetailShow.state && !isEdit.state" v-for="(expen, index) in props.item.Expenses" :key="index">
+        <div class="td expensesUnit">{{ expen.ExpenTitle }}</div>
+        <div class="td expensesUnit">{{ expen.ExpenPrice }}</div>
+      </div>
+      <div class="dataTable tr" style="width: 40%; justify-content:space-around; margin:0 auto;">
+
+        <div class="td detail" @click="onEditBTNClick()" v-if="!isEdit.state">
+          <div class="detailBTN" style="font-size: 1rem;">แก้ไข</div>
+        </div>
+        <div class="td detail" v-if="isEdit.state">
+          <input style="border: none; font-size: 1rem;" type="submit" class="detailBTN" value="ยืนยัน">
+        </div>
+        <div class="td detail" @click="onEditBTNClick()" v-if="isEdit.state">
+          <div style="font-size: 1rem;" class="detailBTN">ยกเลิก</div>
+        </div>
+      </div>
+    </form>
   </div>
 </template>
 
@@ -65,16 +112,19 @@ const logDate = () => {
   white-space: nowrap;
   text-overflow: ellipsis;
 }
+
 .tr {
   display: flex;
   padding: 0.2rem 0.5rem;
 }
+
 .td {
   display: flex;
   align-items: center;
   justify-content: space-around;
 }
-.tbody > .tr > .td {
+
+.tbody>.tr>.td {
   padding: 0.5rem 0.5rem;
 }
 
@@ -87,6 +137,4 @@ const logDate = () => {
 
 .detail {
   width: 20%;
-}
-
-</style>
+}</style>

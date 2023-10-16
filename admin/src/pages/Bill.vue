@@ -1,7 +1,7 @@
 <script setup>
 
-import { BillData, RoomData, BillStatus } from "../../../Ex-data/data.js";
-import BillDeatailBoxVue from "../components/BillDeatailBox.vue";
+import { BillData, RoomData, BillStatus, BillExpensesJoin } from "../../../Ex-data/data.js";
+import BillDeatailBox from "../components/BillDeatailBox.vue";
 const isEdit = {}
 
 const onDetailBTNClick = (id) => {
@@ -75,8 +75,23 @@ const logDate = () => { console.log(document.getElementById('date').value) }
         </div>
       </div>
       <div class="tbody">
-        <div class="Trow" v-for="(item, index) in BillData" :key="index">
-          <BillDeatailBoxVue :item="item" />
+        <div class="Trow" v-for="(item, index) in BillExpensesJoin" :key="index">
+          <BillDeatailBox :item="item" />
+        </div>
+        <div class="Trow" v-for="(item, index) in BillExpensesJoin" :key="index">
+          <BillDeatailBox :item="item" />
+        </div>
+        <div class="Trow" v-for="(item, index) in BillExpensesJoin" :key="index">
+          <BillDeatailBox :item="item" />
+        </div>
+        <div class="Trow" v-for="(item, index) in BillExpensesJoin" :key="index">
+          <BillDeatailBox :item="item" />
+        </div>
+        <div class="Trow" v-for="(item, index) in BillExpensesJoin" :key="index">
+          <BillDeatailBox :item="item" />
+        </div>
+        <div class="Trow" v-for="(item, index) in BillExpensesJoin" :key="index">
+          <BillDeatailBox :item="item" />
         </div>
       </div>
     </div>
@@ -161,7 +176,7 @@ const logDate = () => { console.log(document.getElementById('date').value) }
 }
 
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 5px;
 }
 
 ::-webkit-scrollbar-track {
