@@ -20,7 +20,7 @@ const onMenuIconClick = () => {
 </script>
 
 <template>
-    <div class="navContainer">
+    <nav class="navContainer">
         <div class="logo">
             <p class="text">cs mansion</p>
             <div class="icon" @click="onMenuIconClick" id="icon">
@@ -78,7 +78,7 @@ const onMenuIconClick = () => {
                 </div>
             </div>
         </router-link>
-    </div>
+    </nav>
 </template>
 
 <style scoped>

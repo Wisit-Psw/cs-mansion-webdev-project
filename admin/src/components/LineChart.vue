@@ -80,9 +80,9 @@ export default {
 </script>
   
 <template>
-  <div class="chart-wrap">
+  <section class="chart-wrap">
     <Line :data="data" :options="options" />
-  </div>
+  </section>
 </template>
 
 <style scoped>

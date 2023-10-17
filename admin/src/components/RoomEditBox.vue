@@ -27,22 +27,21 @@ const submit = (event) => {
         <div class="td price">{{ props.item.RoomPrice }}</div>
         <div class="td type">{{ props.item.RoomTypeName }}</div>
         <div class="td status">{{ props.item.RoomStatusName }}</div>
-        <div class="td detail">{{ props.item.RoomDetail }}</div>
+        <div class="td detail" style="display:block;text-align: left;">{{ props.item.RoomDetail }}</div>
         <div class="td edit" @click="onEditBTNClick()">
             <div class="editBTN">แก้ไข</div>
         </div>
     </div>
 
     <div class="" style="width: 100%; text-align: center; display: flex;" v-if="isEdit.state">
-        
-        
           <form @submit="submit">
             <div class="dataTable tr">
-                <input class="td roomNumber" style="font-size: 1rem; text-align: center;" :value="props.item.RoomID">
+                <input class="td roomNumber" disabled style="font-size: 1rem; text-align: center;" :value="props.item.RoomID">
                 <input class="td price" style="font-size: 1rem; text-align: center;" :value="props.item.RoomPrice">
                 <input class="td type" style="font-size: 1rem; text-align: center;" :value="props.item.RoomTypeName">
-                <input class="td status" style="font-size: 1rem; text-align: center;" :value="props.item.RoomStatusName">
+                <input class="td status" disabled style="font-size: 1rem; text-align: center;" :value="props.item.RoomStatusName">
                 <input class="td detail" style="font-size: 1rem; text-align: center;" :value="props.item.RoomDetail">
+                <div class="td edit" ></div>
             </div>
             <div class="dataTable tr" style="width: 40%; justify-content:space-around; margin:0 auto;">
               <div class="td edit">
@@ -53,8 +52,6 @@ const submit = (event) => {
               </div>
             </div>
           </form>
-        
-    
       </div>
 </template>
 
@@ -82,6 +79,9 @@ const submit = (event) => {
     display: flex;
     align-items: center;
     justify-content: space-around;
+    overflow: hidden;
+    text-wrap: nowrap;
+    text-overflow: ellipsis;
 }
 
 .tbody>.tr>.td {
@@ -96,5 +96,9 @@ const submit = (event) => {
 }
 .edit {
     width: 20%;
+  }
+  input[disabled]{
+    border: none;
+    outline: none;
   }
 </style>

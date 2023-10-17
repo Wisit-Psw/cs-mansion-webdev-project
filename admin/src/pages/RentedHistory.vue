@@ -1,9 +1,10 @@
 <script setup>
-import { BillData, RoomData, BillStatus } from "../../../Ex-data/data.js"
+import { BillData, RoomData, BillStatus, BillExpensesJoin } from "../../../Ex-data/data.js"
+
 </script>
 
 <template>
-  <div class="container">
+  <section class="container">
     <header class="header">
       รายการเช่าห้องพัก:
     </header>
@@ -29,26 +30,32 @@ import { BillData, RoomData, BillStatus } from "../../../Ex-data/data.js"
       <div class="thead">
         <div class="tr">
           <div class="th roomNumber">เลขห้อง</div>
-          <div class="th date">วันที่</div>
-          <div class="th totalPrice">ราคารวม</div>
-          <div class="th status">สถานะ</div>
+          <div class="th date">ชื่อ</div>
+          <div class="th date">ราคาห้อง</div>
+          <div class="th date">ชนิดห้อง</div>
+          <div class="th totalPrice">เริ่มเช่า</div>
+          <div class="th status">หยุดเช่า</div>
           <div class="th detail">รายละเอียด</div>
         </div>
       </div>
       <div class="tbody">
-        <div v-for="(item, index) in BillData" :key="index" class="dataTable tr">
+        <div v-for="(item, index) in BillExpensesJoin" :key="index" class="dataTable tr">
           <div class="td roomNumber">{{ item.RoomID }}</div>
-          <div class="td date">{{ item.BillDate }}</div>
-          <div class="td totalPrice">{{ item.BillTotalPrice }}</div>
-          <div class="td status">{{ item.BillStatusName }}</div>
-          <div class="td detail">
-            <div class="detailBTN">รายละเอียด</div>
+          <div class="td date">{{ item.UserName }}</div>
+          <div class="td date">{{ item.RoomPrice }}</div>
+          <div class="td date">{{ item.RoomDetail }}</div>
+          <div class="td totalPrice">{{ item.RentingStart }}</div>
+          <div class="td totalPrice">{{ item.RentingEnd }}</div>
+          <div class="filter-wrap RentEnd" style="padding: 0; margin-left: 0.1%;">
+            <select name="RentingEnd" id="RentingEndFillter" style="padding: 0;" @click="Popup()">
+              <option value="null"> - </option>
+              <option value="RentEnd" >ย้ายออก</option>
+            </select>
           </div>
         </div>
       </div>
     </div>
-
-  </div>
+  </section>
 </template>
 
 <style scoped>
@@ -95,6 +102,7 @@ import { BillData, RoomData, BillStatus } from "../../../Ex-data/data.js"
   padding: 0.2rem;
 }
 
+
 .filter-wrap>label {
   margin-right: 0rem;
 }
@@ -124,8 +132,7 @@ import { BillData, RoomData, BillStatus } from "../../../Ex-data/data.js"
 .tbody {
   max-height: 75dvh;
   overflow-y: auto;
-  border-radius:0 0 0.5rem 0.5rem ;
-
+  border-radius: 0 0 0.5rem 0.5rem;
 }
 
 .tr {
@@ -145,6 +152,7 @@ import { BillData, RoomData, BillStatus } from "../../../Ex-data/data.js"
   display: flex;
   align-items: center;
   justify-content: space-around;
+  width: fit-content;
 }
 
 .tbody>:nth-child(even) {
@@ -216,10 +224,13 @@ import { BillData, RoomData, BillStatus } from "../../../Ex-data/data.js"
   .filter-wrap>select {
     padding: 0 2rem;
   }
-  .table{
+
+  .table {
     width: 90%;
   }
+
   .th {
     font-size: 1.5rem;
   }
-}</style>
+}
+</style>

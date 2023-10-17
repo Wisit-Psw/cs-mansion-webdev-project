@@ -1,9 +1,10 @@
 <script setup>
-import { BillData, RoomData, BillStatus, RentingData } from "../../../Ex-data/data.js"
+import { BillData, RoomData, BillStatus, RentingData, BillExpensesJoin } from "../../../Ex-data/data.js"
+import CreateBillBox from "../components/CreateBillBox.vue";
 </script>
 
 <template>
-  <div class="container">
+  <section class="container">
     <header class="header">
       สร้างบิล:
     </header>
@@ -29,30 +30,17 @@ import { BillData, RoomData, BillStatus, RentingData } from "../../../Ex-data/da
       <div class="thead">
         <div class="tr">
           <div class="th roomNumber">เลขห้อง</div>
-          <div class="th date">ชื่อ</div>
           <div class="th date">ราคาห้อง</div>
-          <div class="th date">ชนิดห้อง</div>
-          <div class="th totalPrice">เริ่มเช่า</div>
-          <div class="th status">หยุดเช่า</div>
           <div class="th detail">รายละเอียด</div>
         </div>
       </div>
       <div class="tbody">
-        <div v-for="(item, index) in RentingData" :key="index" class="dataTable tr">
-          <div class="td roomNumber">{{ item.RoomID }}</div>
-          <div class="td date">{{ item.UserName }}</div>
-          <div class="td date">{{ item.RoomPrice }}</div>
-          <div class="td date">{{ item.RoomDetail }}</div>
-          <div class="td totalPrice">{{ item.RentingStart }}</div>
-          <div class="td status">{{ item.RentingEnd }}</div>
-          <div class="td detail">
-            <div class="detailBTN">รายละเอียด</div>
-          </div>
+        <div class="Trow" v-for="(item, index) in BillExpensesJoin" :key="index">
+          <CreateBillBox :item="item" :index="index"/>
         </div>
       </div>
     </div>
-
-  </div>
+  </section>
 </template>
 
 <style scoped>
@@ -88,7 +76,7 @@ import { BillData, RoomData, BillStatus, RentingData } from "../../../Ex-data/da
   cursor: pointer;
   font-weight: bold;
   width: fit-content;
-  padding: 0.2rem 0.5rem;
+  padding: 0.1rem 0.3rem;
   background-color: var(--btnColor);
   border-radius: 0.3rem;
   white-space: nowrap;
@@ -131,8 +119,26 @@ import { BillData, RoomData, BillStatus, RentingData } from "../../../Ex-data/da
   border-radius: 0 0 0.5rem 0.5rem;
 }
 
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #b6b5b5;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #dbdada;
+}
+
 .tr {
   display: flex;
+  padding: 0.2rem 0.5rem;
 }
 
 .th {
@@ -142,15 +148,17 @@ import { BillData, RoomData, BillStatus, RentingData } from "../../../Ex-data/da
   display: flex;
   align-items: center;
   justify-content: space-around;
+  margin-left: 7.5%;
 }
 
 .td {
   display: flex;
   align-items: center;
   justify-content: space-around;
+  margin-left: 7.5%;
 }
 
-.tbody>:nth-child(even) {
+.tbody> :nth-child(even) {
   background-color: rgb(233, 232, 232);
 }
 
@@ -169,7 +177,8 @@ import { BillData, RoomData, BillStatus, RentingData } from "../../../Ex-data/da
   width: 20%;
 }
 
-@media screen and (min-width:826px) {
+/* กลาง */
+@media screen and (min-width: 826px) {
   .header {
     display: block;
   }
@@ -177,22 +186,23 @@ import { BillData, RoomData, BillStatus, RentingData } from "../../../Ex-data/da
   .filterBar {
     margin: 0 auto;
     font-size: 1.2rem;
-    width: fit-content;
+    min-width: fit-content;
     padding: 0.2rem 0.5rem;
   }
 
   .filter-wrap {
-    margin: 0.5rem 3rem;
+    margin: 0.5rem 0rem;
+    padding: 0.1rem 0.3rem;
   }
 
   .filter-wrap>label {
-    margin-right: 0.5rem;
+    margin-right: 0rem;
   }
 
   .filter-wrap>select {
     font-size: 1rem;
-    padding: 0 1.5rem;
-    border-radius: 0.5rem;
+    width: 5.5rem;
+    padding: 0 0.5rem;
     border-color: var(--menuColor);
   }
 
@@ -210,14 +220,16 @@ import { BillData, RoomData, BillStatus, RentingData } from "../../../Ex-data/da
   }
 }
 
-@media screen and (min-width:1200px) {
+/* ใหญ่ */
+@media screen and (min-width: 1200px) {
   .filterBar {
     width: 60%;
     min-width: 800px;
   }
 
   .filter-wrap>select {
-    padding: 0 2rem;
+    padding: 0 0.5rem;
+    width: 7.5rem;
   }
 
   .table {
@@ -227,4 +239,5 @@ import { BillData, RoomData, BillStatus, RentingData } from "../../../Ex-data/da
   .th {
     font-size: 1.5rem;
   }
-}</style>
+}
+</style>

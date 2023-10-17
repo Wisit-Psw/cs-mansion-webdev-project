@@ -5,7 +5,7 @@ import { teamColor } from '../module/team.js';
 </script>
 
 <template>
-  <div class="center">
+  <section class="center">
     <div class="login">login</div>
     <form method="post">
       <div class="txt_field">
@@ -19,12 +19,12 @@ import { teamColor } from '../module/team.js';
         <div class="Icon-wrap">
           <PasswordIcon />
         </div>
-        <input type="password" placeholder="Password" required>
+        <input type="password" pattern="[0-9]{13}" title="กรุณกรอกเลข 13 หลัก" placeholder="Password" required>
         <span></span>
       </div>
       <input type="submit" value="Login">
     </form>
-  </div>
+  </section>
 </template>
 
 <style scoped>

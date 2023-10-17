@@ -5,7 +5,7 @@ import { teamColor } from '../module/team.js';
 </script>
 
 <template>
-  <div class="center">
+  <section class="center">
     <div class="login">login</div>
     <form method="post">
       <div class="txt_field">
@@ -24,7 +24,7 @@ import { teamColor } from '../module/team.js';
       </div>
       <input type="submit" value="Login">
     </form>
-  </div>
+  </section>
 </template>
 
 <style scoped>

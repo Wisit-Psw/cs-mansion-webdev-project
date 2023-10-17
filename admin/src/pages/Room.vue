@@ -4,7 +4,7 @@ import RoomEditBox from "../components/RoomEditBox.vue";
 </script>
 
 <template>
-  <div class="container">
+  <section class="container">
     <header class="header">
       ห้องพัก:
     </header>
@@ -44,7 +44,7 @@ import RoomEditBox from "../components/RoomEditBox.vue";
       </div>
     </div>
 
-  </div>
+  </section>
 </template>
 
 <style scoped>

@@ -11,7 +11,7 @@ const onModeChange = () => {
 }
 </script>
 <template>
-  <div class="table">
+  <section class="table">
     <div class="thead">
       <div class="tr">
         <div class="th" style="min-width: fit-content">
@@ -35,7 +35,7 @@ const onModeChange = () => {
         <div class="editBTN">แก้ไข</div>
       </div>
     </div>
-  </div>
+  </section>
 </template>
 <style scoped>
 .toggle-container {

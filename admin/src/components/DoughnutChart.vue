@@ -45,9 +45,9 @@ export default {
 
 
 <template>
-    <div class="chart-wrap">
+    <section class="chart-wrap">
         <Doughnut :data="data" :options="options" />
-    </div>
+    </section>
 </template>
 
 <style scoped>

@@ -4,7 +4,7 @@ import DoughnutChart from '../components/DoughnutChart.vue';
 </script>
 
 <template>
-  <div class="container">
+  <section class="container">
     <header class="header">
       รายละเอียด:
     </header>
@@ -22,7 +22,7 @@ import DoughnutChart from '../components/DoughnutChart.vue';
         <DoughnutChart />
       </div>
     </div>
-  </div>
+  </section>
 </template>
 
 <style scoped>

@@ -4,7 +4,7 @@ import WaitingDetailBox from "../components/WaitingDetailBox.vue";
 </script>
 
 <template>
-  <div class="container">
+  <section class="container">
     <header class="header">
       รายการรอยืนยัน:
     </header>
@@ -43,7 +43,7 @@ import WaitingDetailBox from "../components/WaitingDetailBox.vue";
       </div>
     </div>
 
-  </div>
+  </section>
 </template>
 
 <style scoped>

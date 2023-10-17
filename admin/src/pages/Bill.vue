@@ -23,7 +23,7 @@ const logDate = () => { console.log(document.getElementById('date').value) }
 </script>
 
 <template>
-  <div class="container">
+  <section class="container">
     <header class="header">บิลค่าเช่า:</header>
     <div class="filterBar">
       <div class="filter-wrap">
@@ -80,7 +80,7 @@ const logDate = () => { console.log(document.getElementById('date').value) }
         </div>
       </div>
     </div>
-  </div>
+  </section>
 </template>
 
 <style scoped>
@@ -109,6 +109,7 @@ const logDate = () => { console.log(document.getElementById('date').value) }
   background-color: var(--menuColor);
   box-shadow: 0px 3px 2px var(--menuSelectedColor);
 }
+
 .filter-wrap {
   padding: 0.2rem;
 }
@@ -175,6 +176,7 @@ const logDate = () => { console.log(document.getElementById('date').value) }
   align-items: center;
   justify-content: space-around;
 }
+
 .tbody> :nth-child(even) {
   background-color: rgb(233, 232, 232);
 }

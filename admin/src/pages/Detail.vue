@@ -5,14 +5,14 @@ import DetailBox from '../components/DetailBox.vue';
 </script>
 
 <template>
-  <div class="container">
+  <section class="container">
     <header class="header">รายละเอียดหอพัก:</header>
     <div class="table-wrap">
       <div class="tableBox" v-for="(item, index) in MansionDetail" :key="index">
         <DetailBox :DetailName="item.DetailName" :DetailPrice="item.DetailPrice" />
       </div>
     </div>
-  </div>
+  </section>
 </template>
 
 <style scoped>

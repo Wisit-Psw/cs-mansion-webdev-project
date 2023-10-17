@@ -3,7 +3,7 @@ import { RentingData,BillData, RoomData, BillStatus } from "../../../Ex-data/dat
 </script>
 
 <template>
-  <div class="container">
+  <section class="container">
     <header class="header">
       ผู้เช่า:
     </header>
@@ -48,7 +48,7 @@ import { RentingData,BillData, RoomData, BillStatus } from "../../../Ex-data/dat
       </div>
     </div>
 
-  </div>
+  </section>
 </template>
 
 <style scoped>
