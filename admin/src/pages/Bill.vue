@@ -78,25 +78,9 @@ const logDate = () => { console.log(document.getElementById('date').value) }
         <div class="Trow" v-for="(item, index) in BillExpensesJoin" :key="index">
           <BillDeatailBox :item="item" />
         </div>
-        <div class="Trow" v-for="(item, index) in BillExpensesJoin" :key="index">
-          <BillDeatailBox :item="item" />
-        </div>
-        <div class="Trow" v-for="(item, index) in BillExpensesJoin" :key="index">
-          <BillDeatailBox :item="item" />
-        </div>
-        <div class="Trow" v-for="(item, index) in BillExpensesJoin" :key="index">
-          <BillDeatailBox :item="item" />
-        </div>
-        <div class="Trow" v-for="(item, index) in BillExpensesJoin" :key="index">
-          <BillDeatailBox :item="item" />
-        </div>
-        <div class="Trow" v-for="(item, index) in BillExpensesJoin" :key="index">
-          <BillDeatailBox :item="item" />
-        </div>
       </div>
     </div>
   </div>
-  <input type="date" name="" id="date" @change="logDate()">
 </template>
 
 <style scoped>
@@ -125,20 +109,6 @@ const logDate = () => { console.log(document.getElementById('date').value) }
   background-color: var(--menuColor);
   box-shadow: 0px 3px 2px var(--menuSelectedColor);
 }
-
-.detailBTN {
-  margin: 0 auto;
-  color: white;
-  cursor: pointer;
-  font-weight: bold;
-  width: fit-content;
-  padding: 0.1rem 0.3rem;
-  background-color: var(--btnColor);
-  border-radius: 0.3rem;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-
 .filter-wrap {
   padding: 0.2rem;
 }
@@ -205,13 +175,6 @@ const logDate = () => { console.log(document.getElementById('date').value) }
   align-items: center;
   justify-content: space-around;
 }
-
-.td {
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-}
-
 .tbody> :nth-child(even) {
   background-color: rgb(233, 232, 232);
 }

@@ -24,7 +24,7 @@ const submit = (event) => {
 
 <template>
   <!-- data ถ้า edit state เป็น false ( เมื่อยังไม่กด edit )-->
-  <div class="dataTable tr">
+  <div class="dataTable tr" >
     <div class="td roomNumber">{{ props.item.RoomID }}</div>
     <div class="td date">{{ props.item.BillDate }}</div>
     <div class="td totalPrice">{{ props.item.BillTotalPrice }}</div>
@@ -83,8 +83,8 @@ const submit = (event) => {
         <div class="td expensesUnit">{{ expen.ExpenTitle }}</div>
         <div class="td expensesUnit">{{ expen.ExpenPrice }}</div>
       </div>
-      <div class="dataTable tr" style="width: 40%; justify-content:space-around; margin:0 auto;">
 
+      <div class="dataTable tr" style="width: 40%; justify-content:space-around; margin:0 auto;">
         <div class="td detail" @click="onEditBTNClick()" v-if="!isEdit.state">
           <div class="detailBTN" style="font-size: 1rem;">แก้ไข</div>
         </div>
