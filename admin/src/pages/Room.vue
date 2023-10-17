@@ -1,5 +1,6 @@
 <script setup>
 import {  RoomData, RoomStatus } from "../../../Ex-data/data.js"
+import RoomEditBox from "../components/RoomEditBox.vue";
 </script>
 
 <template>
@@ -37,15 +38,8 @@ import {  RoomData, RoomStatus } from "../../../Ex-data/data.js"
         </div>
       </div>
       <div class="tbody">
-        <div v-for="(item, index) in RoomData" :key="index" class="dataTable tr">
-          <div class="td roomNumber">{{ item.RoomID }}</div>
-          <div class="td date">{{ item.RoomPrice }}</div>
-          <div class="td totalPrice">{{ item.RoomTypeName }}</div>
-          <div class="td status">{{ item.RoomStatusName }}</div>
-          <div class="td detail">{{ item.RoomDetail }}</div>
-          <div class="td edit">
-            <div class="editBTN">แก้ไข</div>
-          </div>
+        <div class="Trow" v-for="(item, index) in RoomData" :key="index">
+          <RoomEditBox :item="item"/>
         </div>
       </div>
     </div>
