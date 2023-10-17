@@ -1,5 +1,7 @@
 <script setup>
 import { RentingData,BillData, RoomData, BillStatus } from "../../../Ex-data/data.js"
+/*เพิ่ม*/
+import UserDetailBox from "../components/UserDetailBox.vue"
 </script>
 
 <template>
@@ -32,11 +34,14 @@ import { RentingData,BillData, RoomData, BillStatus } from "../../../Ex-data/dat
           <div class="th date">เบอร์โทรศัพท์</div>
           <div class="th totalPrice">ที่อยู่</div>
           <div class="th status">ห้อง</div>
-          <div class="th detail">รายละเอียด</div>
+          <div class="th detail">แก้ไข</div>
         </div>
       </div>
       <div class="tbody">
-        <div v-for="(item, index) in RentingData" :key="index" class="dataTable tr">
+        <div class="Trow" v-for="(item, index) in RentingData" :key="index">
+          <UserDetailBox :item="item" />
+        </div>
+        <!-- <div v-for="(item, index) in RentingData" :key="index" class="dataTable tr">
           <div class="td roomNumber">{{ item.UserName }}</div>
           <div class="td date">{{ item.UserPhone }}</div>
           <div class="td totalPrice">{{ item.UserAddress }}</div>
@@ -44,7 +49,7 @@ import { RentingData,BillData, RoomData, BillStatus } from "../../../Ex-data/dat
           <div class="td detail">
             <div class="detailBTN">รายละเอียด</div>
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
 
@@ -165,6 +170,7 @@ import { RentingData,BillData, RoomData, BillStatus } from "../../../Ex-data/dat
 .detail {
   width: 20%;
 }
+
 
 @media screen and (min-width:826px) {
   .header {

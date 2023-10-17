@@ -9,6 +9,16 @@ const onModeChange = () => {
     Switch.IsOpen = 'false'
   }
 }
+/*เพิ่ม*/
+const isEdit = reactive({ state: false });
+const onEditBTNClick = () => {
+  isEdit.state = !isEdit.state;
+};
+const submit = (event) => {
+  event.preventDefault();
+  console.log(event.target.expensesUnit[0].id);
+  isEdit.state = false;
+}
 </script>
 <template>
   <section class="table">
@@ -29,12 +39,33 @@ const onModeChange = () => {
         </div>
       </div>
     </div>
-    <div class="tbody">
+
+    <div class="tbody" v-if="!isEdit.state">
       <div class="td detail">{{ DetailPrice }}</div>
-      <div class="td edit">
+      <div class="td edit" @click="onEditBTNClick()">
         <div class="editBTN">แก้ไข</div>
       </div>
     </div>
+    <!--เพิ่ม-->
+    <div class="tbody" v-else>
+      <input class="td detail" style="font-size: 1rem ; height: 1rem ; margin-top: 0.2rem;" :value="DetailPrice" />
+
+    </div>
+
+    <div style="width: 100%; text-align: center ;" v-if="isEdit.state">
+      <form @submit="submit">
+        <div class="box" style="margin-right: 0; display: flex;">
+          <div class="td detail" @click="onEditBTNClick()">
+            <input style="border: none; font-size: 1rem;" type="submit" class="detailBTN" value="ยืนยัน">
+          </div>
+          <div class="td detail" @click="onEditBTNClick()">
+            <div style="font-size: 1rem;" class="detailBTN">ยกเลิก</div>
+          </div>
+        </div>
+      </form>
+
+    </div>
+    <!-- </div> -->
   </section>
 </template>
 <style scoped>
@@ -46,6 +77,7 @@ const onModeChange = () => {
   height: 1.15rem;
   transition: all 0.2s ease-out;
 }
+
 .toggle-circle {
   width: 1rem;
   height: 1rem;
@@ -54,6 +86,21 @@ const onModeChange = () => {
   transition: all 0.2s ease-out;
   position: relative;
 }
+
+.detailBTN {
+  margin: 0 auto;
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+  width: fit-content;
+  padding: 0.1rem 0.3rem;
+  background-color: var(--btnColor);
+  border-radius: 0.3rem;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+
+}
+
 .editBTN {
   margin-right: 1rem;
   color: white;
@@ -67,6 +114,7 @@ const onModeChange = () => {
   text-overflow: ellipsis;
   height: fit-content;
 }
+
 .table {
   width: 15rem;
   border-radius: 0.5rem;
@@ -74,23 +122,27 @@ const onModeChange = () => {
   margin-top: 1rem;
   margin-left: 1rem;
 }
+
 .thead {
   color: var(--bgColor);
   border-radius: 0.5rem 0.5rem 0 0;
   background-color: var(--menuColor);
 }
+
 .tbody {
   border-radius: 0 0 0.5rem 0.5rem;
   justify-content: space-around;
   margin: 0 auto;
   display: flex;
 }
+
 .tr {
   display: flex;
   padding-top: 0.5%;
   justify-content: space-between;
   align-items: center;
 }
+
 .td {
   text-align: left;
   margin-left: 5%;
@@ -98,6 +150,7 @@ const onModeChange = () => {
   padding-bottom: 1%;
   width: 50%;
 }
+
 .th {
   padding: 0.2rem 1.5rem;
   width: fit-content;
@@ -106,20 +159,25 @@ const onModeChange = () => {
   justify-content: space-around;
 
 }
+
 .tbody>.tr>.td {
   padding: 0.5rem 0.5rem;
 }
+
 .detail {
   width: 70%;
   padding: 0.5rem 1rem;
 }
+
 .edit {
   width: 30%;
 }
+
 @media screen and (min-width: 826px) {
   .table {
     font-size: 1.2rem;
   }
 }
+
 @media screen and (min-width: 1200px) {}
 </style>
