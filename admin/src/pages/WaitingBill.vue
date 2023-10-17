@@ -1,5 +1,6 @@
 <script setup>
-import { BillData, RoomData, BillStatus } from "../../../Ex-data/data.js"
+import { BillData, RoomData, BillStatus, BillExpensesJoin } from "../../../Ex-data/data.js"
+import WaitingDetailBox from "../components/WaitingDetailBox.vue";
 </script>
 
 <template>
@@ -36,14 +37,8 @@ import { BillData, RoomData, BillStatus } from "../../../Ex-data/data.js"
         </div>
       </div>
       <div class="tbody">
-        <div v-for="(item, index) in BillData" :key="index" class="dataTable tr">
-          <div class="td roomNumber">{{ item.RoomID }}</div>
-          <div class="td date">{{ item.BillDate }}</div>
-          <div class="td totalPrice">{{ item.BillTotalPrice }}</div>
-          <div class="td status">{{ item.BillStatusName }}</div>
-          <div class="td detail">
-            <div class="detailBTN">รายละเอียด</div>
-          </div>
+        <div class="Trow" v-for="(item, index) in BillExpensesJoin" :key="index">
+          <WaitingDetailBox :item="item" />
         </div>
       </div>
     </div>
@@ -127,9 +122,26 @@ import { BillData, RoomData, BillStatus } from "../../../Ex-data/data.js"
   border-radius:0 0 0.5rem 0.5rem ;
 
 }
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #b6b5b5;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #dbdada;
+}
 
 .tr {
   display: flex;
+  padding: 0.2rem 0.5rem;
 }
 
 .th {
@@ -165,7 +177,7 @@ import { BillData, RoomData, BillStatus } from "../../../Ex-data/data.js"
 .detail {
   width: 20%;
 }
-
+/* กลาง */
 @media screen and (min-width:826px) {
   .header {
     display: block;
