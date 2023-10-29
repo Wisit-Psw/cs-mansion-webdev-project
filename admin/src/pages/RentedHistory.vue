@@ -1,5 +1,16 @@
 <script setup>
 import { BillData, RoomData, BillStatus, BillExpensesJoin } from "../../../Ex-data/data.js"
+import RentedHistoryBox from "../components/RentedHistoreBox.vue"
+import { reactive } from "vue";
+const isDetailShow = reactive({ state: false });
+
+const onDetailBTNClick = () => {
+  isDetailShow.state = !isDetailShow.state;
+};
+const submit = (event) => {
+  event.preventDefault();
+  isDetailShow.state = false;
+}
 
 </script>
 
@@ -38,22 +49,11 @@ import { BillData, RoomData, BillStatus, BillExpensesJoin } from "../../../Ex-da
           <div class="th detail">รายละเอียด</div>
         </div>
       </div>
-      <div class="tbody">
-        <div v-for="(item, index) in BillExpensesJoin" :key="index" class="dataTable tr">
-          <div class="td roomNumber">{{ item.RoomID }}</div>
-          <div class="td date">{{ item.UserName }}</div>
-          <div class="td date">{{ item.RoomPrice }}</div>
-          <div class="td date">{{ item.RoomDetail }}</div>
-          <div class="td totalPrice">{{ item.RentingStart }}</div>
-          <div class="td totalPrice">{{ item.RentingEnd }}</div>
-          <div class="filter-wrap RentEnd" style="padding: 0; margin-left: 0.1%;">
-            <select name="RentingEnd" id="RentingEndFillter" style="padding: 0;" @click="Popup()">
-              <option value="null"> - </option>
-              <option value="RentEnd" >ย้ายออก</option>
-            </select>
+        <div class="tbody">
+          <div v-for="(item, index) in BillExpensesJoin" :key="index" class="dataTable tr">
+            <RentedHistoryBox :item="item"/>
           </div>
         </div>
-      </div>
     </div>
   </section>
 </template>
@@ -85,18 +85,9 @@ import { BillData, RoomData, BillStatus, BillExpensesJoin } from "../../../Ex-da
   box-shadow: 0px 3px 2px var(--menuSelectedColor);
 }
 
-.detailBTN {
-  margin: 0 auto;
-  color: white;
-  cursor: pointer;
-  font-weight: bold;
-  width: fit-content;
-  padding: 0.2rem 0.5rem;
-  background-color: var(--btnColor);
-  border-radius: 0.3rem;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
+
+
+
 
 .filter-wrap {
   padding: 0.2rem;
@@ -148,12 +139,6 @@ import { BillData, RoomData, BillStatus, BillExpensesJoin } from "../../../Ex-da
   justify-content: space-around;
 }
 
-.td {
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  width: fit-content;
-}
 
 .tbody>:nth-child(even) {
   background-color: rgb(233, 232, 232);
