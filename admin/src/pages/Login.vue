@@ -1,28 +1,58 @@
 <script setup>
 import PasswordIcon from '../icon/PasswordIcon.vue';
 import UserLoginIcon from '../icon/UserLoginIcon.vue';
-import { teamColor } from '../module/team.js';
+import { reactive } from 'vue';
+import { useRouter } from 'vue-router';
+import axios from 'axios';
+const route = useRouter();
+
+const data = reactive({
+  username: '',
+  password: ''
+});
+const queryRoom = async () => {
+  const response = await fetch("http://localhost:3001" + "/api/Exdata/renting/CreateBill", { method: "POOST" });
+  data.Renting = await response.json();
+  console.log(data.Renting)
+}
+const reqLogin = async (event) => {
+  event.preventDefault();
+  try {
+    const body = {
+      username: data.username,
+      password: data.password
+    }
+    const result = await axios.post("http://localhost:3001" + "/api/admin/authentication", body,{withCredentials:true});
+    if (result && result.data.status === "success") {
+      route.push("/")
+    }
+    const result2 = await axios.get("http://localhost:3001"+"/api/admin/removesessions",{withCredentials:true});
+        console.log(result2)
+  } catch (error) {
+    console.log(error)
+  }
+}
 </script>
 
 <template>
   <section class="center">
     <div class="login">login</div>
-    <form method="post">
-      <div class="txt_field">
-        <div class="Icon-wrap">
-          <UserLoginIcon />
-        </div>
-        <input type="text" placeholder="Username" required>
-        <span></span>
+    <form method="post" @submit="reqLogin">
+    <div class="txt_field">
+      <div class="Icon-wrap">
+        <UserLoginIcon />
       </div>
-      <div class="txt_field">
-        <div class="Icon-wrap">
-          <PasswordIcon />
-        </div>
-        <input type="password" placeholder="Password" required>
-        <span></span>
+      <input type="text" placeholder="Username" v-model="data.username" required>
+      <span></span>
+    </div>
+    <div class="txt_field">
+      <div class="Icon-wrap">
+        <PasswordIcon />
       </div>
-      <input type="submit" value="Login">
+      <input type="password" placeholder="Password" v-model="data.password" required>
+      <span></span>
+    </div>
+    <input type="submit" value="Login">
     </form>
   </section>
 </template>
@@ -81,6 +111,7 @@ form .txt_field {
   border: none;
   outline: none;
 }
+
 .txt_field span::before {
   content: '';
   position: absolute;
@@ -96,6 +127,7 @@ form .txt_field {
 .txt_field input:valid~span::before {
   width: 100%;
 }
+
 input[type="submit"] {
   margin-top: 0.5rem;
   width: 100%;

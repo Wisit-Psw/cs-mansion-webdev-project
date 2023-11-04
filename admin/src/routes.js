@@ -8,6 +8,7 @@ import RentedHistory from "./pages/RentedHistory.vue"
 import PageNotFound from "./pages/PageNotFound.vue"
 import Detail from "./pages/Detail.vue"
 import Login from "./pages/Login.vue"
+import authenticate from "./module/authenticate"
 export const routes = [
     // {
     //     path: '/login', component: LoginPage,
@@ -18,6 +19,10 @@ export const routes = [
     // },
     {
         path: '/', component: HomePage,
+        beforeEnter: async () => {
+            const isAuthenticated = await authenticate();
+            if( isAuthenticated ) return '/';
+        },
     },
     {
         path: '/bill', component: Bill,

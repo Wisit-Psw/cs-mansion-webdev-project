@@ -2,30 +2,46 @@
 
 import { BillData, RoomData, BillStatus, BillExpensesJoin } from "../../../Ex-data/data.js";
 import BillDeatailBox from "../components/BillDeatailBox.vue";
-const isEdit = {}
-
-const onDetailBTNClick = (id) => {
-  const Element = document.getElementById(id);
-  if (Element.style.display == "flex") {
-    Element.style.display = "none";
-  } else {
-    Element.style.display = "flex";
+import { reactive,onMounted } from 'vue';
+const data = reactive({
+  BillData: [],
+});
+// const isEdit = {}
+const queryBill = async () => {
+  try {
+    const response = await fetch("http://localhost:3001" + "/api/Exdata/billdata", { method: "GET" });
+    data.BillData = await response.json()
+    console.log(data.BillData)
+  } catch (error) {
+    console.error("Error fetching renting data:", error);
   }
-};
-const onEditBTNClick = (index) => {
-  console.log(index, isEdit, isEdit[index])
-  // console.log("before"+isEdit[index])
-  isEdit[index] = !isEdit[index]
-  // console.log("after"+isEdit[index])
-  console.log(index, isEdit, isEdit[index])
 }
+// const onDetailBTNClick = (id) => {
+//   const Element = document.getElementById(id);
+//   if (Element.style.display == "flex") {
+//     Element.style.display = "none";
+//   } else {
+//     Element.style.display = "flex";
+//   }
+// };
+// const onEditBTNClick = (index) => {
+//   console.log(index, isEdit, isEdit[index])
+//   // console.log("before"+isEdit[index])
+//   isEdit[index] = !isEdit[index]
+//   // console.log("after"+isEdit[index])
+//   console.log(index, isEdit, isEdit[index])
+// }
 const logDate = () => { console.log(document.getElementById('date').value) }
+
+onMounted(async ()=>{
+  await queryBill()
+})
 </script>
 
 <template>
   <section class="container">
     <header class="header">บิลค่าเช่า:</header>
-    <div class="filterBar">
+    <!-- <div class="filterBar">
       <div class="filter-wrap">
         <label for="RoomID">เลขห้อง: </label>
         <select name="RoomID" id="RoomIDFilter">
@@ -62,7 +78,7 @@ const logDate = () => { console.log(document.getElementById('date').value) }
           </option>
         </select>
       </div>
-    </div>
+    </div> -->
     <!-- {{ BillData }} -->
     <div class="table">
       <div class="thead">
@@ -75,7 +91,7 @@ const logDate = () => { console.log(document.getElementById('date').value) }
         </div>
       </div>
       <div class="tbody">
-        <div class="Trow" v-for="(item, index) in BillExpensesJoin" :key="index">
+        <div class="Trow" v-for="(item, index) in data.BillData" :key="index">
           <BillDeatailBox :item="item" />
         </div>
       </div>

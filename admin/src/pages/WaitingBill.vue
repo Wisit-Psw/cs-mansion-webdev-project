@@ -1,6 +1,21 @@
 <script setup>
 import { BillData, RoomData, BillStatus, BillExpensesJoin } from "../../../Ex-data/data.js"
 import WaitingDetailBox from "../components/WaitingDetailBox.vue";
+import {  reactive,onMounted } from "vue";
+
+const data = reactive({
+  Bill : []
+})
+
+const queryRoom = async () => {
+  const response = await fetch("http://localhost:3001" + "/api/Exdata/billdata/waiting", { method: "GET" });
+  data.Bill = await response.json();
+  console.log(data.Bill)
+}
+
+onMounted( async ()=>{
+  await queryRoom()
+})
 </script>
 
 <template>
@@ -37,7 +52,7 @@ import WaitingDetailBox from "../components/WaitingDetailBox.vue";
         </div>
       </div>
       <div class="tbody">
-        <div class="Trow" v-for="(item, index) in BillExpensesJoin" :key="index">
+        <div class="Trow" v-for="(item, index) in data.Bill" :key="index">
           <WaitingDetailBox :item="item" />
         </div>
       </div>

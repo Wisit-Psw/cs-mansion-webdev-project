@@ -1,7 +1,24 @@
 <script setup>
-import { RentingData,BillData, RoomData, BillStatus } from "../../../Ex-data/data.js"
+// import { RentingData,BillData, RoomData, BillStatus } from "../../../Ex-data/data.js"
 /*เพิ่ม*/
+import { reactive,onMounted } from 'vue';
 import UserDetailBox from "../components/UserDetailBox.vue"
+const data = reactive({
+  RentingData: [],
+});
+const queryUser = async () => {
+  try {
+    const response = await fetch("http://localhost:3001" + "/api/Exdata/renting", { method: "GET" });
+    data.RentingData = await response.json()
+  } catch (error) {
+    console.error("Error fetching renting data:", error);
+  }
+}
+onMounted(async () => {
+  await queryUser()
+  console.log(data.RentingData)
+})
+
 </script>
 
 <template>
@@ -9,7 +26,7 @@ import UserDetailBox from "../components/UserDetailBox.vue"
     <header class="header">
       ผู้เช่า:
     </header>
-    <div class="filterBar">
+    <!-- <div class="filterBar">
       <div class="filter-wrap">
         <label for="RoomID">เลขห้อง: </label>
         <select name="RoomID" id="RoomIDFilter">
@@ -25,7 +42,7 @@ import UserDetailBox from "../components/UserDetailBox.vue"
           </option>
         </select>
       </div>
-    </div>
+    </div> -->
     <!-- {{ BillData }} -->
     <div class="table">
       <div class="thead">
@@ -38,7 +55,7 @@ import UserDetailBox from "../components/UserDetailBox.vue"
         </div>
       </div>
       <div class="tbody">
-        <div class="Trow" v-for="(item, index) in RentingData" :key="index">
+        <div class="Trow" v-for="(item, index) in data.RentingData" :key="index">
           <UserDetailBox :item="item" />
         </div>
         <!-- <div v-for="(item, index) in RentingData" :key="index" class="dataTable tr">
@@ -129,7 +146,7 @@ import UserDetailBox from "../components/UserDetailBox.vue"
 .tbody {
   max-height: 75dvh;
   overflow-y: auto;
-  border-radius:0 0 0.5rem 0.5rem ;
+  border-radius: 0 0 0.5rem 0.5rem;
 
 }
 
@@ -222,10 +239,13 @@ import UserDetailBox from "../components/UserDetailBox.vue"
   .filter-wrap>select {
     padding: 0 2rem;
   }
-  .table{
+
+  .table {
     width: 90%;
   }
+
   .th {
     font-size: 1.5rem;
   }
-}</style>
+}
+</style>

@@ -1,14 +1,28 @@
 <script setup>
-import { MansionDetail } from '../../../Ex-data/data';
+// import { MansionDetail } from '../../../Ex-data/data';
 import DetailBox from '../components/DetailBox.vue';
+import {  reactive,onMounted } from "vue";
 
+const data = reactive({
+  Detail : []
+})
+
+const queryRoom = async () => {
+  const response = await fetch("http://localhost:3001" + "/api/Exdata/Detail", { method: "GET" });
+  data.Detail = await response.json();
+  console.log(data.Detail)
+}
+
+onMounted( async ()=>{
+  await queryRoom()
+})
 </script>
 
 <template>
   <section class="container">
     <header class="header">รายละเอียดหอพัก:</header>
     <div class="table-wrap">
-      <div class="tableBox" v-for="(item, index) in MansionDetail" :key="index">
+      <div class="tableBox" v-for="(item, index) in data.Detail" :key="index">
         <DetailBox :DetailName="item.DetailName" :DetailPrice="item.DetailPrice" />
       </div>
     </div>

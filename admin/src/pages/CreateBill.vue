@@ -1,6 +1,21 @@
 <script setup>
-import { BillData, RoomData, BillStatus, RentingData, BillExpensesJoin } from "../../../Ex-data/data.js"
+// import { BillData, RoomData, BillStatus, RentingData, BillExpensesJoin } from "../../../Ex-data/data.js"
 import CreateBillBox from "../components/CreateBillBox.vue";
+import {  reactive,onMounted } from "vue";
+
+const data = reactive({
+  Renting : []
+})
+
+const queryRoom = async () => {
+  const response = await fetch("http://localhost:3001" + "/api/Exdata/renting/CreateBill", { method: "GET" });
+  data.Renting = await response.json();
+  console.log(data.Renting)
+}
+
+onMounted( async ()=>{
+  await queryRoom()
+})
 </script>
 
 <template>
@@ -8,7 +23,7 @@ import CreateBillBox from "../components/CreateBillBox.vue";
     <header class="header">
       สร้างบิล:
     </header>
-    <div class="filterBar">
+    <!-- <div class="filterBar">
       <div class="filter-wrap">
         <label for="RoomID">เลขห้อง: </label>
         <select name="RoomID" id="RoomIDFilter">
@@ -24,7 +39,7 @@ import CreateBillBox from "../components/CreateBillBox.vue";
           </option>
         </select>
       </div>
-    </div>
+    </div> -->
     <!-- {{ BillData }} -->
     <div class="table">
       <div class="thead">
@@ -35,7 +50,7 @@ import CreateBillBox from "../components/CreateBillBox.vue";
         </div>
       </div>
       <div class="tbody">
-        <div class="Trow" v-for="(item, index) in BillExpensesJoin" :key="index">
+        <div class="Trow" v-for="(item, index) in data.Renting " :key="index">
           <CreateBillBox :item="item" :index="index"/>
         </div>
       </div>

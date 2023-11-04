@@ -1,6 +1,19 @@
 <script setup>
+import {  reactive,onMounted } from "vue";
 import {  RoomData, RoomStatus } from "../../../Ex-data/data.js"
 import RoomEditBox from "../components/RoomEditBox.vue";
+const data = reactive({
+  Room : []
+})
+const queryRoom = async () => {
+  const response = await fetch("http://localhost:3001" + "/api/Exdata/room", { method: "GET" });
+  data.Room = await response.json();
+  console.log(data.Room)
+}
+
+onMounted( async ()=>{
+  await queryRoom()
+})
 </script>
 
 <template>
@@ -38,7 +51,7 @@ import RoomEditBox from "../components/RoomEditBox.vue";
         </div>
       </div>
       <div class="tbody">
-        <div class="Trow" v-for="(item, index) in RoomData" :key="index">
+        <div class="Trow" v-for="(item, index) in data.Room" :key="index">
           <RoomEditBox :item="item"/>
         </div>
       </div>

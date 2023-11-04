@@ -1,17 +1,19 @@
 <script setup>
-import { BillData, RoomData, BillStatus, BillExpensesJoin } from "../../../Ex-data/data.js"
-import RentedHistoryBox from "../components/RentedHistoreBox.vue"
-import { reactive } from "vue";
-const isDetailShow = reactive({ state: false });
-
-const onDetailBTNClick = () => {
-  isDetailShow.state = !isDetailShow.state;
-};
-const submit = (event) => {
-  event.preventDefault();
-  isDetailShow.state = false;
+import { reactive, onMounted } from "vue";
+import RentedHistoreBox from "../components/RentedHistoreBox.vue";
+// import { BillData, RoomData, BillStatus, BillExpensesJoin } from "../../../Ex-data/data.js";
+const data = reactive({
+  Renting: []
+})
+const queryUser = async () => {
+  const response = await fetch("http://localhost:3001" + "/api/Exdata/renting", { method: "GET" });
+  data.Renting = await response.json();
+  console.log(data.Renting)
 }
 
+onMounted(async () => {
+  await queryUser()
+})
 </script>
 
 <template>
@@ -19,7 +21,7 @@ const submit = (event) => {
     <header class="header">
       รายการเช่าห้องพัก:
     </header>
-    <div class="filterBar">
+    <!-- <div class="filterBar">
       <div class="filter-wrap">
         <label for="RoomID">เลขห้อง: </label>
         <select name="RoomID" id="RoomIDFilter">
@@ -35,7 +37,7 @@ const submit = (event) => {
           </option>
         </select>
       </div>
-    </div>
+    </div> -->
     <!-- {{ BillData }} -->
     <div class="table">
       <div class="thead">
@@ -49,11 +51,23 @@ const submit = (event) => {
           <div class="th detail">รายละเอียด</div>
         </div>
       </div>
-        <div class="tbody">
-          <div v-for="(item, index) in BillExpensesJoin" :key="index" class="dataTable tr">
-            <RentedHistoryBox :item="item"/>
-          </div>
+      <div class="tbody">
+        <div v-for="(item, index) in data.Renting" :key="index" class="dataTable tr">
+          <!-- <div class="td roomNumber">{{ item.RoomID }}</div>
+          <div class="td date">{{ item.UserName }}</div>
+          <div class="td date">{{ item.RoomPrice }}</div>
+          <div class="td date">{{ item.RoomDetail }}</div>
+          <div class="td totalPrice">{{ item.RentingStart }}</div>
+          <div class="td totalPrice">{{ item.RentingEnd }}</div>
+          <div class="filter-wrap RentEnd" style="padding: 0; margin-left: 0.1%;">
+            <select name="RentingEnd" id="RentingEndFillter" style="padding: 0;" @click="Popup()">
+              <option value="null"> - </option>
+              <option value="RentEnd">ย้ายออก</option>
+            </select>
+          </div> -->
+          <RentedHistoreBox  :item="item"/>
         </div>
+      </div>
     </div>
   </section>
 </template>
