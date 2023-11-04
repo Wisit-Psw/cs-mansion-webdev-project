@@ -1,5 +1,6 @@
 <script setup>
 import { BillData, RoomData, BillStatus } from "../../../Ex-data/data.js"
+import BillUserDetailBoxVue from "../../../admin/src/components/BillUserDetailBox.vue";
 </script>
 
 <template>
@@ -37,17 +38,10 @@ import { BillData, RoomData, BillStatus } from "../../../Ex-data/data.js"
       </div>
       <div class="tbody">
         <div v-for="(item, index) in BillData" :key="index" class="dataTable tr">
-          <div class="td roomNumber">{{ item.RoomID }}</div>
-          <div class="td date">{{ item.BillDate }}</div>
-          <div class="td totalPrice">{{ item.BillTotalPrice }}</div>
-          <div class="td status">{{ item.BillStatusName }}</div>
-          <div class="td detail">
-            <div class="detailBTN">รายละเอียด</div>
-          </div>
+          <BillUserDetailBoxVue :item="item" />
         </div>
       </div>
     </div>
-
   </div>
 </template>
 
@@ -66,7 +60,7 @@ import { BillData, RoomData, BillStatus } from "../../../Ex-data/data.js"
 }
 
 .filterBar {
-  width: 80%;
+  width: 95%;
   display: flex;
   margin: 0 auto;
   font-size: 1rem;
@@ -78,22 +72,14 @@ import { BillData, RoomData, BillStatus } from "../../../Ex-data/data.js"
   box-shadow: 0px 3px 2px var(--menuSelectedColor);
 }
 
-.detailBTN {
-  margin: 0 auto;
-  color: white;
-  cursor: pointer;
-  font-weight: bold;
-  width: fit-content;
-  padding: 0.2rem 0.5rem;
-  background-color: var(--btnColor);
-  border-radius: 0.3rem;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
+
+
+
 
 .filter-wrap {
   padding: 0.2rem;
 }
+
 
 .filter-wrap>label {
   margin-right: 0rem;
@@ -107,7 +93,7 @@ import { BillData, RoomData, BillStatus } from "../../../Ex-data/data.js"
 }
 
 .table {
-  width: 90%;
+  width: 95%;
   font-size: 1rem;
   border-spacing: 0;
   text-align: center;
@@ -124,8 +110,7 @@ import { BillData, RoomData, BillStatus } from "../../../Ex-data/data.js"
 .tbody {
   max-height: 75dvh;
   overflow-y: auto;
-  border-radius:0 0 0.5rem 0.5rem ;
-
+  border-radius: 0 0 0.5rem 0.5rem;
 }
 
 .tr {
@@ -141,11 +126,6 @@ import { BillData, RoomData, BillStatus } from "../../../Ex-data/data.js"
   justify-content: space-around;
 }
 
-.td {
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-}
 
 .tbody>:nth-child(even) {
   background-color: rgb(233, 232, 232);
@@ -217,7 +197,12 @@ import { BillData, RoomData, BillStatus } from "../../../Ex-data/data.js"
     padding: 0 2rem;
   }
 
+  .table {
+    width: 90%;
+  }
+
   .th {
     font-size: 1.5rem;
   }
-}</style>
+}
+</style>
