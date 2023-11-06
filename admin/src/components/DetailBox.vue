@@ -16,7 +16,6 @@ const onEditBTNClick = () => {
 };
 const submit = (event) => {
   event.preventDefault();
-  console.log(event.target.expensesUnit[0].id);
   isEdit.state = false;
 }
 </script>

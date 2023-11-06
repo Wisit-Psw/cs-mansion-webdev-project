@@ -151,7 +151,7 @@ onMounted(async () => {
       </div>
       <div class="tbody">
         <div class="Trow" v-for="(item, index) in pagination.render" :key="index">
-          <BillUserDetailBox :item="item" />
+          <BillUserDetailBox :item="item" @queryBill="queryBill"/>
         </div>
       </div>
     </div>

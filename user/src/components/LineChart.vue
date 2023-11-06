@@ -1,7 +1,6 @@
 
   
 <script >
-import { reactive } from 'vue'
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -13,13 +12,29 @@ import {
   Legend
 } from 'chart.js';
 import { Line } from 'vue-chartjs'
+import { reactive } from 'vue'
+import axios from "axios";
+import useUserStore from '../module/userstore';
+const lineData = reactive({
+  data: [],
+  label: []
+})
+const queryData = async () => {
+  const chartData = await axios.get("http://localhost:3001/api/user/graph", { withCredentials:true});
+  chartData.data.forEach(element => {
+    lineData.data.push(element.Total)
+    lineData.label.push(element.BillDate.slice(0, 10))
+  });
+  // document.getElementById('chartContainer').innerHTML = "<Line :data='data' :options='options' />"
+}
+await queryData()
 const chartConfig = reactive({
   data: {
-    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+    labels: lineData.label,
     datasets: [
       {
         label: 'รายได้ต่อเดือน',
-        data: [40, 39, 10, 40, 39, 80, 40]
+        data: lineData.data
       },
     ]
   },
@@ -37,7 +52,7 @@ const chartConfig = reactive({
           display: false,
         },
       },
-      
+
     },
     elements: {
       line: {
@@ -52,7 +67,7 @@ const chartConfig = reactive({
       point: {
         radius: 3,
         backgroundColor: 'rgba(75, 192, 192, 0.8)',
-        borderWidth:0,
+        borderWidth: 0,
       },
     },
 
@@ -75,12 +90,19 @@ export default {
   },
   data() {
     return chartConfig
-  }
+  },
+  // async setup() {
+  //   userData = useUserStore()
+  //   await queryData();
+  //   chartConfig.data.datasets.data = lineData.data
+  //   chartConfig.data.datasets.labels = lineData.label
+  //   return {};
+  // },
 }
 </script>
   
 <template>
-  <div class="chart-wrap">
+  <div class="chart-wrap" id="chartContainer">
     <Line :data="data" :options="options" />
   </div>
 </template>

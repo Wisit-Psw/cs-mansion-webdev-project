@@ -2,15 +2,15 @@
 // import { MansionDetail } from '../../../Ex-data/data';
 import DetailBox from '../components/DetailBox.vue';
 import {  reactive,onMounted } from "vue";
+import axios from "axios";
 
 const data = reactive({
   Detail : []
 })
 
 const queryRoom = async () => {
-  const response = await fetch("http://localhost:3001" + "/api/admin/Detail", { method: "GET" });
-  data.Detail = await response.json();
-  console.log(data.Detail)
+  const response = await axios.get("http://localhost:3001/api/admin/Detail");
+  data.Detail = await response.data;
 }
 
 onMounted( async ()=>{

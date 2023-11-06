@@ -4,6 +4,7 @@ import axios from "axios"
 const isDetailShow = reactive({ state: false });
 const isModalShow = reactive({ state: false });
 const props = defineProps(["item"]);
+const emit = defineEmits(['queryBill'])
 const data = reactive({
     expenses: undefined,
     slip: ''
@@ -33,12 +34,12 @@ const submit = async () => {
     const response = await axios.post("http://localhost:3001/api/user/slip", { billId: props.item.BillID, slip: data.slip });
     data.expenses = await response.data;
     props.item.slip = data.slip
+    emit('queryBill')
     isDetailShow.state = false;
     isModalShow.state = false;
     if (inputRef.value && inputRef.value.click) {
         inputRef.value.click();
     }
-    
 }
 const onDetailCLick = () => {
     isModalShow.state = !isModalShow.state;
@@ -48,7 +49,7 @@ const queryExpenses = async () => {
     data.expenses = await response.data;
 }
 onMounted(async () => {
-    queryExpenses()
+    await queryExpenses()
 })
 </script>
 
@@ -61,7 +62,8 @@ onMounted(async () => {
             </div>
             <div class="modal-body">
                 <div class="context-container" style="display: flex;flex-wrap: wrap;">
-                    <img :src="props.item.slip?props.item.slip:'https://promptpay.io/0614077850.png/' + props.item.BillTotalPrice" alt="" style="width:18rem;padding: 1rem;" >
+                    <img :src="props.item.slip ? props.item.slip : 'https://promptpay.io/0614077850.png/' + props.item.BillTotalPrice"
+                        alt="" style="width:18rem;padding: 1rem;">
                     <div class="context-wrap">
                         <div class="modal-context"> วันที่ {{ props.item.BillDate.slice(0, 10) }}</div>
                         <div class="modal-context">ค่าห้องพัก : {{ props.item.BillTotalPrice }}</div>

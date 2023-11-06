@@ -1,16 +1,15 @@
 <script setup>
-// import { BillData, RoomData, BillStatus, RentingData, BillExpensesJoin } from "../../../Ex-data/data.js"
 import CreateBillBox from "../components/CreateBillBox.vue";
 import {  reactive,onMounted } from "vue";
+import axios from "axios";
 
 const data = reactive({
   Renting : []
 })
 
 const queryRoom = async () => {
-  const response = await fetch("http://localhost:3001/api/admin/renting/CreateBill", { method: "GET" });
-  data.Renting = await response.json();
-  console.log(data.Renting)
+  const response = await axios.get("http://localhost:3001/api/admin/renting/CreateBill");
+  data.Renting = await response.data;
 }
 
 onMounted( async ()=>{
@@ -33,7 +32,7 @@ onMounted( async ()=>{
       </div>
       <div class="tbody">
         <div class="Trow" v-for="(item, index) in data.Renting " :key="index">
-          <CreateBillBox :item="item" :index="index"/>
+          <CreateBillBox :item="item" :index="index" @queryRoom="queryRoom"/>
         </div>
       </div>
     </div>

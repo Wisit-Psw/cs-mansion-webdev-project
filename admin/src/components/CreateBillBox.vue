@@ -4,8 +4,7 @@ import { reactive } from "vue";
 import AddIcon from "../icon/AddIcon.vue";
 import axios from "axios";
 const props = defineProps(["item", "index"]);
-const isEdit = reactive({ state: false });
-const isAdd = reactive({ state: false });
+const emit = defineEmits(['queryRoom'])
 const isDetailShow = reactive({ state: false });
 
 const onDetailBTNClick = () => {
@@ -57,31 +56,29 @@ const submit = async (event) => {
     BillDate: BillDate,
   }
   const response = await axios.post("http://localhost:3001/api/admin/billdata/insert", body);
-
-  if (response.data.status === 'success') {
-    console.log(event.target?.ExpenPrice.value)
-    console.log(event.target?.ExpenPrice?.length)
-    if (event.target?.ExpenPrice?.length) {
-      event.target.ExpenPrice?.forEach(async (e, index) => {
-        console.log(e)
-        const response2 = await axios.post("http://localhost:3001/api/admin/billdata/expend/insert", {
+  try {
+    if (response.data.status === 'success') {
+      if (event.target?.ExpenPrice?.length) {
+        event.target.ExpenPrice?.forEach(async (e, index) => {
+          await axios.post("http://localhost:3001/api/admin/billdata/expend/insert", {
+            BillID: response.data.insertId,
+            ExpenTitle: event.target.ExpenTitle[index].value,
+            ExpenPrice: event.target.ExpenPrice[index].value,
+          });
+        })
+      } else if (event.target?.ExpenPrice.value) {
+        await axios.post("http://localhost:3001/api/admin/billdata/expend/insert", {
           BillID: response.data.insertId,
-          ExpenTitle: event.target.ExpenTitle[index].value,
-          ExpenPrice: event.target.ExpenPrice[index].value,
+          ExpenTitle: event.target.ExpenTitle.value,
+          ExpenPrice: event.target.ExpenPrice.value,
         });
-        console.log(response2)
-
-      })
+      }
     }
-  } else if (event.target?.ExpenPrice.value) {
-      const response2 = await axios.post("http://localhost:3001/api/admin/billdata/expend/insert", {
-        BillID: response.data.insertId,
-        ExpenTitle: event.target.ExpenTitle.value,
-        ExpenPrice: event.target.ExpenPrice.value,
-      });
-      console.log(response2)
+  } catch (e) {
+    console.log(e)
   }
-      isDetailShow.state = false;
+  emit('queryRoom')
+  isDetailShow.state = false;
 }
 
 </script>

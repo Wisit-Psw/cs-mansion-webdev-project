@@ -4,6 +4,7 @@ import axios from "axios";
 const isDetailShow = reactive({ state: false });
 const isModalShow = reactive({ state: false });
 const props = defineProps(["item"]);
+const emit = defineEmits(['queryUser'])
 
 // const onDetailBTNClick = () => {
 //     isDetailShow.state = !isDetailShow.state;
@@ -14,11 +15,12 @@ const submit = async () => {
         RentingEnd: D.getFullYear() + "-" + (D.getMonth() + 1) + "-" + D.getDate(),
         RentingID: props.item.RentingID
     }
-    console.log(body)
     const response = await axios.post("http://localhost:3001/api/admin/renting/out", body);
+    console.log(response)
     if (response.data.status === 'success') {
         isDetailShow.state = false;
-        isModalShow.state = !isModalShow.state;
+        isModalShow.state = false;
+        emit('queryUser')
     }
 }
 const onLeaveCLick = () => {

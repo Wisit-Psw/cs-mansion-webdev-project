@@ -60,7 +60,7 @@ onMounted(async () => {
       </div>
       <div class="tbody">
         <div v-for="(item, index) in data.Renting" :key="index" class="dataTable tr">
-          <RentedHistoreBox :item="item" />
+          <RentedHistoreBox :item="item" @queryUser="queryUser"/>
         </div>
       </div>
     </div>

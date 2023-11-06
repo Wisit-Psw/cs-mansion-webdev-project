@@ -15,9 +15,7 @@ const submit = async (event) => {
         UserPhone: event.target.UserPhone.value,
         UserAddress: event.target.UserAddress.value
     }
-    console.log(body)
     const response = await axios.post("http://localhost:3001/api/admin/user/update", body);
-    console.log(response)
 
     if (response.data.status === 'success') {
         props.item.UserName = body.UserName

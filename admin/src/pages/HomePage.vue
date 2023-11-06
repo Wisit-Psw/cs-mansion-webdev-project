@@ -10,7 +10,7 @@ import DoughnutChart from '../components/DoughnutChart.vue';
     <header class="header">
       รายละเอียด:
     </header>
-    <div class="lineChart">
+    <div class="lineChart" >
       <LineChart />
     </div>
     <div class="doughnutChart">

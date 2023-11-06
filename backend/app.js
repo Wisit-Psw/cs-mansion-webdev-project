@@ -137,20 +137,20 @@ app.get("/api/admin/RoomID", async (req, res) => {
 
 app.post('/api/admin/billdata', async (req, res) => {
   const receivedData = req.body;
-  let dataSql = 
-  "SELECT bill.slip, bill.BillID, bill.RentingID, bill.BillWaterPrice, bill.BillElectricPrice,"+
-  " bill.BillTotalPrice, bill.BillStatusID,room.RoomPrice, billstatus.BillStatusName, bill.BillDate,"+
-  " renting.RoomID"+
-  " FROM bill"+
-  " INNER JOIN renting ON bill.RentingID = renting.RentingID"+
-  " INNER JOIN billstatus ON billstatus.BillStatusID = bill.BillStatusID"+
-  " INNER JOIN room ON room.RoomID = renting.RoomID"+
-  " INNER JOIN user ON renting.UserID = user.UserID"
-  let countSql = 
-    "SELECT COUNT(*) as count FROM bill"+
-    " INNER JOIN renting ON bill.RentingID = renting.RentingID"+
-    " INNER JOIN billstatus ON billstatus.BillStatusID = bill.BillStatusID"+
-    " INNER JOIN room ON room.RoomID = renting.RoomID"+
+  let dataSql =
+    "SELECT bill.slip, bill.BillID, bill.RentingID, bill.BillWaterPrice, bill.BillElectricPrice," +
+    " bill.BillTotalPrice, bill.BillStatusID,room.RoomPrice, billstatus.BillStatusName, bill.BillDate," +
+    " renting.RoomID" +
+    " FROM bill" +
+    " INNER JOIN renting ON bill.RentingID = renting.RentingID" +
+    " INNER JOIN billstatus ON billstatus.BillStatusID = bill.BillStatusID" +
+    " INNER JOIN room ON room.RoomID = renting.RoomID" +
+    " INNER JOIN user ON renting.UserID = user.UserID"
+  let countSql =
+    "SELECT COUNT(*) as count FROM bill" +
+    " INNER JOIN renting ON bill.RentingID = renting.RentingID" +
+    " INNER JOIN billstatus ON billstatus.BillStatusID = bill.BillStatusID" +
+    " INNER JOIN room ON room.RoomID = renting.RoomID" +
     " INNER JOIN user ON renting.UserID = user.UserID"
   if (receivedData.statusId !== 'All' || receivedData.roomId !== 'All') {
     dataSql += ' WHERE';
@@ -435,7 +435,7 @@ app.post("/api/admin/renting/out", async (req, res) => {
         console.error("Error fetching renting data:", err);
         res.status(500).send("Internal Server Error");
       } else {
-        res.send(result);
+        res.send({ response: result, status: "success" });
       }
     }
   );
@@ -446,7 +446,7 @@ app.get("/api/admin/renting/CreateBill", async (req, res) => {
     `SELECT * FROM renting
     INNER JOIN room ON room.RoomID = renting.RoomID
     INNER JOIN user ON user.UserID = renting.UserID
-    WHERE (SELECT COUNT(*) FROM bill WHERE BillDate LIKE "2023-11-%" AND bill.RentingID=renting.RentingID) = 0 AND RentingEnd IS NULL
+    WHERE (SELECT COUNT(*) FROM bill WHERE BillDate LIKE "${D.getFullYear()}-${(D.getMonth() + 1)}-%" AND bill.RentingID=renting.RentingID) = 0 AND RentingEnd IS NULL
     ORDER BY renting.RoomID;;`,
     (err, result) => {
       if (err) {
@@ -775,12 +775,11 @@ app.post("/api/user/info", async (req, res) => {
   );
 });
 
-app.post("/api/user/graph", (req, res) => {
-  const receivedData = req.body;
+app.get("/api/user/graph", (req, res) => {
   con.query(
     `SELECT SUM(BillTotalPrice) AS Total, BillDate
     FROM bill
-    WHERE RentingID = ${receivedData.RentingID}
+    WHERE RentingID = ${req.session.user.RentingID}
     GROUP BY BillDate
     ORDER BY BillDate DESC
     LIMIT 6;`,

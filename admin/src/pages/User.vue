@@ -26,24 +26,6 @@ onMounted(async () => {
     <header class="header">
       ผู้เช่า:
     </header>
-    <!-- <div class="filterBar">
-      <div class="filter-wrap">
-        <label for="RoomID">เลขห้อง: </label>
-        <select name="RoomID" id="RoomIDFilter">
-          <option value="All">ทั้งหมด</option>
-          <option v-for="(item, index) in RoomData" :key="index" :value="item.RoomID">{{ item.RoomID }}</option>
-        </select>
-      </div>
-      <div class="filter-wrap">
-        <label for="status">สถานะ: </label>
-        <select name="status" id="RoomIDFilter">
-          <option value="All">ทั้งหมด</option>
-          <option v-for="(item, index) in BillStatus" :key="index" :value="item.BillStatusID">{{ item.BillStatusName }}
-          </option>
-        </select>
-      </div>
-    </div> -->
-    <!-- {{ BillData }} -->
     <div class="table">
       <div class="thead">
         <div class="tr">
@@ -57,15 +39,6 @@ onMounted(async () => {
         <div class="Trow" v-for="(item, index) in data.RentingData" :key="index">
           <UserDetailBox :item="item" />
         </div>
-        <!-- <div v-for="(item, index) in RentingData" :key="index" class="dataTable tr">
-          <div class="td roomNumber">{{ item.UserName }}</div>
-          <div class="td date">{{ item.UserPhone }}</div>
-          <div class="td totalPrice">{{ item.UserAddress }}</div>
-          <div class="td status">{{ item.RoomID }}</div>
-          <div class="td detail">
-            <div class="detailBTN">รายละเอียด</div>
-          </div>
-        </div> -->
       </div>
     </div>
 

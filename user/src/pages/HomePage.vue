@@ -2,6 +2,7 @@
 import LineChart from '../components/LineChart.vue';
 import DoughnutChart from '../components/DoughnutChart.vue';
 
+
 </script>
 
 <template>
