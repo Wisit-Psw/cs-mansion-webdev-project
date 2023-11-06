@@ -747,7 +747,7 @@ app.post("/api/user/billdata/expenses", async (req, res) => {
 app.post("/api/user/slip", async (req, res) => {
   const receivedData = req.body;
   con.query(
-    "UPDATE `bill` SET `slip`='"+receivedData.slip+"' WHERE `BillID` = " + receivedData.billId,
+    "UPDATE `bill` SET `slip`='"+receivedData.slip+"',`BillStatusID`='3' WHERE `BillID` = " + receivedData.billId,
     (err, result) => {
       if (err) {
         console.error("Error fetching expenses:", err);
