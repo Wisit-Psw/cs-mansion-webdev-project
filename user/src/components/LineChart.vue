@@ -1,6 +1,7 @@
 
   
-<script>
+<script >
+import { reactive } from 'vue'
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -11,32 +12,14 @@ import {
   Tooltip,
   Legend
 } from 'chart.js';
-import { reactive } from 'vue'
-// import { useUserStore } from "../module/userstore"
-// import axios from "axios";
-const lineData = reactive({
-  data: [],
-  label: []
-})
-// const userstore = useUserStore();
-
-// const queryData = async () => {
-//   const chartData = await axios.post("http://localhost:3001/api/user/graph", { RentingID: userstore.data.response.RentingID});
-//   chartData.data.forEach(element => {
-//     lineData.data.push(element.Total)
-//     lineData.label.push(element.BillDate.slice(0, 10))
-//   });
-// }
-// await queryData();
-// const props = defineProps(['lineData'])
 import { Line } from 'vue-chartjs'
 const chartConfig = reactive({
   data: {
-    labels: lineData.label,
+    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
     datasets: [
       {
         label: 'รายได้ต่อเดือน',
-        data: lineData.data
+        data: [40, 39, 10, 40, 39, 80, 40]
       },
     ]
   },
@@ -54,7 +37,7 @@ const chartConfig = reactive({
           display: false,
         },
       },
-
+      
     },
     elements: {
       line: {
@@ -69,7 +52,7 @@ const chartConfig = reactive({
       point: {
         radius: 3,
         backgroundColor: 'rgba(75, 192, 192, 0.8)',
-        borderWidth: 0,
+        borderWidth:0,
       },
     },
 
