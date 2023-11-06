@@ -19,7 +19,7 @@ con.connect((err) => {
 });
 
 const corsOptions = {
-  origin: ["http://localhost:3000","http://localhost:5173"],
+  origin: ["http://localhost:3000", "http://localhost:5173"],
   optionsSuccessStatus: 200,
   credentials: true,
 };
@@ -78,7 +78,7 @@ app.get("/api/admin/accessSession", async (req, res) => {
     if (req.session.user) {
       const body = {
         response: req.session.user,
-        isLogin:true,
+        isLogin: true,
         status: "success",
       };
       res.send(body);
@@ -137,23 +137,21 @@ app.get("/api/admin/RoomID", async (req, res) => {
 
 app.post('/api/admin/billdata', async (req, res) => {
   const receivedData = req.body;
-  let dataSql = `
-    SELECT bill.slip, bill.BillID, bill.RentingID, bill.BillWaterPrice, bill.BillElectricPrice,
-    bill.BillTotalPrice, bill.BillStatusID,room.RoomPrice, billstatus.BillStatusName, bill.BillDate,
-    renting.RoomID, renting.InternetPackID
-    FROM bill
-    INNER JOIN renting ON bill.RentingID = renting.RentingID
-    INNER JOIN billstatus ON billstatus.BillStatusID = bill.BillStatusID
-    INNER JOIN room ON room.RoomID = renting.RoomID
-    INNER JOIN user ON renting.UserID = user.UserID
-  `;
-  let countSql = `
-    SELECT COUNT(*) as count FROM bill
-    INNER JOIN renting ON bill.RentingID = renting.RentingID
-    INNER JOIN billstatus ON billstatus.BillStatusID = bill.BillStatusID
-    INNER JOIN room ON room.RoomID = renting.RoomID
-    INNER JOIN user ON renting.UserID = user.UserID
-    `;
+  let dataSql = 
+  "SELECT bill.slip, bill.BillID, bill.RentingID, bill.BillWaterPrice, bill.BillElectricPrice,"+
+  " bill.BillTotalPrice, bill.BillStatusID,room.RoomPrice, billstatus.BillStatusName, bill.BillDate,"+
+  " renting.RoomID"+
+  " FROM bill"+
+  " INNER JOIN renting ON bill.RentingID = renting.RentingID"+
+  " INNER JOIN billstatus ON billstatus.BillStatusID = bill.BillStatusID"+
+  " INNER JOIN room ON room.RoomID = renting.RoomID"+
+  " INNER JOIN user ON renting.UserID = user.UserID"
+  let countSql = 
+    "SELECT COUNT(*) as count FROM bill"+
+    " INNER JOIN renting ON bill.RentingID = renting.RentingID"+
+    " INNER JOIN billstatus ON billstatus.BillStatusID = bill.BillStatusID"+
+    " INNER JOIN room ON room.RoomID = renting.RoomID"+
+    " INNER JOIN user ON renting.UserID = user.UserID"
   if (receivedData.statusId !== 'All' || receivedData.roomId !== 'All') {
     dataSql += ' WHERE';
     countSql += ' WHERE';
@@ -224,7 +222,7 @@ app.post("/api/admin/billdata/insert", async (req, res) => {
 app.post("/api/admin/billdata/expend/insert", async (req, res) => {
   const receivedData = req.body;
   con.query(
-    "INSERT INTO `expenses`( `BillID`, `ExpenTitle`, `ExpenPrice`) VALUES ('"+receivedData.BillID+"','"+receivedData.ExpenTitle+"','"+receivedData.ExpenPrice+"')",
+    "INSERT INTO `expenses`( `BillID`, `ExpenTitle`, `ExpenPrice`) VALUES ('" + receivedData.BillID + "','" + receivedData.ExpenTitle + "','" + receivedData.ExpenPrice + "')",
     (err, result) => {
       if (err) {
         console.error("Error fetching expenses:", err);
@@ -431,7 +429,7 @@ app.post("/api/admin/renting/out", async (req, res) => {
   const receivedData = req.body;
 
   con.query(
-    "UPDATE `renting` SET `RentingEnd`='"+receivedData.RentingEnd+"' WHERE `RentingID` = '"+receivedData.RentingID+"'",
+    "UPDATE `renting` SET `RentingEnd`='" + receivedData.RentingEnd + "' WHERE `RentingID` = '" + receivedData.RentingID + "'",
     (err, result) => {
       if (err) {
         console.error("Error fetching renting data:", err);
@@ -475,9 +473,9 @@ app.get("/api/admin/Detail", async (req, res) => {
   );
 });
 
-app.get("/api/admin/graph",(req, res)=>{
+app.get("/api/admin/graph", (req, res) => {
   con.query(
-    "SELECT SUM(`BillTotalPrice`)AS Total,`BillDate`  FROM bill GROUP BY `BillDate` ORDER BY `BillDate` DESC LIMIT 6;",
+    "SELECT SUM(`BillTotalPrice`)AS Total,`BillDate`  FROM bill GROUP BY `BillDate` ORDER BY `BillDate` DESC LIMIT 6",
     (err, result) => {
       if (err) {
         console.error("Error fetching mansion details:", err);
@@ -593,8 +591,8 @@ app.post("/api/user/authentication", async (req, res) => {
         });
       } else {
         if (result.length > 0) {
-          req.session.user = { Username: result[0].RoomID,RentingID:result[0].RentingID ,isLogin:true};
-          res.json({ response: { Username: result[0].RoomID ,RentingID:result[0].RentingID,isLogin:true}, status: "success" });
+          req.session.user = { Username: result[0].RoomID, RentingID: result[0].RentingID, isLogin: true };
+          res.json({ response: { Username: result[0].RoomID, RentingID: result[0].RentingID, isLogin: true }, status: "success" });
         } else {
           res.status(401).json({
             response: "Authentication failed",
@@ -618,7 +616,7 @@ app.get("/api/user/accessSession", async (req, res) => {
     if (req.session.user) {
       const body = {
         response: req.session.user,
-        isLogin:true,
+        isLogin: true,
         status: "success",
       };
       res.send(body);
@@ -676,23 +674,21 @@ app.get("/api/user/RoomID", async (req, res) => {
 
 app.post('/api/user/billdata', async (req, res) => {
   const receivedData = req.body;
-  let dataSql = `
-    SELECT bill.slip, bill.BillID, bill.RentingID, bill.BillWaterPrice, bill.BillElectricPrice,
-    bill.BillTotalPrice, bill.BillStatusID,room.RoomPrice, billstatus.BillStatusName, bill.BillDate,
-    renting.RoomID, renting.InternetPackID
-    FROM bill
-    INNER JOIN renting ON bill.RentingID = renting.RentingID
-    INNER JOIN billstatus ON billstatus.BillStatusID = bill.BillStatusID
-    INNER JOIN room ON room.RoomID = renting.RoomID
-    INNER JOIN user ON renting.UserID = user.UserID
-  `;
-  let countSql = `
-    SELECT COUNT(*) as count FROM bill
-    INNER JOIN renting ON bill.RentingID = renting.RentingID
-    INNER JOIN billstatus ON billstatus.BillStatusID = bill.BillStatusID
-    INNER JOIN room ON room.RoomID = renting.RoomID
-    INNER JOIN user ON renting.UserID = user.UserID
-    `;
+  let dataSql =
+    "SELECT bill.slip, bill.BillID, bill.RentingID, bill.BillWaterPrice, bill.BillElectricPrice," +
+    " bill.BillTotalPrice, bill.BillStatusID,room.RoomPrice, billstatus.BillStatusName, bill.BillDate," +
+    " renting.RoomID" +
+    " FROM bill" +
+    " INNER JOIN renting ON bill.RentingID = renting.RentingID" +
+    " INNER JOIN billstatus ON billstatus.BillStatusID = bill.BillStatusID" +
+    " INNER JOIN room ON room.RoomID = renting.RoomID" +
+    " INNER JOIN user ON renting.UserID = user.UserID"
+  let countSql =
+    "SELECT COUNT(*) as count FROM bill" +
+    " INNER JOIN renting ON bill.RentingID = renting.RentingID" +
+    " INNER JOIN billstatus ON billstatus.BillStatusID = bill.BillStatusID" +
+    " INNER JOIN room ON room.RoomID = renting.RoomID" +
+    " INNER JOIN user ON renting.UserID = user.UserID"
   if (receivedData.statusId !== 'All' || receivedData.roomId !== 'All') {
     dataSql += ' WHERE';
     countSql += ' WHERE';
@@ -747,7 +743,7 @@ app.post("/api/user/billdata/expenses", async (req, res) => {
 app.post("/api/user/slip", async (req, res) => {
   const receivedData = req.body;
   con.query(
-    "UPDATE `bill` SET `slip`='"+receivedData.slip+"',`BillStatusID`='3' WHERE `BillID` = " + receivedData.billId,
+    "UPDATE `bill` SET `slip`='" + receivedData.slip + "',`BillStatusID`='3' WHERE `BillID` = " + receivedData.billId,
     (err, result) => {
       if (err) {
         console.error("Error fetching expenses:", err);
@@ -762,7 +758,7 @@ app.post("/api/user/slip", async (req, res) => {
 app.post("/api/user/info", async (req, res) => {
   const receivedData = req.body;
   con.query(
-   `SELECT * FROM renting 
+    `SELECT * FROM renting 
     INNER JOIN room ON room.RoomID = renting.RoomID
     INNER JOIN roomtype ON roomtype.RoomTypeID = room.RoomTypeID
     INNER JOIN user ON renting.UserID = user.UserID
@@ -779,7 +775,7 @@ app.post("/api/user/info", async (req, res) => {
   );
 });
 
-app.post("/api/user/graph",(req, res)=>{
+app.post("/api/user/graph", (req, res) => {
   const receivedData = req.body;
   con.query(
     `SELECT SUM(BillTotalPrice) AS Total, BillDate

@@ -5,7 +5,7 @@ const isEdit = reactive({ state: false });
 const isDetailShow = reactive({ state: false });
 const isModalShow = reactive({ state: false });
 const props = defineProps(["item"]);
-const emit = defineEmits(["queryRoom"])
+const emit = defineEmits(["queryBill"]);
 const data = reactive({
   Expenses: null
 })
@@ -17,13 +17,7 @@ const onDetailBTNClick = () => {
   isEdit.state = false;
 };
 
-const submit = (event) => {
-  event.preventDefault();
-  alert("ยืนยัน");
-}
-
 const queryExpenses = async () => {
-
   const response = await axios.post("http://localhost:3001/api/admin/billdata/expenses", { billId: props.item.BillID });
   data.Expenses = await response.data;
 }
@@ -40,14 +34,12 @@ const updateStatus = async (statusId) => {
   }
   isModalShow.state = true;
 }
-const closeModal = () => {
-  emit('queryRoom');
+const closeModal = async () => {
   isModalShow.state = false;
   isDetailShow.state = false;
   isEdit.state = false;
+  await emit('queryBill');
 }
-
-
 
 onMounted(async () => {
   if (!data.Expenses) {
@@ -55,6 +47,7 @@ onMounted(async () => {
   }
 })
 </script>
+
 
 <template>
   <div class="modal" v-if="isModalShow.state">
@@ -65,7 +58,7 @@ onMounted(async () => {
       </div>
       <div class="modal-footer">
         <div class="btn-wrap">
-          <div class="detailBTN" @click="closeModal()">เสร็จสิ้น</div>
+          <div class="detailBTN" @click="closeModal">เสร็จสิ้น</div>
         </div>
       </div>
     </div>
@@ -85,7 +78,7 @@ onMounted(async () => {
       <img :src="props.item.slip" jsaction="VQAsE" class="sFlh5c pT0Scc iPVvYb" style="height: 30rem;">
     </div>
     <div class="Table" style="width: 100%;">
-      <form @submit="submit">
+      <form>
         <div class="dataTable tr" style="width: 40%; justify-content:space-between; margin:0 auto;">
           <div class="td waterUnit">ค่าน้ำ</div>
           <div class="td waterUnit">{{ props.item.BillWaterPrice }}</div>

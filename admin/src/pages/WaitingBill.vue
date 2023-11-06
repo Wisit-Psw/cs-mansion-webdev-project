@@ -20,7 +20,7 @@ const pagination = reactive({
   render: [],
   entries: 50
 });
-const queryBill = async () => {
+const prequeryBill = async () => {
   if (!pagination.memory[queryState.statusId]) {
     pagination.memory[queryState.statusId] = {}
     pagination.memory[queryState.statusId][queryState.roomId] = {}
@@ -36,9 +36,12 @@ const queryBill = async () => {
       }
     }
   }
+  queryBill()
+}
+const queryBill = async () => {
   let response = await axios.post("http://localhost:3001/api/admin/billdata", { roomId: queryState.roomId, statusId: queryState.statusId, entries: pagination.entries, page: pagination.page });
   data.Bill = response.data.bill;
-  pagination.maxPage = Math.ceil(response.data.allRecord / pagination.entries)
+  pagination.maxPage = Math.ceil(response.data?.allRecord / pagination?.entries)
   pagination.memory[queryState.statusId][queryState.roomId][pagination.page] = data.Bill;
   pagination.memory[queryState.statusId][queryState.roomId]["maxPage"] = pagination.maxPage;
   pagination.render = data.Bill
@@ -48,13 +51,13 @@ const filterRoomId = (event) => {
   event.preventDefault();
   queryState.roomId = event.target.value;
   pagination.page=1;
-  queryBill();
+  prequeryBill();
 }
 const filterStatus = (event) => {
   event.preventDefault();
   queryState.statusId = event.target.value;
   pagination.page=1;
-  queryBill();
+  prequeryBill();
 }
 
 
@@ -72,7 +75,7 @@ const generatePageBar = () => {
 const onPageBarClick = (pnum) => {
   pagination.page = pnum;
   if (pagination.memory[queryState.statusId][queryState.roomId][pagination.page] === undefined || pagination.showAdmin) {
-    queryBill()
+    prequeryBill()
   } else {
     pagination.render = pagination.memory[queryState.statusId][queryState.roomId][pagination.page];
     generatePageBar();
@@ -81,7 +84,7 @@ const onPageBarClick = (pnum) => {
 const prevPage = () => {
   pagination.page--;
   if (pagination.memory[queryState.statusId][queryState.roomId][pagination.page] === undefined || pagination.showAdmin) {
-    queryBill()
+    prequeryBill()
   } else {
     pagination.render = pagination.memory[queryState.statusId][queryState.roomId][pagination.page];
     generatePageBar();
@@ -90,7 +93,7 @@ const prevPage = () => {
 const nextPage = () => {
   pagination.page++;
   if (pagination.memory[queryState.statusId][queryState.roomId][pagination.page] === undefined || pagination.showAdmin) {
-    queryBill()
+    prequeryBill()
   } else {
     pagination.render = pagination.memory[queryState.statusId][queryState.roomId][pagination.page];
     generatePageBar();
@@ -98,7 +101,7 @@ const nextPage = () => {
 }
 
 onMounted(async () => {
-  await queryBill()
+  await prequeryBill()
   generatePageBar();
 })
 </script>
@@ -160,7 +163,8 @@ onMounted(async () => {
       </div>
       <div class="tbody">
         <div class="Trow" v-for="(item, index) in pagination.render" :key="index">
-          <WaitingDetailBox :item="item" @queryBill="queryBill" />
+          <WaitingDetailBox :item="item" @queryBill="queryBill"/>
+          <!--  "  -->
         </div>
       </div>
     </div>

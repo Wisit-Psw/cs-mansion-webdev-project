@@ -1,14 +1,16 @@
 <script setup>
 import { reactive, onMounted } from "vue";
 import RentedHistoreBox from "../components/RentedHistoreBox.vue";
+import axios from "axios";
 // import { BillData, RoomData, BillStatus, BillExpensesJoin } from "../../../Ex-data/data.js";
+const emit = defineProps(['dropdownData'])
 const data = reactive({
   Renting: []
 })
 const isModalShow = reactive({ state: false });
 const queryUser = async () => {
-  const response = await fetch("http://localhost:3001" + "/api/admin/renting", { method: "GET" });
-  data.Renting = await response.json();
+  const response = await axios.get("http://localhost:3001/api/admin/renting");
+  data.Renting = await response.data;
 }
 const onDetailCLick = () => {
   isModalShow.state = !isModalShow.state;
