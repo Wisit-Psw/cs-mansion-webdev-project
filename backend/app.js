@@ -776,20 +776,24 @@ app.post("/api/user/info", async (req, res) => {
 });
 
 app.get("/api/user/graph", (req, res) => {
-  con.query(
-    `SELECT SUM(BillTotalPrice) AS Total, BillDate
-    FROM bill
-    WHERE RentingID = ${req.session.user.RentingID}
-    GROUP BY BillDate
-    ORDER BY BillDate DESC
-    LIMIT 6;`,
-    (err, result) => {
-      if (err) {
-        console.error("Error fetching mansion details:", err);
-        res.status(500).send("Internal Server Error");
-      } else {
-        res.send(result);
+  if(req.session.user.RentingID){
+    con.query(
+      `SELECT SUM(BillTotalPrice) AS Total, BillDate
+      FROM bill
+      WHERE RentingID = ${req.session.user.RentingID}
+      GROUP BY BillDate
+      ORDER BY BillDate DESC
+      LIMIT 6;`,
+      (err, result) => {
+        if (err) {
+          console.error("Error fetching mansion details:", err);
+          res.status(500).send("Internal Server Error");
+        } else {
+          res.send(result);
+        }
       }
-    }
-  );
+    );
+  }else{
+    res.send({Total:'',BillDate:''});
+  }
 })

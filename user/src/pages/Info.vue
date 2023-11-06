@@ -47,7 +47,7 @@ onMounted(async () => {
         </div><hr>
         <div class="tr">
           <div class="td head">เริ่มเช่าตั้งแต่วันที่</div>
-          <div class="td context">{{ data.RentingData?.RentingStart }}</div>
+          <div class="td context">{{ data.RentingData?.RentingStart.slice(0,10) }}</div>
         </div>
       </div>
     </div>

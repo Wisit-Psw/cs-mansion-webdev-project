@@ -191,7 +191,6 @@ const onDetailCLick = () => {
 }
 .navContainer {
     width: 100%;
-    height: 100vh;
     text-align: space-between;
     background-color: white;
 }

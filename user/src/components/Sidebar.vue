@@ -165,8 +165,7 @@ const onDetailCLick = () => {
     z-index: 99;
 }
 .navContainer {
-    width: 100%;
-    height: 100vh;
+    width: 100;
     text-align: space-between;
     background-color: white;
 }

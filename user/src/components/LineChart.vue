@@ -20,12 +20,15 @@ const lineData = reactive({
   label: []
 })
 const queryData = async () => {
-  const chartData = await axios.get("http://localhost:3001/api/user/graph", { withCredentials:true});
-  chartData.data.forEach(element => {
-    lineData.data.push(element.Total)
-    lineData.label.push(element.BillDate.slice(0, 10))
-  });
-  // document.getElementById('chartContainer').innerHTML = "<Line :data='data' :options='options' />"
+  try {
+    const chartData = await axios.get("http://localhost:3001/api/user/graph", { withCredentials: true });
+    chartData.data.forEach(element => {
+      lineData.data.push(element.Total)
+      lineData.label.push(element.BillDate.slice(0, 10))
+    });
+  } catch (e) {
+    console.log(e)
+  }
 }
 await queryData()
 const chartConfig = reactive({
