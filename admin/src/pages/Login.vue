@@ -10,11 +10,6 @@ const data = reactive({
   username: '',
   password: ''
 });
-const queryRoom = async () => {
-  const response = await fetch("http://localhost:3001" + "/api/Exdata/renting/CreateBill", { method: "POOST" });
-  data.Renting = await response.json();
-  console.log(data.Renting)
-}
 const reqLogin = async (event) => {
   event.preventDefault();
   try {
@@ -22,12 +17,10 @@ const reqLogin = async (event) => {
       username: data.username,
       password: data.password
     }
-    const result = await axios.post("http://localhost:3001" + "/api/admin/authentication", body,{withCredentials:true});
+    const result = await axios.post("http://localhost:3001/api/admin/authentication", body,{withCredentials:true});
     if (result && result.data.status === "success") {
       route.push("/")
     }
-    const result2 = await axios.get("http://localhost:3001"+"/api/admin/removesessions",{withCredentials:true});
-        console.log(result2)
   } catch (error) {
     console.log(error)
   }
@@ -35,6 +28,7 @@ const reqLogin = async (event) => {
 </script>
 
 <template>
+  <div class="backdrop"></div>
   <section class="center">
     <div class="login">login</div>
     <form method="post" @submit="reqLogin">
@@ -58,6 +52,14 @@ const reqLogin = async (event) => {
 </template>
 
 <style scoped>
+.backdrop{
+  width: 100dvw;
+  height: 100dvh;
+  background-color: whitesmoke;
+  position: fixed;
+  top: 0;
+  right:0;
+}
 * {
   margin: 0;
   padding: 0;

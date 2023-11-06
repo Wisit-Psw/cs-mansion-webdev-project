@@ -8,7 +8,7 @@ const data = reactive({
 })
 
 const queryRoom = async () => {
-  const response = await fetch("http://localhost:3001" + "/api/Exdata/Detail", { method: "GET" });
+  const response = await fetch("http://localhost:3001" + "/api/admin/Detail", { method: "GET" });
   data.Detail = await response.json();
   console.log(data.Detail)
 }

@@ -1,6 +1,8 @@
 <script setup>
+// import { reactive, onMounted } from "vue";
 import LineChart from '../components/LineChart.vue';
 import DoughnutChart from '../components/DoughnutChart.vue';
+
 </script>
 
 <template>
@@ -30,7 +32,7 @@ import DoughnutChart from '../components/DoughnutChart.vue';
   width: 100%;
   height: 100%;
   display: block;
- 
+
 }
 
 .header {
@@ -94,7 +96,9 @@ import DoughnutChart from '../components/DoughnutChart.vue';
     display: flex;
     margin: 2.5rem auto;
   }
+
   .lineChart {
     margin: 2rem auto;
   }
-}</style>
+}
+</style>

@@ -1,8 +1,10 @@
 <script setup>
 import { reactive } from 'vue';
-
+import axios from "axios";
+import { useRouter } from 'vue-router';
+const route = useRouter();
 const menuReactive = reactive({ isShow: false });
-
+const isModalShow = reactive({ state: false });
 const onMenuIconClick = () => {
     if (window.innerWidth >= 826){console.log(window.innerWidth); return}
     if (menuReactive.isShow) {
@@ -17,9 +19,36 @@ const onMenuIconClick = () => {
         document.getElementById("icon").style.transform = "rotate(90deg)";
     }
 }
+const submit = async () =>{
+    const response = await axios.get("http://localhost:3001/api/admin/removesessions",{withCredentials:true});
+    if(response.data.status==='success'){
+        isModalShow.state = !isModalShow.state;
+        route.push("/login")
+    }
+}
+const onDetailCLick = () => {
+  isModalShow.state = !isModalShow.state;
+}
 </script>
 
 <template>
+    <div class="modal" v-if="isModalShow.state">
+        <div class="backdrop" @click="onDetailCLick()"></div>
+        <div class="madal">
+            <div class="modal-header">
+                ออกจากระบบ
+            </div>
+            <div class="modal-body">
+                คุณต้องการออกจากระบบใช่หรือไม่
+            </div>
+            <div class="modal-footer">
+                <div class="btn-wrap">
+                    <button class="btn btn-red" @click="onDetailCLick()">ยกเลิก</button>
+                    <button class="btn btn-blue" @click="submit()">ยืนยัน</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <nav class="navContainer">
         <div class="logo">
             <p class="text">cs mansion</p>
@@ -29,59 +58,137 @@ const onMenuIconClick = () => {
                 <div></div>
             </div>
         </div>
-        <div class="menu-list" id="Menu">
-            <router-link to="/" :onclick="onMenuIconClick">
+        <div class="menu-list" id="Menu" >
+            <router-link to="/" @click="onMenuIconClick">
                 <div class="menu-wrap">
                     หน้าแรก
                 </div>
             </router-link>
-            <router-link to="/waitingbill" :onclick="onMenuIconClick">
+            <router-link to="/waitingbill" @click="onMenuIconClick">
                 <div class="menu-wrap">
                     รายการรอยืนยัน
                 </div>
             </router-link>
-            <router-link to="/bill" :onclick="onMenuIconClick">
+            <router-link to="/bill" @click="onMenuIconClick">
                 <div class="menu-wrap">
                     บิลค่าเช่า
                 </div>
             </router-link>
-            <router-link to="/room" :onclick="onMenuIconClick">
+            <router-link to="/room" @click="onMenuIconClick">
                 <div class="menu-wrap">
                     ห้องพัก
                 </div>
             </router-link>
-            <router-link to="/user" :onclick="onMenuIconClick">
+            <router-link to="/user" @click="onMenuIconClick">
                 <div class="menu-wrap">
                     ผู้เช่า
                 </div>
             </router-link>
-            <router-link to="/create-bill" :onclick="onMenuIconClick">
+            <router-link to="/create-bill" @click="onMenuIconClick">
                 <div class="menu-wrap">
                     สร้างบิล
                 </div>
             </router-link>
-            <router-link to="/rented-history" :onclick="onMenuIconClick">
+            <router-link to="/rented-history" @click="onMenuIconClick">
                 <div class="menu-wrap">
                     รายการเช่าห้องพัก
                 </div>
             </router-link>
-            <router-link to="/detail" :onclick="onMenuIconClick">
+            <!-- <router-link to="/detail" @click="onMenuIconClick">
                 <div class="menu-wrap">
                     รายละเอียดหอพัก
                 </div>
-            </router-link>
+            </router-link> -->
         </div>
-        <router-link to="/login" :onclick="onMenuIconClick">
+        <div  @click="onDetailCLick" >
             <div class="logoutContainer" id="logout">
                 <div class="logoutText-wrap">
                     ออกจากระบบ
                 </div>
             </div>
-        </router-link>
+        </div>
     </nav>
 </template>
 
 <style scoped>
+.btn {
+    background-color: #f1f1f1;
+    min-width: 5rem;
+    height: 1.75rem;
+    /* box-shadow: 0px 8px 16px 0px rgba(154, 153, 153, 0.404); */
+    border: none;
+    border-radius: 0.3rem;
+    white-space: nowrap;
+    padding: 0.1rem 0.3rem;
+    text-overflow: ellipsis;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background-color: #6d6d6d;
+}
+
+.btn-red {
+    background-color: #D83F31;
+    color: white;
+}
+
+.btn-blue {
+    background-color: #525FE1;
+    color: white;
+}
+.madal {
+    background-color: white;
+    padding: 1.5rem 2rem;
+    border-radius: 0.5rem;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 100;
+}
+
+.modal-header {
+    border-bottom: 1px solid rgb(211, 211, 211);
+    text-align: center;
+    padding: 0.5rem 0;
+}
+
+.modal-body {
+    min-width: 20rem;
+    text-align: center;
+    padding: 2rem 0;
+    align-items: center;
+    margin: 0 auto;
+}
+
+.modal-context {
+    align-items: center;
+    margin: 0 auto;
+    width: fit-content;
+    width: 60%;
+    padding: 1% 0;
+}
+
+.modal-footer {
+    padding: 0.5rem 0 1rem 0;
+}
+
+.btn-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.backdrop {
+    width: 100dvw;
+    height: 100dvh;
+    top: 0%;
+    left: 0%;
+    background-color: rgba(120, 120, 120, 0.3);
+    position: fixed;
+    z-index: 99;
+}
 .navContainer {
     width: 100%;
     height: 100vh;
@@ -156,7 +263,7 @@ const onMenuIconClick = () => {
     display: none;
     position: fixed;
     background-color: var(--bgColor);
-    top: 28.5rem;
+    top: 25.5rem;
     border-radius: 0.2rem;
 }
 

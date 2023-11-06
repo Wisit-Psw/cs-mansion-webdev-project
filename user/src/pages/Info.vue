@@ -1,7 +1,20 @@
 <script setup>
-import { RentingData } from "../../../Ex-data/data.js"
-
-
+import { reactive, onMounted } from "vue";
+import axios from "axios"
+import { useUserStore } from "../module/userstore"
+const userstore = useUserStore();
+const props = defineProps(["item"]);
+const emit = defineEmits(["dropdownData"]);
+const data = reactive({
+  RentingData: undefined,
+});
+const queryExpenses = async () => {
+    const response = await axios.post("http://localhost:3001/api/user/info", { RentingID: userstore.data.response.RentingID});
+    data.RentingData = await response.data[0];
+}
+onMounted(async () => {
+    queryExpenses()
+})
 </script>
 
 <template>
@@ -18,23 +31,23 @@ import { RentingData } from "../../../Ex-data/data.js"
       <div class="tbody">
         <div class="tr">
           <div class="td head">เลขห้อง</div>
-          <div class="td context">{{ RentingData[0].RoomID }}</div>
+          <div class="td context">{{ data.RentingData?.RoomID }}</div>
         </div><hr>
         <div class="tr">
           <div class="td head">ข้อมูลห้อง</div>
-          <div class="td context">{{ RentingData[0].RoomDetail }}</div>
+          <div class="td context">{{ data.RentingData?.RoomDetail }}</div>
         </div><hr>
         <div class="tr">
           <div class="td head">ประเภทห้อง</div>
-          <div class="td context">{{ RentingData[0].RoomTypeID }}</div>
+          <div class="td context">{{ data.RentingData?.RoomTypeID }}</div>
         </div><hr>
         <div class="tr">
           <div class="td head">ราคาห้อง</div>
-          <div class="td context">{{ RentingData[0].RoomPrice }}</div>
+          <div class="td context">{{ data.RentingData?.RoomPrice }}</div>
         </div><hr>
         <div class="tr">
           <div class="td head">เริ่มเช่าตั้งแต่วันที่</div>
-          <div class="td context">{{ RentingData[0].RentingStart }}</div>
+          <div class="td context">{{ data.RentingData?.RentingStart }}</div>
         </div>
       </div>
     </div>
@@ -48,15 +61,15 @@ import { RentingData } from "../../../Ex-data/data.js"
       <div class="tbody">
         <div class="tr">
           <div class="td head">ชื่อ</div>
-          <div class="td context">{{ RentingData[0].UserName }}</div>
+          <div class="td context">{{ data.RentingData?.UserName }}</div>
         </div><hr>
         <div class="tr">
           <div class="td head">เบอร์โทรศัพท์</div>
-          <div class="td context">{{ RentingData[0].UserPhone }}</div>
+          <div class="td context">{{ data.RentingData?.UserPhone }}</div>
         </div><hr>
         <div class="tr">
           <div class="td head">ที่อยู่</div>
-          <div class="td context">{{ RentingData[0].UserAddress }}</div>
+          <div class="td context">{{ data.RentingData?.UserAddress }}</div>
         </div>
       </div>
     </div>

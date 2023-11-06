@@ -1,48 +1,60 @@
 <script setup>
 import { reactive } from "vue";
+import axios from "axios"
 const props = defineProps(["item"]);
 const isEdit = reactive({ state: false });
 
 const onEditBTNClick = () => {
     isEdit.state = !isEdit.state;
 };
-const submit = (event) => {
+const submit = async (event) => {
     event.preventDefault();
-    // console.log(event.target.expensesUnit[0].id);
+    const body = {
+        UserID : props.item.UserID,
+        UserName: event.target.UserName.value,
+        UserPhone: event.target.UserPhone.value,
+        UserAddress: event.target.UserAddress.value
+    }
+    console.log(body)
+    const response = await axios.post("http://localhost:3001/api/admin/user/update", body);
+    console.log(response)
+
+    if (response.data.status === 'success') {
+        props.item.UserName = body.UserName
+        props.item.UserPhone = body.UserPhone
+        props.item.UserAddress = body.UserAddress
+    }
     isEdit.state = false;
 }
 </script>
 
 <template>
-    <div class="dataTable tr" v-if="!isEdit.state">
-        <div class="td roomNumber">{{ props.item.UserName }}</div>
-        <div class="td date">{{ props.item.UserPhone }}</div>
-        <div class="td totalPrice">{{ props.item.UserAddress }}</div>
-        <div class="td status">{{ props.item.RoomID }}</div>
-        <div class="td detail" @click="onEditBTNClick()">
-            <div class="detailBTN">แก้ไข</div>
+    <form @submit="submit">
+        <div class="dataTable tr" v-if="!isEdit.state">
+            <div class="td roomNumber">{{ props.item.UserName }}</div>
+            <div class="td date">{{ props.item.UserPhone }}</div>
+            <div class="td totalPrice">{{ props.item.UserAddress }}</div>
+            <div class="td detail" @click="onEditBTNClick()">
+                <div class="detailBTN">แก้ไข</div>
+            </div>
         </div>
-    </div>
+        <div class="dataTable tr" v-else>
+            <input class="td roomNumber" name="UserName" :value="props.item.UserName" />
+            <input class="td date" name="UserPhone" :value="props.item.UserPhone" />
+            <input class="td totalPrice" name="UserAddress" :value="props.item.UserAddress" />
 
-    <div class="dataTable tr" v-else >
-        <input class="td roomNumber" :value="props.item.UserName" />
-        <input class="td date" :value="props.item.UserPhone" />
-        <input class="td totalPrice" :value="props.item.UserAddress" />
-        <input class="td status" :value="props.item.RoomID" disabled />
-        
-    </div>
-    <div style="width:50%; text-align: center;margin: 1rem auto;" v-if="isEdit.state">
-        <form @submit="submit">
-            <div style="width: 100%;display: flex;justify-content: space-around;" >
-                <div class="td detail" @click="onEditBTNClick()">
+        </div>
+        <div style="width:50%; text-align: center;margin: 1rem auto;" v-if="isEdit.state">
+            <div style="width: 100%;display: flex;justify-content: space-around;">
+                <div class="td detail">
                     <input style="border: none; font-size: 1rem;" type="submit" class="detailBTN" value="ยืนยัน">
                 </div>
                 <div class="td detail" @click="onEditBTNClick()">
                     <div style="font-size: 1rem;" class="detailBTN">ยกเลิก</div>
                 </div>
             </div>
-        </form>
-    </div>
+        </div>
+    </form>
 </template>
 
 <style scoped>
@@ -58,11 +70,13 @@ const submit = (event) => {
     white-space: nowrap;
     text-overflow: ellipsis;
 }
+
 .tr {
     display: flex;
     padding: 0.2rem 0.5rem;
-    
+
 }
+
 .td {
     display: flex;
     align-items: center;
@@ -79,16 +93,18 @@ const submit = (event) => {
 .status {
     width: 20%;
 }
+
 .detail {
     width: 20%;
-   
-}
-.detail-button{
-    width: 6%;
-}
-.button-box{
-     display: flex ;
-     flex-direction: row-reverse;
+
 }
 
+.detail-button {
+    width: 6%;
+}
+
+.button-box {
+    display: flex;
+    flex-direction: row-reverse;
+}
 </style>

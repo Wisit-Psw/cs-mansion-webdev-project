@@ -6,15 +6,6 @@ const cors = require("cors");
 const app = express();
 const port = 3001;
 
-app.use(
-  session({
-    secret: "your-secret-key-here",
-    resave: false,
-    saveUninitialized: true,
-    cookie: { sameSite: true,secure: false ,maxAge: 60000}
-  })
-);
-
 var con = mysql.createConnection({
   host: "localhost",
   user: "root",
@@ -22,21 +13,26 @@ var con = mysql.createConnection({
   database: "cs-mansion",
 });
 
-
-// Establish the MySQL connection
 con.connect((err) => {
   if (err) throw err;
   console.log("Connected to MySQL database");
 });
 
 const corsOptions = {
-  origin: ["http://127.0.0.1:3000", "http://127.0.0.1:3001", "http://localhost:3000", "http://localhost:3001"],
+  origin: ["http://localhost:3000","http://localhost:5173"],
   optionsSuccessStatus: 200,
   credentials: true,
 };
 
 app.use(cors(corsOptions));
 app.use(bodyParser.json());
+app.use(
+  session({
+    secret: "your-secret-key-here",
+    resave: false,
+    saveUninitialized: true,
+  })
+);
 
 app.use((req, res, next) => {
   console.log(`${req.method} ${req.url} status ${res.statusCode} `);
@@ -47,9 +43,8 @@ app.use((req, res, next) => {
 app.post("/api/admin/authentication", async (req, res) => {
   const receivedData = req.body;
   try {
-    const query = "SELECT * FROM admin WHERE Email = ? AND Password = ?";
-    const values = [receivedData.username, receivedData.password];
-    con.query(query, values, (err, result) => {
+    const query = "SELECT * FROM admin WHERE Email = '" + receivedData.username + "' AND Password = '" + receivedData.password + "'";
+    con.query(query, (err, result) => {
       if (err) {
         console.error(err);
         res.status(500).send({
@@ -58,20 +53,20 @@ app.post("/api/admin/authentication", async (req, res) => {
         });
       } else {
         if (result.length > 0) {
-          req.session.user = result[0].Email;
+          req.session.user = { Username: result[0].Email };
           res.json({ response: result, status: "success" });
         } else {
-          res.json({
-            response: "fail to query",
+          res.status(401).json({
+            response: "Authentication failed",
             status: "Error",
           });
         }
-        console.log(req.session);
       }
     });
 
   } catch (e) {
-    res.send({
+    console.error(e);
+    res.status(500).send({
       response: "Internal Server Error",
       status: "Error",
     });
@@ -80,15 +75,15 @@ app.post("/api/admin/authentication", async (req, res) => {
 
 app.get("/api/admin/accessSession", async (req, res) => {
   try {
-    console.log(req.session);
     if (req.session.user) {
       const body = {
         response: req.session.user,
+        isLogin:true,
         status: "success",
       };
       res.send(body);
     } else {
-      res.send({
+      res.status(401).send({
         response: "Authentication failed",
         status: "Error",
       });
@@ -104,117 +99,409 @@ app.get("/api/admin/accessSession", async (req, res) => {
 
 
 app.get("/api/admin/removesessions", async (req, res) => {
-  console.log(req.session)
   if (req.session.user) {
     try {
       req.session.destroy();
-      res.send(
-        JSON.stringify({ response: "Remove session success", status: "success" })
-      );
-    } catch {
-      res.send(
-        JSON.stringify({ response: "Internal Server Error", status: "Error" })
-      );
+      res.send({ response: "Remove session success", status: "success" });
+    } catch (error) {
+      console.error("Error while destroying session:", error);
+      res.status(500).send({ response: "Internal Server Error", status: "Error" });
     }
   } else {
-    res.send(
-      JSON.stringify({ response: "Authentication failed", status: "Error" })
-    );
+    res.send({ response: "Authentication failed", status: "Error" });
   }
 });
-app.get("/api/Exdata/bill", async (req, res) => {
-  con.query("SELECT * FROM bill", (err, result) => {
-    if (err) throw err;
-    res.send(result);
+
+app.get("/api/admin/billstatus", async (req, res) => {
+  con.query("SELECT * FROM billstatus", (err, result) => {
+    if (err) {
+      console.error("Error fetching bill status data:", err);
+      res.status(500).send("Internal Server Error");
+    } else {
+      res.send(result);
+    }
   });
 });
-app.get("/api/Exdata/billdata", async (req, res) => {
-  con.query(
-    "SELECT bill.BillID,bill.RentingID,bill.BillWaterUnit,bill.BillElectricUnit,bill.BillTotalPrice,bill.BillStatusID,billstatus.BillStatusName,bill.BillDate,renting.RoomID,renting.InternetPackID FROM bill INNER JOIN renting ON bill.RentingID = renting.RentingID INNER JOIN billstatus ON billstatus.BillStatusID = bill.BillStatusID INNER JOIN user ON renting.UserID = user.UserID ORDER BY bill.BillDate DESC;",
-    (err, result) => {
-      if (err) throw err;
+
+app.get("/api/admin/RoomID", async (req, res) => {
+  con.query("SELECT `RoomID` FROM `room`", (err, result) => {
+    if (err) {
+      console.error("Error fetching RoomID data:", err);
+      res.status(500).send("Internal Server Error");
+    } else {
       res.send(result);
+    }
+  });
+});
+
+
+app.post('/api/admin/billdata', async (req, res) => {
+  const receivedData = req.body;
+  let dataSql = `
+    SELECT bill.slip, bill.BillID, bill.RentingID, bill.BillWaterPrice, bill.BillElectricPrice,
+    bill.BillTotalPrice, bill.BillStatusID,room.RoomPrice, billstatus.BillStatusName, bill.BillDate,
+    renting.RoomID, renting.InternetPackID
+    FROM bill
+    INNER JOIN renting ON bill.RentingID = renting.RentingID
+    INNER JOIN billstatus ON billstatus.BillStatusID = bill.BillStatusID
+    INNER JOIN room ON room.RoomID = renting.RoomID
+    INNER JOIN user ON renting.UserID = user.UserID
+  `;
+  let countSql = `
+    SELECT COUNT(*) as count FROM bill
+    INNER JOIN renting ON bill.RentingID = renting.RentingID
+    INNER JOIN billstatus ON billstatus.BillStatusID = bill.BillStatusID
+    INNER JOIN room ON room.RoomID = renting.RoomID
+    INNER JOIN user ON renting.UserID = user.UserID
+    `;
+  if (receivedData.statusId !== 'All' || receivedData.roomId !== 'All') {
+    dataSql += ' WHERE';
+    countSql += ' WHERE';
+  }
+  if (receivedData.statusId !== 'All') {
+    dataSql += ` bill.BillStatusID = '${receivedData.statusId}'`;
+    countSql += ` bill.BillStatusID = '${receivedData.statusId}'`;
+    if (receivedData.roomId !== 'All') {
+      dataSql += ' AND';
+      countSql += ' AND';
+    }
+  }
+  if (receivedData.roomId !== 'All') {
+    dataSql += ` renting.RoomID = '${receivedData.roomId}'`;
+    countSql += ` renting.RoomID = '${receivedData.roomId}'`;
+  }
+  dataSql += ' ORDER BY bill.BillDate DESC, renting.RoomID';
+  dataSql += ` LIMIT ${receivedData.entries * (receivedData.page - 1)}, ${receivedData.entries}`;
+  con.query(countSql, (countErr, countResult) => {
+    if (countErr) {
+      console.error('Error while counting records:', countErr);
+      res.status(500).send('Internal Server Error');
+    } else {
+      const totalRecord = countResult[0].count;
+      con.query(dataSql, (dataErr, dataResult) => {
+        if (dataErr) {
+          console.error('Error while fetching data:', dataErr);
+          res.status(500).send('Internal Server Error');
+        } else {
+          res.send({ bill: dataResult, allRecord: totalRecord });
+        }
+      });
+    }
+  });
+});
+
+app.post("/api/admin/billdata/expenses", async (req, res) => {
+  const receivedData = req.body;
+  con.query(
+    "SELECT * FROM expenses WHERE BillID = " + receivedData.billId,
+    (err, result) => {
+      if (err) {
+        console.error("Error fetching expenses:", err);
+        res.status(500).send("Internal Server Error");
+      } else {
+        res.send(result);
+      }
     }
   );
 });
 
-app.get("/api/Exdata/billdata/waiting", async (req, res) => {
+app.post("/api/admin/billdata/insert", async (req, res) => {
+  const receivedData = req.body;
   con.query(
-    "SELECT bill.BillID,bill.RentingID,bill.BillWaterUnit,bill.BillElectricUnit,bill.BillTotalPrice,bill.BillStatusID,billstatus.BillStatusName,bill.BillDate,renting.RoomID,renting.InternetPackID FROM bill INNER JOIN renting ON bill.RentingID = renting.RentingID INNER JOIN billstatus ON billstatus.BillStatusID = bill.BillStatusID INNER JOIN user ON renting.UserID = user.UserID WHERE bill.BillStatusID != 2",
+    "INSERT INTO `bill`(`RentingID`, `BillWaterPrice`, `BillElectricPrice`, `BillTotalPrice`, `BillDate`) VALUES ('" + receivedData.RentingID + "','" + receivedData.BillWaterPrice + "','" + receivedData.BillElectricPrice + "','" + receivedData.TotalPrice + "','" + receivedData.BillDate + "')",
     (err, result) => {
-      if (err) throw err;
-      res.send(result);
+      if (err) {
+        console.error("Error fetching expenses:", err);
+        res.status(500).send("Internal Server Error");
+      } else {
+        res.send({ status: 'success', insertId: result.insertId })
+      }
+    }
+  );
+}
+);
+
+app.post("/api/admin/billdata/expend/insert", async (req, res) => {
+  const receivedData = req.body;
+  con.query(
+    "INSERT INTO `expenses`( `BillID`, `ExpenTitle`, `ExpenPrice`) VALUES ('"+receivedData.BillID+"','"+receivedData.ExpenTitle+"','"+receivedData.ExpenPrice+"')",
+    (err, result) => {
+      if (err) {
+        console.error("Error fetching expenses:", err);
+        res.status(500).send("Internal Server Error");
+      } else {
+        res.send({ status: 'success', insertId: result.insertId })
+      }
+    }
+  );
+}
+);
+
+app.post("/api/admin/billdata/update", async (req, res) => {
+  const receivedData = req.body;
+  con.query(
+    "SELECT * FROM bill INNER JOIN renting ON bill.RentingID = renting.RentingID INNER JOIN room ON room.RoomID = renting.RoomID WHERE BillID = '" + receivedData.billId + "'",
+    (err, result) => {
+      if (err) {
+        console.error("Error fetching expenses:", err);
+        res.status(500).send("Internal Server Error");
+      } else {
+        let newTotalPrice = parseFloat(result[0].RoomPrice) + parseFloat(receivedData.BillWaterPrice) + parseFloat(receivedData.BillElectricPrice);
+        receivedData.ExpensesPrice.forEach((p, index) => {
+          newTotalPrice += parseFloat(p)
+          con.query(
+            "UPDATE `expenses` SET `ExpenTitle`='" + receivedData.ExpensesTitle[index] + "',`ExpenPrice`='" + receivedData.ExpensesPrice[index] + "' WHERE ExpenID = '" + receivedData.ExpensesID[index] + "'",
+            (err, result) => {
+              if (err) {
+                console.error("Error fetching expenses:", err);
+                res.status(500).send("Internal Server Error");
+              }
+            }
+          );
+        });
+        con.query(
+          "UPDATE `bill` SET `BillWaterPrice`='" + receivedData.BillWaterPrice + "',`BillElectricPrice`='" + receivedData.BillElectricPrice + "',`BillTotalPrice`='" + newTotalPrice + "' WHERE BillID = '" + receivedData.billId + "'",
+          (err, result) => {
+            if (err) {
+              console.error("Error fetching expenses:", err);
+              res.status(500).send("Internal Server Error");
+            } else {
+              res.send({ status: 'success', newTotalPrice: newTotalPrice });
+            }
+          }
+        );
+      }
+    }
+  );
+
+});
+
+app.post("/api/admin/billdata/updateStatus", async (req, res) => {
+  const receivedData = req.body;
+  const updateQuery = "UPDATE `bill` SET `BillStatusID`='" + receivedData.statusID + "' WHERE BillID = '" + receivedData.billID + "'";
+
+  con.query(updateQuery, (err, result) => {
+    if (err) {
+      console.error("Error updating bill status:", err);
+      res.status(500).send({ status: 'error' });
+    } else {
+      res.send({ status: 'success' });
+    }
+  });
+});
+
+app.post("/api/admin/billdata/delete", async (req, res) => {
+  const receivedData = req.body;
+  con.query(
+    "DELETE FROM bill WHERE BillID = " + receivedData.billId,
+    (err, result) => {
+      if (err) {
+        console.error("Error fetching expenses:", err);
+        res.status(500).send("Internal Server Error");
+      } else {
+        res.send({ status: 'success' });
+      }
     }
   );
 });
 
-app.get("/api/Exdata/billdata/expenses", async (req, res) => {
-  con.query(
-    "SELECT * FROM expenses WHERE BillID = " + req.query.billid,
-    (err, result) => {
-      if (err) throw err;
-      res.send(result);
-    }
-  );
-});
-
-app.get("/api/Exdata/user", async (req, res) => {
+app.get("/api/admin/user", async (req, res) => {
   con.query("SELECT * FROM user", (err, result) => {
-    if (err) throw err;
-    res.send(result);
+    if (err) {
+      console.error("Error fetching user data:", err);
+      res.status(500).send("Internal Server Error");
+    } else {
+      res.send(result);
+    }
   });
 });
 
-app.get("/api/Exdata/room", async (req, res) => {
-  con.query("SELECT * FROM room INNER JOIN roomstatus ON room.RoomStatusID = roomstatus.RoomStatusID INNER JOIN roomtype ON room.RoomTypeID = roomtype.RoomTypeID", (err, result) => {
-    if (err) throw err;
-    res.send(result);
+
+app.post("/api/admin/user/update", async (req, res) => {
+  const receivedData = req.body;
+  const updateQuery = "UPDATE `user` SET `UserName`='" + receivedData.UserName + "',`UserPhone`='" + receivedData.UserPhone + "',`UserAddress`='" + receivedData.UserAddress + "' WHERE UserID = '" + receivedData.UserID + "'";
+  con.query(updateQuery, (err, result) => {
+    if (err) {
+      console.error("Error updating bill status:", err);
+      res.status(500).send({ status: 'error' });
+    } else {
+      res.send({ status: 'success' });
+    }
   });
 });
 
-app.get("/api/Exdata/renting", async (req, res) => {
+app.post("/api/admin/room", async (req, res) => {
+  const receivedData = req.body;
+  let dataSql = `SELECT * FROM room INNER JOIN roomstatus ON room.RoomStatusID = roomstatus.RoomStatusID INNER JOIN roomtype ON room.RoomTypeID = roomtype.RoomTypeID`;
+  let countSql = `SELECT COUNT(*) as count FROM room INNER JOIN roomstatus ON room.RoomStatusID = roomstatus.RoomStatusID INNER JOIN roomtype ON room.RoomTypeID = roomtype.RoomTypeID`;
+  if (receivedData.statusId !== 'All' || receivedData.roomId !== 'All') {
+    dataSql += ' WHERE';
+    countSql += ' WHERE';
+  }
+  if (receivedData.statusId !== 'All') {
+    dataSql += ` room.RoomStatusID = '${receivedData.statusId}'`;
+    countSql += ` room.RoomStatusID = '${receivedData.statusId}'`;
+    if (receivedData.roomId !== 'All') {
+      dataSql += ' AND';
+      countSql += ' AND';
+    }
+  }
+  if (receivedData.roomId !== 'All') {
+    dataSql += ` room.RoomID = '${receivedData.roomId}'`;
+    countSql += ` room.RoomID = '${receivedData.roomId}'`;
+  }
+  dataSql += ' ORDER BY RoomID ';
+  dataSql += ` LIMIT ${receivedData.entries * (receivedData.page - 1)}, ${receivedData.entries}`;
+  con.query(countSql, (countErr, countResult) => {
+    if (countErr) {
+      console.error('Error while counting records:', countErr);
+      res.status(500).send('Internal Server Error');
+    } else {
+      const totalRecord = countResult[0].count;
+      con.query(dataSql, (dataErr, dataResult) => {
+        if (dataErr) {
+          console.error('Error while fetching data:', dataErr);
+          res.status(500).send('Internal Server Error');
+        } else {
+          res.send({ bill: dataResult, allRecord: totalRecord });
+        }
+      });
+    }
+  });
+});
+app.post("/api/admin/room/update", async (req, res) => {
+  const receivedData = req.body;
+  const updateQuery = "UPDATE `room` SET `RoomPrice`='" + receivedData.RoomPrice + "',`RoomDetail`='" + receivedData.RoomDetail + "',`RoomTypeID`='" + receivedData.RoomTypeID + "' WHERE RoomID = '" + receivedData.RoomID + "'";
+  con.query(updateQuery, (err, result) => {
+    if (err) {
+      console.error("Error updating bill status:", err);
+      res.status(500).send({ status: 'error' });
+    } else {
+      res.send({ status: 'success' });
+    }
+  });
+});
+app.post("/api/admin/room/updateStatus", async (req, res) => {
+  const receivedData = req.body;
+  const updateQuery = "UPDATE `room` SET `BillStatusID`='" + receivedData.statusID + "' WHERE BillID = '" + receivedData.billID + "'";
+
+  con.query(updateQuery, (err, result) => {
+    if (err) {
+      console.error("Error updating bill status:", err);
+      res.status(500).send({ status: 'error' });
+    } else {
+      res.send({ status: 'success' });
+    }
+  });
+});
+app.get("/api/admin/roomtype", async (req, res) => {
+  con.query("SELECT * FROM roomtype ", (err, result) => {
+    if (err) {
+      console.error("Error fetching room data:", err);
+      res.status(500).send("Internal Server Error");
+    } else {
+      res.send(result);
+    }
+  });
+});
+app.get("/api/admin/roomstatus", async (req, res) => {
+  con.query("SELECT * FROM roomstatus ", (err, result) => {
+    if (err) {
+      console.error("Error fetching room data:", err);
+      res.status(500).send("Internal Server Error");
+    } else {
+      res.send(result);
+    }
+  });
+});
+app.get("/api/admin/renting", async (req, res) => {
   con.query(
     "SELECT * FROM renting INNER JOIN room ON room.RoomID = renting.RoomID INNER JOIN user ON user.UserID = renting.UserID ",
-    // "SELECT * FROM renting INNER JOIN room ON room.RoomID = renting.RoomID INNER JOIN user ON user.UserID = renting.UserID WHERE renting.RentingEnd IS NULL",
     (err, result) => {
-      if (err) throw err;
-      res.send(result);
+      if (err) {
+        console.error("Error fetching renting data:", err);
+        res.status(500).send("Internal Server Error");
+      } else {
+        res.send(result);
+      }
     }
   );
 });
+app.post("/api/admin/renting/out", async (req, res) => {
+  const receivedData = req.body;
 
-app.get("/api/Exdata/renting/CreateBill", async (req, res) => {
   con.query(
-    "SELECT * FROM renting INNER JOIN room ON room.RoomID = renting.RoomID INNER JOIN user ON user.UserID = renting.UserID ORDER BY renting.RoomID;",
+    "UPDATE `renting` SET `RentingEnd`='"+receivedData.RentingEnd+"' WHERE `RentingID` = '"+receivedData.RentingID+"'",
     (err, result) => {
-      if (err) throw err;
-      res.send(result);
+      if (err) {
+        console.error("Error fetching renting data:", err);
+        res.status(500).send("Internal Server Error");
+      } else {
+        res.send(result);
+      }
+    }
+  );
+});
+app.get("/api/admin/renting/CreateBill", async (req, res) => {
+  const D = new Date();
+  con.query(
+    `SELECT * FROM renting
+    INNER JOIN room ON room.RoomID = renting.RoomID
+    INNER JOIN user ON user.UserID = renting.UserID
+    WHERE (SELECT COUNT(*) FROM bill WHERE BillDate LIKE "2023-11-%" AND bill.RentingID=renting.RentingID) = 0 AND RentingEnd IS NULL
+    ORDER BY renting.RoomID;;`,
+    (err, result) => {
+      if (err) {
+        console.error("Error fetching data for CreateBill:", err);
+        res.status(500).send("Internal Server Error");
+      } else {
+        res.send(result);
+      }
     }
   );
 });
 
-app.get("/api/Exdata/Detail", async (req, res) => {
+app.get("/api/admin/Detail", async (req, res) => {
   con.query(
     "SELECT * FROM `mansiondetail` WHERE 1",
     (err, result) => {
-      if (err) throw err;
-      res.send(result);
+      if (err) {
+        console.error("Error fetching mansion details:", err);
+        res.status(500).send("Internal Server Error");
+      } else {
+        res.send(result);
+      }
     }
   );
 });
+
+app.get("/api/admin/graph",(req, res)=>{
+  con.query(
+    "SELECT SUM(`BillTotalPrice`)AS Total,`BillDate`  FROM bill GROUP BY `BillDate` ORDER BY `BillDate` DESC LIMIT 6;",
+    (err, result) => {
+      if (err) {
+        console.error("Error fetching mansion details:", err);
+        res.status(500).send("Internal Server Error");
+      } else {
+        res.send(result);
+      }
+    }
+  );
+})
 
 app.listen(port, () => {
   console.log(`Listening at http://localhost:${port}`);
 });
 
-// app.get("/api/Exdata/add-billdata", async (req, res) => {
-//   const m = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
-//   const y = [2021, 2022, 2023]
+// app.get("/api/admin/add-billdata", async (req, res) => {
+//   const m = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12']
+//   const y = [2019, 2020, 2021, 2022, 2023]
+//   const rid = [0, 1, 2, 3]
 //   y.forEach((y) => {
 //     m.forEach(async (m) => {
-//       console.log("INSERT INTO `bill`(`RentingID`, `BillWaterUnit`, `BillElectricUnit`, `BillTotalPrice`, `BillStatusID`, `BillDate`) VALUES (1,10,100,5300,1,'" + y + "-" + m + "-25')")
+//       console.log("INSERT INTO `bill`(`RentingID`, `BillWaterPrice`, `BillElectricPrice`, `BillTotalPrice`, `BillStatusID`, `BillDate`) VALUES (1,10,100,5300,1,'" + y + "-" + m + "-25')")
 //       await con.query(
-//         "INSERT INTO `bill`(`RentingID`, `BillWaterUnit`, `BillElectricUnit`, `BillTotalPrice`, `BillStatusID`, `BillDate`) VALUES (1,10,100,5300,1,'" + y + "-" + m + "-25')",
+//         "INSERT INTO `bill`(`RentingID`, `BillWaterPrice`, `BillElectricPrice`, `BillTotalPrice`, `BillStatusID`, `BillDate`) VALUES (1,10,100,5300,1,'" + y + "-" + m + "-25')",
 //         async (err, result) => {
 //           if (err) throw err;
 //           // await res.send(result);
@@ -226,12 +513,288 @@ app.listen(port, () => {
 // const y = [2013,2014,2015, 2016, 2027]
 // y.forEach((y) => {
 //   m.forEach(async (m) => {
-//     console.log("INSERT INTO `bill`(`RentingID`, `BillWaterUnit`, `BillElectricUnit`, `BillTotalPrice`, `BillStatusID`, `BillDate`) VALUES (1,10,100,5300,1,'" + y + "-" + m + "-25')")
+//     console.log("INSERT INTO `bill`(`RentingID`, `BillWaterPrice`, `BillElectricPrice`, `BillTotalPrice`, `BillStatusID`, `BillDate`) VALUES (1,10,100,5300,1,'" + y + "-" + m + "-25')")
 //     await con.query(
-//       "INSERT INTO `bill`(`RentingID`, `BillWaterUnit`, `BillElectricUnit`, `BillTotalPrice`, `BillStatusID`, `BillDate`) VALUES (1,10,100,5300,1,'" + y + "-" + m + "-25')",
+//       "INSERT INTO `bill`(`RentingID`, `BillWaterPrice`, `BillElectricPrice`, `BillTotalPrice`, `BillStatusID`, `BillDate`) VALUES (1,10,100,5300,1,'" + y + "-" + m + "-25')",
 //       async (err, result) => {
 //         if (err) throw err;
 //         // await res.send(result);
 //       })
 //   })
 // })
+// const addbilldata = async (str) => {
+//   await con.query(
+//     str,
+//     async (err, result) => {
+//       if (err) throw err;
+//       await console.log(result)
+//       // await res.send(result);
+//     })
+// }
+// let i = 1;
+// const m = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12']
+// const y = [2019, 2020, 2021, 2022, 2023]
+// const rid = [0, 1, 2, 3]
+// y.forEach(async (y) => {
+//   m.forEach(async (m) => {
+//     rid.forEach(async (r) => {
+//       addbilldata("INSERT INTO `bill`(`BillID`,`RentingID`, `BillWaterPrice`, `BillElectricPrice`, `BillTotalPrice`, `BillStatusID`, `BillDate`, `slip`) VALUES ('" + i + "','" + r + "',10,100,5300,1,'" + y + "-" + m + "-25','https://s359.kapook.com//pagebuilder/ba154685-db18-4ac7-b318-a4a2b15b9d4c.jpg')")
+//       console.log("INSERT INTO `bill`(`BillID`,`RentingID`, `BillWaterPrice`, `BillElectricPrice`, `BillTotalPrice`, `BillStatusID`, `BillDate`, `slip`) VALUES ('" + i + "','" + r + "',10,100,5300,1,'" + y + "-" + m + "-25','https://s359.kapook.com//pagebuilder/ba154685-db18-4ac7-b318-a4a2b15b9d4c.jpg')")
+//       i++;
+//     })
+
+//   })
+// })
+// const addbilldata = async (str) => {
+//   await con.query(
+//     str,
+//     async (err, result) => {
+//       if (err) throw err;
+//       await console.log(result)
+//       // await res.send(result);
+//     })
+// }
+// const getRandomInt=(max)=> {
+//   return Math.floor(Math.random() * max);
+// }
+// const rid = [1103, 1104, 1105, 1106, 1107, 1108, 1109, 1110, 1111, 1112, 1113, 1114, 1115,
+//   1202, 1203, 1204, 1205, 1206, 1207, 1208, 1209, 1210, 1211, 1212, 1213, 1214, 1215,
+//   1301, 1302, 1303, 1304, 1305, 1306, 1307, 1308, 1309, 1310, 1311, 1312, 1313, 1314, 1315,
+//   1401, 1402, 1403, 1404, 1405, 1406, 1407, 1408, 1409, 1410, 1411, 1412, 1413, 1414, 1415,
+//   1501, 1502, 1503, 1504, 1505, 1506, 1507, 1508, 1509, 1510, 1511, 1512, 1513, 1514, 1515,
+// ]
+// const d = [
+//   ['3700','27 ตร.ม. แอร์','27','2','1'],
+//   ['4200','30 ตร.ม. แอร์','30','2','1'],
+//   ['3200','27 ตร.ม. พัดลม','27','1','1'],
+//   ['3500','30 ตร.ม. พัดลม','30','1','1'],
+// ]
+// rid .forEach(async (r) => {
+//   const rd = d[getRandomInt(4)];
+//   console.log(r)
+//   addbilldata("INSERT INTO `room`(`RoomID`, `RoomPrice`, `RoomDetail`, `RoomSize`, `RoomTypeID`, `RoomStatusID`) VALUES ('" + r + "','"+rd[0]+"','"+rd[1]+"','"+rd[3]+"','"+rd[3]+"','"+rd[4]+"')")
+
+// })
+
+
+
+
+//-------------------------------------------------user------------------------------------------
+app.post("/api/user/authentication", async (req, res) => {
+  const receivedData = req.body;
+  try {
+    const query = "SELECT * FROM renting WHERE RoomID = '" + receivedData.RoomID + "' AND UserID = '" + receivedData.UserID + "'";
+    con.query(query, (err, result) => {
+      if (err) {
+        console.error(err);
+        res.status(500).send({
+          response: "Internal Server Error",
+          status: "Error",
+        });
+      } else {
+        if (result.length > 0) {
+          req.session.user = { Username: result[0].RoomID,RentingID:result[0].RentingID ,isLogin:true};
+          res.json({ response: { Username: result[0].RoomID ,RentingID:result[0].RentingID,isLogin:true}, status: "success" });
+        } else {
+          res.status(401).json({
+            response: "Authentication failed",
+            status: "Error",
+          });
+        }
+      }
+    });
+
+  } catch (e) {
+    console.error(e);
+    res.status(500).send({
+      response: "Internal Server Error",
+      status: "Error",
+    });
+  }
+});
+
+app.get("/api/user/accessSession", async (req, res) => {
+  try {
+    if (req.session.user) {
+      const body = {
+        response: req.session.user,
+        isLogin:true,
+        status: "success",
+      };
+      res.send(body);
+    } else {
+      res.status(401).send({
+        response: "Authentication failed",
+        status: "Error",
+      });
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({
+      response: "Internal Server Error",
+      status: "Error",
+    });
+  }
+});
+
+
+app.get("/api/user/removesessions", async (req, res) => {
+  if (req.session.user) {
+    try {
+      req.session.destroy();
+      res.send({ response: "Remove session success", status: "success" });
+    } catch (error) {
+      console.error("Error while destroying session:", error);
+      res.status(500).send({ response: "Internal Server Error", status: "Error" });
+    }
+  } else {
+    res.send({ response: "Authentication failed", status: "Error" });
+  }
+});
+
+app.get("/api/user/billstatus", async (req, res) => {
+  con.query("SELECT * FROM billstatus", (err, result) => {
+    if (err) {
+      console.error("Error fetching bill status data:", err);
+      res.status(500).send("Internal Server Error");
+    } else {
+      res.send(result);
+    }
+  });
+});
+
+app.get("/api/user/RoomID", async (req, res) => {
+  con.query("SELECT `RoomID` FROM `room`", (err, result) => {
+    if (err) {
+      console.error("Error fetching RoomID data:", err);
+      res.status(500).send("Internal Server Error");
+    } else {
+      res.send(result);
+    }
+  });
+});
+
+app.post('/api/user/billdata', async (req, res) => {
+  const receivedData = req.body;
+  let dataSql = `
+    SELECT bill.slip, bill.BillID, bill.RentingID, bill.BillWaterPrice, bill.BillElectricPrice,
+    bill.BillTotalPrice, bill.BillStatusID,room.RoomPrice, billstatus.BillStatusName, bill.BillDate,
+    renting.RoomID, renting.InternetPackID
+    FROM bill
+    INNER JOIN renting ON bill.RentingID = renting.RentingID
+    INNER JOIN billstatus ON billstatus.BillStatusID = bill.BillStatusID
+    INNER JOIN room ON room.RoomID = renting.RoomID
+    INNER JOIN user ON renting.UserID = user.UserID
+  `;
+  let countSql = `
+    SELECT COUNT(*) as count FROM bill
+    INNER JOIN renting ON bill.RentingID = renting.RentingID
+    INNER JOIN billstatus ON billstatus.BillStatusID = bill.BillStatusID
+    INNER JOIN room ON room.RoomID = renting.RoomID
+    INNER JOIN user ON renting.UserID = user.UserID
+    `;
+  if (receivedData.statusId !== 'All' || receivedData.roomId !== 'All') {
+    dataSql += ' WHERE';
+    countSql += ' WHERE';
+  }
+  if (receivedData.statusId !== 'All') {
+    dataSql += ` bill.BillStatusID = '${receivedData.statusId}'`;
+    countSql += ` bill.BillStatusID = '${receivedData.statusId}'`;
+    if (receivedData.roomId !== 'All') {
+      dataSql += ' AND';
+      countSql += ' AND';
+    }
+  }
+  if (receivedData.roomId !== 'All') {
+    dataSql += ` renting.RoomID = '${receivedData.roomId}'`;
+    countSql += ` renting.RoomID = '${receivedData.roomId}'`;
+  }
+  dataSql += ' ORDER BY bill.BillDate DESC, renting.RoomID';
+  dataSql += ` LIMIT ${receivedData.entries * (receivedData.page - 1)}, ${receivedData.entries}`;
+  con.query(countSql, (countErr, countResult) => {
+    if (countErr) {
+      console.error('Error while counting records:', countErr);
+      res.status(500).send('Internal Server Error');
+    } else {
+      const totalRecord = countResult[0].count;
+      con.query(dataSql, (dataErr, dataResult) => {
+        if (dataErr) {
+          console.error('Error while fetching data:', dataErr);
+          res.status(500).send('Internal Server Error');
+        } else {
+          res.send({ bill: dataResult, allRecord: totalRecord });
+        }
+      });
+    }
+  });
+});
+
+app.post("/api/user/billdata/expenses", async (req, res) => {
+  const receivedData = req.body;
+  con.query(
+    "SELECT * FROM expenses WHERE BillID = " + receivedData.billId,
+    (err, result) => {
+      if (err) {
+        console.error("Error fetching expenses:", err);
+        res.status(500).send("Internal Server Error");
+      } else {
+        res.send(result);
+      }
+    }
+  );
+});
+
+app.post("/api/user/slip", async (req, res) => {
+  const receivedData = req.body;
+  con.query(
+    "UPDATE `bill` SET `slip`='"+receivedData.slip+"' WHERE `BillID` = " + receivedData.billId,
+    (err, result) => {
+      if (err) {
+        console.error("Error fetching expenses:", err);
+        res.status(500).send("Internal Server Error");
+      } else {
+        res.send(result);
+      }
+    }
+  );
+});
+
+app.post("/api/user/info", async (req, res) => {
+  const receivedData = req.body;
+  con.query(
+   `SELECT * FROM renting 
+    INNER JOIN room ON room.RoomID = renting.RoomID
+    INNER JOIN roomtype ON roomtype.RoomTypeID = room.RoomTypeID
+    INNER JOIN user ON renting.UserID = user.UserID
+    WHERE renting.RentingID = ${receivedData.RentingID}
+    `,
+    (err, result) => {
+      if (err) {
+        console.error("Error fetching expenses:", err);
+        res.status(500).send("Internal Server Error");
+      } else {
+        res.send(result);
+      }
+    }
+  );
+});
+
+app.post("/api/user/graph",(req, res)=>{
+  const receivedData = req.body;
+  con.query(
+    `SELECT SUM(BillTotalPrice) AS Total, BillDate
+    FROM bill
+    WHERE RentingID = ${receivedData.RentingID}
+    GROUP BY BillDate
+    ORDER BY BillDate DESC
+    LIMIT 6;`,
+    (err, result) => {
+      if (err) {
+        console.error("Error fetching mansion details:", err);
+        res.status(500).send("Internal Server Error");
+      } else {
+        res.send(result);
+      }
+    }
+  );
+})

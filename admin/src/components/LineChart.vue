@@ -1,7 +1,8 @@
 
   
-<script lang="ts">
+<script >
 import { reactive } from 'vue'
+import axios from "axios";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -13,13 +14,26 @@ import {
   Legend
 } from 'chart.js';
 import { Line } from 'vue-chartjs'
+const lineData = reactive({ 
+  data:[],
+  label:[]
+})
+const queryData = async() =>{
+  const chartData = await axios.get("http://localhost:3001/api/admin/graph");
+  chartData.data.forEach(element => {
+    lineData.data.push(element.Total)
+    lineData.label.push(element.BillDate.slice(0,10))
+  });
+}
+await queryData();
+
 const chartConfig = reactive({
   data: {
-    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+    labels:lineData.label,
     datasets: [
       {
         label: 'รายได้ต่อเดือน',
-        data: [40, 39, 10, 40, 39, 80, 40]
+        data: lineData.data
       },
     ]
   },

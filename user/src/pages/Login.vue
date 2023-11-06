@@ -1,33 +1,65 @@
 <script setup>
 import PasswordIcon from '../icon/PasswordIcon.vue';
 import UserLoginIcon from '../icon/UserLoginIcon.vue';
-import { teamColor } from '../module/team.js';
+import { reactive } from 'vue';
+import { useRouter } from 'vue-router';
+import axios from 'axios';
+const route = useRouter();
+
+const data = reactive({
+  username: '',
+  password: ''
+});
+const reqLogin = async (event) => {
+  event.preventDefault();
+  try {
+    const body = {
+      RoomID: data.username,
+      UserID: data.password
+    }
+    const result = await axios.post("http://localhost:3001/api/user/authentication", body,{withCredentials:true});
+    if (result && result.data.status === "success") {
+      route.push("/")
+    }
+  } catch (error) {
+    console.log(error)
+  }
+}
 </script>
 
 <template>
+  <div class="backdrop"></div>
   <section class="center">
     <div class="login">login</div>
-    <form method="post">
-      <div class="txt_field">
-        <div class="Icon-wrap">
-          <UserLoginIcon />
-        </div>
-        <input type="text" placeholder="Username" required>
-        <span></span>
+    <form method="post" @submit="reqLogin">
+    <div class="txt_field">
+      <div class="Icon-wrap">
+        <UserLoginIcon />
       </div>
-      <div class="txt_field">
-        <div class="Icon-wrap">
-          <PasswordIcon />
-        </div>
-        <input type="password" pattern="[0-9]{13}" title="กรุณกรอกเลข 13 หลัก" placeholder="Password" required>
-        <span></span>
+      <input type="text" placeholder="Room ID" v-model="data.username" required>
+      <span></span>
+    </div>
+    <div class="txt_field">
+      <div class="Icon-wrap">
+        <PasswordIcon />
       </div>
-      <input type="submit" value="Login">
+      <input type="password" placeholder="People ID" v-model="data.password" required>
+      <span></span>
+    </div>
+    <input type="submit" value="Login">
     </form>
   </section>
 </template>
 
 <style scoped>
+.backdrop{
+  width: 100dvw;
+  height: 100dvh;
+  background-color: whitesmoke;
+  position: fixed;
+  top: 0;
+  right:0;
+}
 * {
   margin: 0;
   padding: 0;
@@ -81,6 +113,7 @@ form .txt_field {
   border: none;
   outline: none;
 }
+
 .txt_field span::before {
   content: '';
   position: absolute;
@@ -96,6 +129,7 @@ form .txt_field {
 .txt_field input:valid~span::before {
   width: 100%;
 }
+
 input[type="submit"] {
   margin-top: 0.5rem;
   width: 100%;

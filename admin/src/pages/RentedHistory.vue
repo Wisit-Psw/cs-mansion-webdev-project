@@ -5,40 +5,45 @@ import RentedHistoreBox from "../components/RentedHistoreBox.vue";
 const data = reactive({
   Renting: []
 })
+const isModalShow = reactive({ state: false });
 const queryUser = async () => {
-  const response = await fetch("http://localhost:3001" + "/api/Exdata/renting", { method: "GET" });
+  const response = await fetch("http://localhost:3001" + "/api/admin/renting", { method: "GET" });
   data.Renting = await response.json();
-  console.log(data.Renting)
 }
-
+const onDetailCLick = () => {
+  isModalShow.state = !isModalShow.state;
+}
 onMounted(async () => {
   await queryUser()
 })
 </script>
 
 <template>
+  <div class="modal" v-if="isModalShow.state">
+    <div class="backdrop" @click="onDetailCLick()"></div>
+    <div class="madal">
+      <div class="modal-header">
+        ห้องพัก {{ props.item.RoomID }}
+      </div>
+      <div class="modal-body">
+        <div class="modal-context"> วันที่ {{ props.item.BillDate }}</div>
+        <div class="modal-context">ค่าห้องพัก : {{ props.item.BillTotalPrice }}</div>
+        <div class="modal-context">ค่าน้ำ : {{ props.item.BillWaterPrice }}</div>
+        <div class="modal-context">ค่าไฟ : {{ props.item.BillElectricPrice }}</div>
+        <input class="modal-context" type="file" accept="image/*">
+      </div>
+      <div class="modal-footer">
+        <div class="btn-wrap">
+          <button class="btn btn-red" @click="onDetailCLick()">ยกเลิก</button>
+          <button class="btn btn-blue" @click="submit()">ยืนยัน</button>
+        </div>
+      </div>
+    </div>
+  </div>
   <section class="container">
     <header class="header">
       รายการเช่าห้องพัก:
     </header>
-    <!-- <div class="filterBar">
-      <div class="filter-wrap">
-        <label for="RoomID">เลขห้อง: </label>
-        <select name="RoomID" id="RoomIDFilter">
-          <option value="All">ทั้งหมด</option>
-          <option v-for="(item, index) in RoomData" :key="index" :value="item.RoomID">{{ item.RoomID }}</option>
-        </select>
-      </div>
-      <div class="filter-wrap">
-        <label for="status">สถานะ: </label>
-        <select name="status" id="RoomIDFilter">
-          <option value="All">ทั้งหมด</option>
-          <option v-for="(item, index) in BillStatus" :key="index" :value="item.BillStatusID">{{ item.BillStatusName }}
-          </option>
-        </select>
-      </div>
-    </div> -->
-    <!-- {{ BillData }} -->
     <div class="table">
       <div class="thead">
         <div class="tr">
@@ -48,24 +53,12 @@ onMounted(async () => {
           <div class="th date">ชนิดห้อง</div>
           <div class="th totalPrice">เริ่มเช่า</div>
           <div class="th status">หยุดเช่า</div>
-          <div class="th detail">รายละเอียด</div>
+          <div class="th detail"></div>
         </div>
       </div>
       <div class="tbody">
         <div v-for="(item, index) in data.Renting" :key="index" class="dataTable tr">
-          <!-- <div class="td roomNumber">{{ item.RoomID }}</div>
-          <div class="td date">{{ item.UserName }}</div>
-          <div class="td date">{{ item.RoomPrice }}</div>
-          <div class="td date">{{ item.RoomDetail }}</div>
-          <div class="td totalPrice">{{ item.RentingStart }}</div>
-          <div class="td totalPrice">{{ item.RentingEnd }}</div>
-          <div class="filter-wrap RentEnd" style="padding: 0; margin-left: 0.1%;">
-            <select name="RentingEnd" id="RentingEndFillter" style="padding: 0;" @click="Popup()">
-              <option value="null"> - </option>
-              <option value="RentEnd">ย้ายออก</option>
-            </select>
-          </div> -->
-          <RentedHistoreBox  :item="item"/>
+          <RentedHistoreBox :item="item" />
         </div>
       </div>
     </div>
@@ -73,6 +66,59 @@ onMounted(async () => {
 </template>
 
 <style scoped>
+
+.madal {
+  background-color: white;
+  padding: 1.5rem 2rem;
+  border-radius: 0.5rem;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 5;
+}
+
+.modal-header {
+  border-bottom: 1px solid rgb(211, 211, 211);
+  text-align: center;
+  padding: 0.5rem 0;
+}
+
+.modal-body {
+  min-width: 20rem;
+  text-align: center;
+  padding: 2rem 0;
+  align-items: center;
+  margin: 0 auto;
+}
+
+.modal-context {
+  align-items: center;
+  margin: 0 auto;
+  width: fit-content;
+  width: 60%;
+  padding: 1% 0;
+}
+
+.modal-footer {
+  padding: 0.5rem 0 1rem 0;
+}
+
+.btn-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.backdrop {
+  width: 100dvw;
+  height: 100dvh;
+  top: 0%;
+  left: 0%;
+  background-color: rgba(120, 120, 120, 0.3);
+  position: fixed;
+  z-index: 4;
+}
 .container {
   width: 100%;
   height: 100%;

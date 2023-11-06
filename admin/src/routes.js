@@ -10,43 +10,68 @@ import Detail from "./pages/Detail.vue"
 import Login from "./pages/Login.vue"
 import authenticate from "./module/authenticate"
 export const routes = [
-    // {
-    //     path: '/login', component: LoginPage,
-    //     beforeEnter: async () => {
-    //         const isAuthenticated = await authenticate();
-    //         if( isAuthenticated ) return '/';
-    //     },
-    // },
     {
-        path: '/', component: HomePage,
+        path: '/login', component: Login,
         beforeEnter: async () => {
             const isAuthenticated = await authenticate();
             if( isAuthenticated ) return '/';
         },
     },
     {
+        path: '/', component: HomePage,
+        beforeEnter: async () => {
+            const isAuthenticated = await authenticate();
+            if( !isAuthenticated ) return '/login';
+        },
+    },
+    {
         path: '/bill', component: Bill,
+        beforeEnter: async () => {
+            const isAuthenticated = await authenticate();
+            if( !isAuthenticated ) return '/login';
+        },
     },
     {
         path: '/waitingbill', component: WaitingBill,
+        beforeEnter: async () => {
+            const isAuthenticated = await authenticate();
+            if( !isAuthenticated ) return '/login';
+        },
     },
     {
         path: '/room', component: Room,
+        beforeEnter: async () => {
+            const isAuthenticated = await authenticate();
+            if( !isAuthenticated ) return '/login';
+        },
     },
     {
         path: '/user', component: User,
+        beforeEnter: async () => {
+            const isAuthenticated = await authenticate();
+            if( !isAuthenticated ) return '/login';
+        },
     },
     {
         path: '/create-bill', component: CreateBill,
+        beforeEnter: async () => {
+            const isAuthenticated = await authenticate();
+            if( !isAuthenticated ) return '/login';
+        },
     },
     {
         path: '/rented-history', component: RentedHistory,
+        beforeEnter: async () => {
+            const isAuthenticated = await authenticate();
+            if( !isAuthenticated ) return '/login';
+        },
     },
     {
         path: '/detail', component: Detail,
-    },
-    {
-        path: '/login', component: Login,
+        beforeEnter: async () => {
+            const isAuthenticated = await authenticate();
+            if( !isAuthenticated ) return '/login';
+        },
     },
     { 
         path: '/:pathMatch(.*)*', component: PageNotFound 

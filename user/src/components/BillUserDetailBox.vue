@@ -1,41 +1,55 @@
 <script setup>
-const props = defineProps(["item"]);
-import { reactive } from "vue";
+import { reactive, onMounted } from "vue";
+import axios from "axios"
 const isDetailShow = reactive({ state: false });
 const isModalShow = reactive({ state: false });
-
+const props = defineProps(["item"]);
+const data = reactive({
+    expenses: undefined,
+    slip: ''
+});
 const handleFileChange = (event) => {
     const files = event.target.files;
     if (files.length > 0) {
         convertToBase64(files);
-        console.log(convertToBase64(files))
+        // console.log(convertToBase64(files))
     }
     event.target.files = null;
-    
+
 };
 
 const convertToBase64 = (files) => {
     for (let i = 0; i < files.length; i++) {
         const reader = new FileReader();
-        reader.onload = (event) => {
-            PostData.Content.Images.push(String(event.target?.result));
+        reader.onload = async (event) => {
+            // PostData.Content.Images.push(String(event.target?.result));
+            data.slip = event.target?.result;
         };
         reader.readAsDataURL(files[i]);
     }
 };
 
-const submit = (event) => {
-    event.preventDefault();
+const submit = async () => {
+    const response = await axios.post("http://localhost:3001/api/user/slip", { billId: props.item.BillID, slip: data.slip });
+    data.expenses = await response.data;
+    props.item.slip = data.slip
     isDetailShow.state = false;
     isModalShow.state = false;
     if (inputRef.value && inputRef.value.click) {
         inputRef.value.click();
     }
-    handleFileChange();
+    
 }
 const onDetailCLick = () => {
     isModalShow.state = !isModalShow.state;
 }
+const queryExpenses = async () => {
+    const response = await axios.post("http://localhost:3001/api/user/billdata/expenses", { billId: props.item.BillID });
+    data.expenses = await response.data;
+}
+onMounted(async () => {
+    queryExpenses()
+})
 </script>
 
 <template>
@@ -46,11 +60,19 @@ const onDetailCLick = () => {
                 ห้องพัก {{ props.item.RoomID }}
             </div>
             <div class="modal-body">
-                <div class="modal-context"> วันที่ {{ props.item.BillDate }}</div>
-                <div class="modal-context">ค่าห้องพัก : {{ props.item.BillTotalPrice }}</div>
-                <div class="modal-context">ค่าน้ำ : {{ props.item.BillWaterUnit }}</div>
-                <div class="modal-context">ค่าไฟ : {{ props.item.BillElectricUnit }}</div>
-                <input class="modal-context" type="file" accept="image/*">
+                <div class="context-container" style="display: flex;flex-wrap: wrap;">
+                    <img :src="props.item.slip?props.item.slip:'https://promptpay.io/0614077850.png/' + props.item.BillTotalPrice" alt="" style="width:18rem;padding: 1rem;" >
+                    <div class="context-wrap">
+                        <div class="modal-context"> วันที่ {{ props.item.BillDate.slice(0, 10) }}</div>
+                        <div class="modal-context">ค่าห้องพัก : {{ props.item.BillTotalPrice }}</div>
+                        <div class="modal-context">ค่าน้ำ : {{ props.item.BillWaterPrice }}</div>
+                        <div class="modal-context">ค่าไฟ : {{ props.item.BillElectricPrice }}</div>
+                        <div class="modal-context" v-for="(expen, index) in data.expenses" :key="index">{{ expen.ExpenTitle
+                        }}:{{ expen.ExpenPrice }}</div>
+                    </div>
+                </div>
+                <input class="modal-context" type="file" accept="image/*" @change="handleFileChange($event)">
+
             </div>
             <div class="modal-footer">
                 <div class="btn-wrap">
@@ -63,7 +85,7 @@ const onDetailCLick = () => {
 
     <div class=" dataTable tr">
         <div class="td roomNumber">{{ props.item.RoomID }}</div>
-        <div class="td date">{{ props.item.BillDate }}</div>
+        <div class="td date">{{ props.item.BillDate.slice(0, 10) }}</div>
         <div class="td totalPrice">{{ props.item.BillTotalPrice }}</div>
         <div class="td status">{{ props.item.BillStatusName }}</div>
         <div class="td detail" @click="onDetailCLick()">
@@ -105,7 +127,7 @@ input::file-selector-button {
 }
 
 .modal-body {
-    min-width: 20rem;
+    width: fit-content;
     text-align: center;
     padding: 2rem 0;
     align-items: center;
@@ -116,7 +138,7 @@ input::file-selector-button {
     align-items: center;
     margin: 0 auto;
     width: fit-content;
-    width: 60%;
+    width: 100%;
     padding: 1% 0;
 }
 
@@ -282,4 +304,5 @@ input::file-selector-button {
     .th {
         font-size: 1.5rem;
     }
-}</style>
+}
+</style>

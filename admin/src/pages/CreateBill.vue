@@ -8,7 +8,7 @@ const data = reactive({
 })
 
 const queryRoom = async () => {
-  const response = await fetch("http://localhost:3001" + "/api/Exdata/renting/CreateBill", { method: "GET" });
+  const response = await fetch("http://localhost:3001/api/admin/renting/CreateBill", { method: "GET" });
   data.Renting = await response.json();
   console.log(data.Renting)
 }
@@ -23,24 +23,6 @@ onMounted( async ()=>{
     <header class="header">
       สร้างบิล:
     </header>
-    <!-- <div class="filterBar">
-      <div class="filter-wrap">
-        <label for="RoomID">เลขห้อง: </label>
-        <select name="RoomID" id="RoomIDFilter">
-          <option value="All">ทั้งหมด</option>
-          <option v-for="(item, index) in RoomData" :key="index" :value="item.RoomID">{{ item.RoomID }}</option>
-        </select>
-      </div>
-      <div class="filter-wrap">
-        <label for="status">สถานะ: </label>
-        <select name="status" id="RoomIDFilter">
-          <option value="All">ทั้งหมด</option>
-          <option v-for="(item, index) in BillStatus" :key="index" :value="item.BillStatusID">{{ item.BillStatusName }}
-          </option>
-        </select>
-      </div>
-    </div> -->
-    <!-- {{ BillData }} -->
     <div class="table">
       <div class="thead">
         <div class="tr">
@@ -59,6 +41,7 @@ onMounted( async ()=>{
 </template>
 
 <style scoped>
+
 .container {
   width: 100%;
   height: 100%;

@@ -1,6 +1,7 @@
 <script setup>
 import LineChart from '../components/LineChart.vue';
 import DoughnutChart from '../components/DoughnutChart.vue';
+
 </script>
 
 <template>
@@ -8,7 +9,7 @@ import DoughnutChart from '../components/DoughnutChart.vue';
     <header class="header">
       รายละเอียด:
     </header>
-    <div class="lineChart">
+    <div class="lineChart" >
       <LineChart />
     </div>
     <div class="doughnutChart">

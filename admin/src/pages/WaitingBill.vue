@@ -1,20 +1,105 @@
 <script setup>
 import { BillData, RoomData, BillStatus, BillExpensesJoin } from "../../../Ex-data/data.js"
 import WaitingDetailBox from "../components/WaitingDetailBox.vue";
-import {  reactive,onMounted } from "vue";
+import { reactive, onMounted } from "vue";
+import axios from "axios"
+const props = defineProps(["dropdownData"]);
 
 const data = reactive({
-  Bill : []
+  Bill: []
 })
-
-const queryRoom = async () => {
-  const response = await fetch("http://localhost:3001" + "/api/Exdata/billdata/waiting", { method: "GET" });
-  data.Bill = await response.json();
-  console.log(data.Bill)
+const queryState = reactive({
+  roomId: 'All',
+  statusId: '3'
+})
+const pagination = reactive({
+  page: 1,
+  pageBar: [],
+  maxPage: 0,
+  memory: {},
+  render: [],
+  entries: 50
+});
+const queryBill = async () => {
+  if (!pagination.memory[queryState.statusId]) {
+    pagination.memory[queryState.statusId] = {}
+    pagination.memory[queryState.statusId][queryState.roomId] = {}
+  } else {
+    if (!pagination.memory[queryState.statusId][queryState.roomId]) {
+      pagination.memory[queryState.statusId][queryState.roomId] = {}
+    } else {
+      if (pagination.memory[queryState.statusId][queryState.roomId][pagination.page]) {
+        pagination.render = pagination.memory[queryState.statusId][queryState.roomId][pagination.page]
+        pagination.maxPage = pagination.memory[queryState.statusId][queryState.roomId]["maxPage"]
+        generatePageBar();
+        return
+      }
+    }
+  }
+  let response = await axios.post("http://localhost:3001/api/admin/billdata", { roomId: queryState.roomId, statusId: queryState.statusId, entries: pagination.entries, page: pagination.page });
+  data.Bill = response.data.bill;
+  pagination.maxPage = Math.ceil(response.data.allRecord / pagination.entries)
+  pagination.memory[queryState.statusId][queryState.roomId][pagination.page] = data.Bill;
+  pagination.memory[queryState.statusId][queryState.roomId]["maxPage"] = pagination.maxPage;
+  pagination.render = data.Bill
+  generatePageBar();
+}
+const filterRoomId = (event) => {
+  event.preventDefault();
+  queryState.roomId = event.target.value;
+  pagination.page=1;
+  queryBill();
+}
+const filterStatus = (event) => {
+  event.preventDefault();
+  queryState.statusId = event.target.value;
+  pagination.page=1;
+  queryBill();
 }
 
-onMounted( async ()=>{
-  await queryRoom()
+
+
+const generatePageBar = () => {
+  pagination.pageBar = []
+  for (let pageNum = pagination.page - 4 > 0 ? pagination.page - 4 : 1; pageNum < pagination.page && pageNum > 0; pageNum++) {
+    pagination.pageBar.push(pageNum);
+  }
+  pagination.pageBar.push(pagination.page)
+  for (let pageNum = pagination.page + 1; (pageNum < pagination.page + 4 || pagination.pageBar.length < 9) && pagination.maxPage >= pageNum; pageNum++) {
+    pagination.pageBar.push(pageNum);
+  }
+}
+const onPageBarClick = (pnum) => {
+  pagination.page = pnum;
+  if (pagination.memory[queryState.statusId][queryState.roomId][pagination.page] === undefined || pagination.showAdmin) {
+    queryBill()
+  } else {
+    pagination.render = pagination.memory[queryState.statusId][queryState.roomId][pagination.page];
+    generatePageBar();
+  }
+}
+const prevPage = () => {
+  pagination.page--;
+  if (pagination.memory[queryState.statusId][queryState.roomId][pagination.page] === undefined || pagination.showAdmin) {
+    queryBill()
+  } else {
+    pagination.render = pagination.memory[queryState.statusId][queryState.roomId][pagination.page];
+    generatePageBar();
+  }
+}
+const nextPage = () => {
+  pagination.page++;
+  if (pagination.memory[queryState.statusId][queryState.roomId][pagination.page] === undefined || pagination.showAdmin) {
+    queryBill()
+  } else {
+    pagination.render = pagination.memory[queryState.statusId][queryState.roomId][pagination.page];
+    generatePageBar();
+  }
+}
+
+onMounted(async () => {
+  await queryBill()
+  generatePageBar();
 })
 </script>
 
@@ -26,18 +111,40 @@ onMounted( async ()=>{
     <div class="filterBar">
       <div class="filter-wrap">
         <label for="RoomID">เลขห้อง: </label>
-        <select name="RoomID" id="RoomIDFilter">
+        <select name="RoomID" id="RoomIDFilter" @change="filterRoomId($event)">
           <option value="All">ทั้งหมด</option>
-          <option v-for="(item, index) in RoomData" :key="index" :value="item.RoomID">{{ item.RoomID }}</option>
-        </select>
-      </div>
-      <div class="filter-wrap">
-        <label for="status">สถานะ: </label>
-        <select name="status" id="RoomIDFilter">
-          <option value="All">ทั้งหมด</option>
-          <option v-for="(item, index) in BillStatus" :key="index" :value="item.BillStatusID">{{ item.BillStatusName }}
+          <option v-for="(item, index) in dropdownData.roomId" :key="index" :value="item.RoomID">{{ item.RoomID }}
           </option>
         </select>
+      </div>
+      <!-- <div class="filter-wrap">
+        <label for="status">สถานะ: </label>
+        <select name="status" id="RoomIDFilter" @change="filterStatus($event)">
+          <option value="All">ทั้งหมด</option>
+          <option v-for="(item, index) in dropdownData.status" :key="index" :value="item.BillStatusID">{{
+            item.BillStatusName }}
+          </option>
+        </select>
+      </div> -->
+      <div class="filter-wrap">
+        <div class="pagination-controller">
+          <div class="pagination-container bg-white text-blue">
+            <div class="pagination-btn pagination-left-btn" v-if="pagination.page > 1" @click="prevPage">
+              <div>&laquo;</div>
+            </div>
+            <div v-for="i in pagination.pageBar" :key="i">
+              <div
+                :class="'pagination-btn' + (i === pagination.page ? ' pagination-btn-active' : '') + (pagination.page === 1 && i === 1 ? ' pagination-left-btn' : '')"
+                @click="onPageBarClick(i)">
+                <div>{{ i }}</div>
+              </div>
+            </div>
+            <div class="pagination-btn pagination-right-btn" v-if="pagination.page < pagination.maxPage"
+              @click="nextPage">
+              <div>&raquo;</div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <!-- {{ BillData }} -->
@@ -52,8 +159,8 @@ onMounted( async ()=>{
         </div>
       </div>
       <div class="tbody">
-        <div class="Trow" v-for="(item, index) in data.Bill" :key="index">
-          <WaitingDetailBox :item="item" />
+        <div class="Trow" v-for="(item, index) in pagination.render" :key="index">
+          <WaitingDetailBox :item="item" @queryBill="queryBill" />
         </div>
       </div>
     </div>
@@ -62,6 +169,43 @@ onMounted( async ()=>{
 </template>
 
 <style scoped>
+.pagination-container {
+  width: fit-content;
+  display: flex;
+}
+
+.pagination-btn {
+  width: 1.4rem;
+  height: 1.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  border: 1px solid white;
+  margin-right: -1px;
+  font-size: 0.8rem;
+}
+
+.pagination-btn-active {
+  color: rgb(0, 102, 255);
+  cursor: text;
+}
+
+.pagination-left-btn {
+  border-radius: 0.3rem 0 0 0.3rem;
+}
+
+.pagination-right-btn {
+  border-radius: 0 0.3rem 0.3rem 0;
+}
+
+.pagination-btn:hover,
+.pagination-right-btn:hover,
+.pagination-left-btn:hover {
+  cursor: pointer;
+  color: var(--white);
+  background-color: var(--blue-30);
+}
+
 .container {
   width: 100%;
   height: 100%;
@@ -78,6 +222,7 @@ onMounted( async ()=>{
 .filterBar {
   width: 95%;
   display: flex;
+  flex-wrap: wrap;
   margin: 0 auto;
   font-size: 1rem;
   align-items: center;
@@ -87,7 +232,11 @@ onMounted( async ()=>{
   background-color: var(--menuColor);
   box-shadow: 0px 3px 2px var(--menuSelectedColor);
 }
-
+.filterBar>:last-child{
+  width:fit-content;
+  padding: 0;
+  margin: 0;
+}
 .detailBTN {
   margin: 0 auto;
   color: white;
@@ -132,11 +281,12 @@ onMounted( async ()=>{
 }
 
 .tbody {
-  max-height: 75dvh;
+  height: 70dvh;
   overflow-y: auto;
-  border-radius:0 0 0.5rem 0.5rem ;
+  border-radius: 0 0 0.5rem 0.5rem;
 
 }
+
 ::-webkit-scrollbar {
   width: 5px;
 }
@@ -192,6 +342,7 @@ onMounted( async ()=>{
 .detail {
   width: 20%;
 }
+
 /* กลาง */
 @media screen and (min-width:826px) {
   .header {
@@ -229,7 +380,8 @@ onMounted( async ()=>{
   }
 
   .tbody {
-    max-height: 70dvh;
+    max-height: 77dvh;
+    height: 77dvh;
     overflow-y: auto;
   }
 }
@@ -243,10 +395,13 @@ onMounted( async ()=>{
   .filter-wrap>select {
     padding: 0 2rem;
   }
-  .table{
+
+  .table {
     width: 90%;
   }
+
   .th {
     font-size: 1.5rem;
   }
-}</style>
+}
+</style>

@@ -1,15 +1,25 @@
 <script setup>
-const props = defineProps(["item"]);
 import { reactive } from "vue";
+import axios from "axios";
 const isDetailShow = reactive({ state: false });
 const isModalShow = reactive({ state: false });
+const props = defineProps(["item"]);
 
 // const onDetailBTNClick = () => {
 //     isDetailShow.state = !isDetailShow.state;
 // };
-const submit = (event) => {
-    event.preventDefault();
-    isDetailShow.state = false;
+const submit = async () => {
+    const D = new Date();
+    const body = {
+        RentingEnd: D.getFullYear() + "-" + (D.getMonth() + 1) + "-" + D.getDate(),
+        RentingID: props.item.RentingID
+    }
+    console.log(body)
+    const response = await axios.post("http://localhost:3001/api/admin/renting/out", body);
+    if (response.data.status === 'success') {
+        isDetailShow.state = false;
+        isModalShow.state = !isModalShow.state;
+    }
 }
 const onLeaveCLick = () => {
     isModalShow.state = !isModalShow.state;
@@ -28,8 +38,8 @@ const onLeaveCLick = () => {
             </div>
             <div class="modal-footer">
                 <div class="btn-wrap">
-                    <button class="btn btn-red"   @click="onLeaveCLick()">ยกเลิก</button>
-                    <button class="btn btn-blue"  @click="submit()">ยืนยัน</button>
+                    <button class="btn btn-blue" @click="onLeaveCLick()">ยกเลิก</button>
+                    <button class="btn btn-red" @click="submit()">ยืนยัน</button>
                 </div>
             </div>
         </div>
@@ -40,55 +50,60 @@ const onLeaveCLick = () => {
         <div class="td user">{{ props.item.UserName }}</div>
         <div class="td roomPrice">{{ props.item.RoomPrice }}</div>
         <div class="td roomDetail">{{ props.item.RoomDetail }}</div>
-        <div class="td start">{{ props.item.RentingStart }}</div>
-        <div class="td end">{{ props.item.RentingEnd }}</div>
-        <div class="td detail" @click="onLeaveCLick()">
-            <div class="dropdown" v-if="!isDetailShow.state">
-                <div class="detailBTN">ย้ายออก</div>
+        <div class="td start">{{ props.item.RentingStart?.slice(0, 10) }}</div>
+        <div class="td end">{{ props.item.RentingEnd?.slice(0, 10) }}</div>
+        <div class="td detail">
+            <div class="dropdown" v-if="!isDetailShow.state && !props.item.RentingEnd" @click="isModalShow.state = true">
+                <div class="detailBTN">ออก</div>
             </div>
         </div>
     </div>
 </template>
 
 <style scoped>
-
-.madal{
-    background-color:white ;
+.madal {
+    background-color: white;
     padding: 1.5rem 2rem;
     border-radius: 0.5rem;
-    position:fixed ;
-    top:50%;
-    left:50%;
-    transform: translate(-50%,-50%);
-    z-index:5;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 5;
 }
-.modal-header{
-    border-bottom:1px solid rgb(211, 211, 211) ;
+
+.modal-header {
+    border-bottom: 1px solid rgb(211, 211, 211);
     text-align: center;
     padding: 0.5rem 0;
 }
-.modal-body{
+
+.modal-body {
     min-width: 20rem;
     text-align: center;
     padding: 2rem 0;
 }
-.modal-footer{
-    padding: 0.5rem 0 1rem 0 ;
+
+.modal-footer {
+    padding: 0.5rem 0 1rem 0;
 }
-.btn-wrap{
+
+.btn-wrap {
     display: flex;
     align-items: center;
     justify-content: space-around;
 }
-.backdrop{
+
+.backdrop {
     width: 100dvw;
     height: 100dvh;
-    top:0%;
-    left:0%;
+    top: 0%;
+    left: 0%;
     background-color: rgba(120, 120, 120, 0.3);
-    position:fixed;
-    z-index:4;
+    position: fixed;
+    z-index: 4;
 }
+
 .detailBTN {
     margin: 0 auto;
     color: white;
@@ -106,7 +121,8 @@ const onLeaveCLick = () => {
     position: relative;
     display: inline-block;
 }
-.btn{
+
+.btn {
     background-color: #f1f1f1;
     min-width: 5rem;
     height: 1.75rem;
@@ -118,17 +134,21 @@ const onLeaveCLick = () => {
     text-overflow: ellipsis;
     cursor: pointer;
 }
-.btn:hover{
+
+.btn:hover {
     background-color: #6d6d6d;
 }
-.btn-red{
+
+.btn-red {
     background-color: red;
     color: white;
 }
-.btn-blue{
+
+.btn-blue {
     background-color: rgb(0, 98, 255);
     color: white;
 }
+
 .dropdown-content {
     position: relative;
     background-color: #f1f1f1;
@@ -167,7 +187,7 @@ const onLeaveCLick = () => {
 .roomDetail,
 .start,
 .end {
-  width: 20%;
+    width: 20%;
 }
 
 @media screen and (min-width:826px) {

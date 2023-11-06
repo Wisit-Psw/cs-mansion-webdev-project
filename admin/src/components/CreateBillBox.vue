@@ -2,7 +2,8 @@
 // import { BillData, RoomData, BillStatus, RentingData } from "../../../Ex-data/data.js";
 import { reactive } from "vue";
 import AddIcon from "../icon/AddIcon.vue";
-const props = defineProps(["item","index"]);
+import axios from "axios";
+const props = defineProps(["item", "index"]);
 const isEdit = reactive({ state: false });
 const isAdd = reactive({ state: false });
 const isDetailShow = reactive({ state: false });
@@ -19,7 +20,7 @@ const onAddlBTNClick = () => {
   const expensesName = document.createElement("input")
   expensesName.type = "text";
   expensesName.class = "td expensesUnit";
-  expensesName.name = "expensesName";
+  expensesName.name = "ExpenTitle";
   expensesName.style = "font-size:1.05rem;width:60%;margin-left:auto;margin-right:2rem;";
   expensesName.pattern = "[ก-๙]*";
   expensesName.title = "กรุณากรอกเฉพาะภาษาไทย";
@@ -27,20 +28,58 @@ const onAddlBTNClick = () => {
   const expensesPrice = document.createElement("input")
   expensesPrice.type = "number";
   expensesPrice.class = "td expensesUnit";
-  expensesPrice.name = "expensesPrice";
+  expensesPrice.name = "ExpenPrice";
   expensesPrice.style = "height: 70%; width: 20%; font-size: 1rem;font-size:1.05rem;";
   expensesPrice.title = "กรุณากรอกเฉพาะภาษาไทย";
 
   container.appendChild(expensesName);
   container.appendChild(expensesPrice);
-  document.getElementById("expensesInputContainer"+props.index).appendChild(container);
+  document.getElementById("expensesInputContainer" + props.index).appendChild(container);
 };
-
-const submit = (event) => {
+const submit = async (event) => {
   event.preventDefault();
-  console.log(event.target.expensesUnit[0].id);
-  // isDetailShow.state = false;
+  const D = new Date();
+  const BillDate = D.getFullYear() + "-" + (D.getMonth() + 1) + "-" + D.getDate()
+  let TotalPrice = props.item.RoomPrice + parseFloat(event.target.BillWaterPrice.value) + parseFloat(event.target.BillElectricPrice.value)
+  if (event.target.ExpenPrice?.value) {
+    TotalPrice += parseFloat(event.target.ExpenPrice?.value)
+  } else {
+    event.target.ExpenPrice?.forEach(e => {
+      TotalPrice += parseFloat(e.value)
+    })
+  }
+
+  const body = {
+    RentingID: props.item.RentingID,
+    BillWaterPrice: event.target.BillWaterPrice.value,
+    BillElectricPrice: event.target.BillElectricPrice.value,
+    TotalPrice: TotalPrice,
+    BillDate: BillDate,
+  }
+  const response = await axios.post("http://localhost:3001/api/admin/billdata/insert", body);
+  if (response.data.status === 'success') {
+    if (event.target?.ExpenPrice?.length) {
+      event.target.ExpenPrice?.forEach(async (e, index) => {
+        const response2 = await axios.post("http://localhost:3001/api/admin/billdata/expend/insert", {
+          BillID: response.data.insertId,
+          ExpenTitle: event.target.ExpenTitle[index].value,
+          ExpenPrice: event.target.ExpenPrice[index].value,
+        });
+
+      })
+    }
+  }else{
+    if(event.target?.ExpenPrice){
+      const response2 = await axios.post("http://localhost:3001/api/admin/billdata/expend/insert", {
+          BillID: response.data.insertId,
+          ExpenTitle: event.target.ExpenTitle.value,
+          ExpenPrice: event.target.ExpenPrice.value,
+        });
+    }
+  }
+  isEdit.state = false;
 }
+
 </script>
 
 <template>
@@ -57,21 +96,15 @@ const submit = (event) => {
   <div style="width: 100%; text-align: center" v-if="isDetailShow.state">
     <form @submit="submit">
       <div class="dataTable tr" style="width: 40%; justify-content:space-between; margin:0 auto;">
-        <div class="td waterUnit">จำนวนยูนิตน้ำ</div>
-        <input name="waterUnit" class="td waterUnit" style="height: 70%; width: 20%; font-size: 1rem;">
+        <div class="td waterUnit">ค่าน้ำ</div>
+        <input name="BillWaterPrice" class="td waterUnit" style="height: 70%; width: 20%; font-size: 1rem;">
       </div>
       <div class="dataTable tr" style="width: 40%; justify-content:space-between; margin:0 auto;">
-        <div class="td electricUnit">จำนวนยูนิตไฟ</div>
-        <input name="electricUnit" class="td electricUnit" style="height: 70%; width: 20%; font-size: 1rem;">
-      </div>
-      <div class="dataTable tr" style="width: 40%; justify-content:space-between; margin:0 auto;"
-        v-for="(expen, index) in props.item.Expenses" :key="index">
-        <div class="td expensesUnit">{{ expen.ExpenTitle }}</div>
-        <input name="expensesUnit" :id="expen.ExpenID" class="td expensesUnit"
-          style="height: 70%; width: 20%; font-size: 1rem;">
+        <div class="td electricUnit">ค่าไฟ</div>
+        <input name="BillElectricPrice" class="td electricUnit" style="height: 70%; width: 20%; font-size: 1rem;">
       </div>
       <!-- add -->
-      <div class="dataTable" :id="'expensesInputContainer'+props.index"
+      <div class="dataTable" :id="'expensesInputContainer' + props.index"
         style="width: 40%; justify-content:space-between; margin:0 auto;">
       </div>
 
@@ -127,8 +160,7 @@ const submit = (event) => {
 }
 
 .roomNumber,
-.date
- {
+.date {
   width: 20%;
 }
 
@@ -141,5 +173,4 @@ const submit = (event) => {
   margin: 0 auto;
   cursor: pointer;
 }
-
 </style>

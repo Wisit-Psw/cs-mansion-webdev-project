@@ -1,9 +1,14 @@
 <script setup>
-import { reactive } from "vue";
+import { reactive, onMounted } from "vue";
+import axios from "axios"
 const props = defineProps(["item"]);
 const isEdit = reactive({ state: false });
 const isDetailShow = reactive({ state: false });
-
+const roomStatus = reactive({ status: [] });
+const queryRoomStatus = async () => {
+    const response = await axios.get("http://localhost:3001/api/admin/roomtype");
+    roomStatus.status = response.data;
+}
 const onDetailBTNClick = () => {
     isDetailShow.state = !isDetailShow.state;
     isEdit.state = false;
@@ -11,14 +16,26 @@ const onDetailBTNClick = () => {
 const onEditBTNClick = () => {
     isEdit.state = !isEdit.state;
 };
-const logDate = () => {
-    console.log(document.getElementById("date").value);
-};
-const submit = (event) => {
-    event.preventDefault();
-    alert("ยืนยัน");
-    isEdit.state = false;
+const submit = async (event) => {
+  event.preventDefault();
+  const body = {
+    RoomID: props.item.RoomID,
+    RoomPrice: event.target.RoomPrice.value,
+    RoomDetail: event.target.RoomDetail.value,
+    RoomTypeID:JSON.parse(event.target.RoomType.value).RoomTypeID
+  }
+  const response = await axios.post("http://localhost:3001/api/admin/room/update", body);
+  if (response.data.status === 'success') {
+    props.item.RoomPrice = body.RoomPrice
+    props.item.RoomDetail = body.RoomDetail
+    props.item.RoomTypeID = body.RoomTypeID
+    props.item.RoomTypeName = JSON.parse(event.target.RoomType.value).RoomTypeName
+  }
+  isEdit.state = false;
 }
+onMounted(async () => {
+    await queryRoomStatus()
+})
 </script>
 <template>
     <!-- data ถ้า edit state เป็น false ( เมื่อยังไม่กด edit )-->
@@ -34,25 +51,35 @@ const submit = (event) => {
     </div>
 
     <div class="" style="width: 100%; text-align: center; display: flex;" v-if="isEdit.state">
-          <form @submit="submit">
+        <form @submit="submit" style="width: 100%; text-align: center">
             <div class="dataTable tr">
-                <input class="td roomNumber" disabled style="font-size: 1rem; text-align: center;" :value="props.item.RoomID">
-                <input class="td price" style="font-size: 1rem; text-align: center;" :value="props.item.RoomPrice">
-                <input class="td type" style="font-size: 1rem; text-align: center;" :value="props.item.RoomTypeName">
-                <input class="td status" disabled style="font-size: 1rem; text-align: center;" :value="props.item.RoomStatusName">
-                <input class="td detail" style="font-size: 1rem; text-align: center;" :value="props.item.RoomDetail">
-                <div class="td edit" ></div>
+                <input class="td roomNumber" disabled style="font-size: 1rem; text-align: center;"
+                    :value="props.item.RoomID">
+                <input class="td price" style="font-size: 1rem; text-align: center;" name="RoomPrice" :value="props.item.RoomPrice">
+                <!-- <input class="td type" style="font-size: 1rem; text-align: center;" :value="props.item.RoomTypeName"> -->
+                <span class="td type" style="font-size: 1rem; text-align: center;">
+                    <select name="RoomType" id="RoomType">
+                        <option :value="JSON.stringify({RoomTypeID: props.item.RoomTypeID,RoomTypeName: props.item.RoomTypeName})">{{
+                            props.item.RoomTypeName }}</option>
+                        <option v-for="(item, index) in roomStatus.status" :key="index" :value="JSON.stringify({RoomTypeID:item.RoomTypeID,RoomTypeName:item.RoomTypeName})">{{
+                            item.RoomTypeName }}</option>
+                    </select>
+                </span>
+                <input class="td status" disabled style="font-size: 1rem; text-align: center;"
+                    :value="props.item.RoomStatusName">
+                <input class="td detail" style="font-size: 1rem; text-align: center;" name="RoomDetail" :value="props.item.RoomDetail">
+                <div class="td edit"></div>
             </div>
             <div class="dataTable tr" style="width: 40%; justify-content:space-around; margin:0 auto;">
-              <div class="td edit">
-                <input style="border: none; font-size: 1rem;" type="submit" class="editBTN" value="ยืนยัน">
-              </div>
-              <div class="td edit" @click="onEditBTNClick()">
-                <div style="font-size: 1rem;" class="editBTN">ปฎิเสธ</div>
-              </div>
+                <div class="td edit">
+                    <input style="border: none; font-size: 1rem;" type="submit" class="editBTN" value="ยืนยัน">
+                </div>
+                <div class="td edit" @click="onEditBTNClick()">
+                    <div style="font-size: 1rem;" class="editBTN">ยกเลิก</div>
+                </div>
             </div>
-          </form>
-      </div>
+        </form>
+    </div>
 </template>
 
 
@@ -68,6 +95,7 @@ const submit = (event) => {
     border-radius: 0.3rem;
     white-space: nowrap;
     text-overflow: ellipsis;
+    min-width: 3rem;
 }
 
 .tr {
@@ -76,16 +104,19 @@ const submit = (event) => {
 }
 
 .td {
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
     overflow: hidden;
     text-wrap: nowrap;
     text-overflow: ellipsis;
+    text-align: center;
 }
 
 .tbody>.tr>.td {
     padding: 0.5rem 0.5rem;
+}
+
+.detail {
+    width: 20%;
+    text-align: center;
 }
 
 .roomNumber,
@@ -94,11 +125,14 @@ const submit = (event) => {
 .status {
     width: 20%;
 }
+
 .edit {
     width: 20%;
-  }
-  input[disabled]{
+    min-width: 5rem;
+}
+
+input[disabled] {
     border: none;
     outline: none;
-  }
+}
 </style>

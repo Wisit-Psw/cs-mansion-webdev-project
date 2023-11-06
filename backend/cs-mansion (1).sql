@@ -43,8 +43,8 @@ CREATE TABLE `admin` (
 CREATE TABLE `bill` (
   `BillID` bigint(20) NOT NULL,
   `RentingID` bigint(20) NOT NULL,
-  `BillWaterUnit` int(11) NOT NULL,
-  `BillElectricUnit` float NOT NULL,
+  `BillWaterPrice` int(11) NOT NULL,
+  `BillElectricPrice` float NOT NULL,
   `BillTotalPrice` double NOT NULL,
   `BillStatusID` int(1) NOT NULL,
   `BillDate` text NOT NULL
@@ -54,7 +54,7 @@ CREATE TABLE `bill` (
 -- Dumping data for table `bill`
 --
 
-INSERT INTO `bill` (`BillID`, `RentingID`, `BillWaterUnit`, `BillElectricUnit`, `BillTotalPrice`, `BillStatusID`, `BillDate`) VALUES
+INSERT INTO `bill` (`BillID`, `RentingID`, `BillWaterPrice`, `BillElectricPrice`, `BillTotalPrice`, `BillStatusID`, `BillDate`) VALUES
 (1, 1, 10, 100, 5200, 2, '2023:09');
 
 -- --------------------------------------------------------

@@ -3,20 +3,20 @@
 /*เพิ่ม*/
 import { reactive,onMounted } from 'vue';
 import UserDetailBox from "../components/UserDetailBox.vue"
+import axios from "axios"
 const data = reactive({
   RentingData: [],
 });
 const queryUser = async () => {
   try {
-    const response = await fetch("http://localhost:3001" + "/api/Exdata/renting", { method: "GET" });
-    data.RentingData = await response.json()
+    const response = await axios.get("http://localhost:3001/api/admin/user");
+    data.RentingData = await response.data
   } catch (error) {
     console.error("Error fetching renting data:", error);
   }
 }
 onMounted(async () => {
   await queryUser()
-  console.log(data.RentingData)
 })
 
 </script>
@@ -50,7 +50,6 @@ onMounted(async () => {
           <div class="th roomNumber">ชื่อผู้เช่า</div>
           <div class="th date">เบอร์โทรศัพท์</div>
           <div class="th totalPrice">ที่อยู่</div>
-          <div class="th status">ห้อง</div>
           <div class="th detail">แก้ไข</div>
         </div>
       </div>
