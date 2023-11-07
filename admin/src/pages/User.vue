@@ -58,25 +58,25 @@ onMounted(async () => {
           <table>
             <tr>
               <td>
-                <div class="modal-context"> รหัสผู้เช่า : </div>
+                <div class="modal-context"> รหัสผู้เช่า  </div>
               </td>
               <td><input type="text" name="UserID" pattern="[0-9]{13}" required></td>
             </tr>
             <tr>
               <td>
-                <div class="modal-context"> ผู้เช่า : </div>
+                <div class="modal-context"> ผู้เช่า  </div>
               </td>
               <td><input type="text" name="UserName" required></td>
             </tr>
             <tr>
               <td>
-                <div class="modal-context"> เบอร์โทรศัพท์ : </div>
+                <div class="modal-context"> เบอร์โทรศัพท์  </div>
               </td>
               <td><input type="text" name="UserPhone" required></td>
             </tr>
             <tr>
               <td>
-                <div class="modal-context"> ที่อยู่ : </div>
+                <div class="modal-context"> ที่อยู่  </div>
               </td>
               <td><input type="text" name="UserAddress" required></td>
             </tr>
@@ -151,7 +151,7 @@ input {
 
 .modal-body {
   min-width: 20rem;
-  text-align: center;
+  
   padding: 2rem 0;
 }
 

@@ -70,12 +70,14 @@ onMounted(async () => {
         <div class="modal-body">
           <table>
             <tr>
-              <tn>เลขห้อง:</tn>
-              <tn><input type="number" name="RoomID" /></tn>
+              <td><div class="modal-context">เลขห้อง</div></td>
+              <td>
+                <input type="number" name="RoomID" />
+              </td>
             </tr>
             <tr>
-              <tn>รหัสบัตรประชาชน: </tn>
-              <tn><input type="text" name="UserID" /></tn>
+              <td><div class="modal-context">รหัสบัตรประชาชน </div></td>
+              <td><input type="text" name="UserID" /></td>
             </tr>
           </table>
         </div>
@@ -137,14 +139,14 @@ onMounted(async () => {
 
 .modal-body {
   min-width: 20rem;
-  text-align: center;
-  padding: 2rem 0;
+  
+  padding: 1rem 0;
   align-items: center;
   margin: 0 auto;
 }
 
 .modal-context {
-  padding: 0.1rem 0;
+  padding: 0.2rem 0;
 }
 
 .modal-footer {
@@ -171,7 +173,7 @@ onMounted(async () => {
   background-color: #f1f1f1;
   min-width: 5rem;
   height: 1.75rem;
-  box-shadow: 0px 8px 16px 0px rgba(41, 40, 40, 0.404);
+  
   border: none;
   border-radius: 0.3rem;
   white-space: nowrap;
