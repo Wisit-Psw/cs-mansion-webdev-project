@@ -43,10 +43,14 @@ const submit = async (event) => {
     TotalPrice += parseFloat(event.target.ExpenPrice?.value)
   } else {
     event.target.ExpenPrice?.forEach(e => {
-      TotalPrice += parseFloat(e.value)
+      if (e.value) {
+        TotalPrice += parseFloat(e.value)
+      }
     })
+
   }
 
+  console.log(TotalPrice)
   const body = {
     RentingID: props.item.RentingID,
     BillWaterPrice: event.target.BillWaterPrice.value,
@@ -59,11 +63,14 @@ const submit = async (event) => {
     if (response.data.status === 'success') {
       if (event.target?.ExpenPrice?.length) {
         event.target.ExpenPrice?.forEach(async (e, index) => {
-          await axios.post("http://localhost:3001/api/admin/billdata/expend/insert", {
-            BillID: response.data.insertId,
-            ExpenTitle: event.target.ExpenTitle[index].value,
-            ExpenPrice: event.target.ExpenPrice[index].value,
-          });
+          console.log(e.value)
+          if (e.value) {
+            await axios.post("http://localhost:3001/api/admin/billdata/expend/insert", {
+              BillID: response.data.insertId,
+              ExpenTitle: event.target.ExpenTitle[index].value,
+              ExpenPrice: event.target.ExpenPrice[index].value,
+            });
+          }
         })
       } else if (event.target?.ExpenPrice.value) {
         await axios.post("http://localhost:3001/api/admin/billdata/expend/insert", {
