@@ -1,10 +1,11 @@
 <script setup>
-import { reactive,onMounted } from 'vue';
+import { reactive, onMounted } from 'vue';
 import UserDetailBox from "../components/UserDetailBox.vue"
 import axios from "axios"
 const data = reactive({
   RentingData: [],
 });
+const props = defineProps(['dropdownData'])
 const queryUser = async () => {
   try {
     const response = await axios.get("http://localhost:3001/api/admin/user");
@@ -13,6 +14,32 @@ const queryUser = async () => {
     console.error("Error fetching renting data:", error);
   }
 }
+const isModalShow = reactive({ state: false });
+const onDetailCLick = () => {
+  isModalShow.state = !isModalShow.state;
+}
+const submit = async (event) => {
+  event.preventDefault()
+  const body = {
+    UserID: event.target.UserID.value,
+    UserName: event.target.UserName.value,
+    UserPhone: event.target.UserPhone.value,
+    UserAddress: event.target.UserAddress.value
+  }
+  console.log(body)
+  try {
+    const response = await axios.post("http://localhost:3001/api/admin/user/insert", body);
+    if (response.data.status === 'success') {
+      await queryUser()
+      isModalShow.state = false;
+    }
+    else {
+      document.getElementById("responseLog").innerHTML = "มีข้อผิดผลาดเกิดขึ้น";
+    }
+  } catch (error) {
+    document.getElementById("responseLog").innerHTML = "มีข้อผิดผลาดเกิดขึ้น";
+  }
+};
 onMounted(async () => {
   await queryUser()
 })
@@ -20,6 +47,51 @@ onMounted(async () => {
 </script>
 
 <template>
+  <div class="modal" v-if="isModalShow.state">
+    <div class="backdrop" @click="onDetailCLick()"></div>
+    <div class="madal">
+      <div class="modal-header">
+        เพิ่มผู้เช่า
+      </div>
+      <form @submit="submit">
+        <div class="modal-body">
+          <table>
+            <tr>
+              <td>
+                <div class="modal-context"> รหัสผู้เช่า : </div>
+              </td>
+              <td><input type="text" name="UserID" pattern="[0-9]{13}" required></td>
+            </tr>
+            <tr>
+              <td>
+                <div class="modal-context"> ผู้เช่า : </div>
+              </td>
+              <td><input type="text" name="UserName" required></td>
+            </tr>
+            <tr>
+              <td>
+                <div class="modal-context"> เบอร์โทรศัพท์ : </div>
+              </td>
+              <td><input type="text" name="UserPhone" required></td>
+            </tr>
+            <tr>
+              <td>
+                <div class="modal-context"> ที่อยู่ : </div>
+              </td>
+              <td><input type="text" name="UserAddress" required></td>
+            </tr>
+          </table>
+        </div>
+        <div id="responseLog" class="responseLog"></div>
+        <div class="modal-footer">
+          <div class="btn-wrap">
+            <button class="btn btn-red" @click="onDetailCLick()">ยกเลิก</button>
+            <input type="submit" value="ยืนยัน" class="btn btn-blue" />
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
   <section class="container">
     <header class="header">
       ผู้เช่า:
@@ -39,11 +111,121 @@ onMounted(async () => {
         </div>
       </div>
     </div>
-
+    <div class="freeBTN" @click="onDetailCLick()">
+      <div class="addBTN">เพิ่มผู้ใช้</div>
+    </div>
   </section>
 </template>
 
 <style scoped>
+.responseLog {
+  width: 100%;
+  text-align: center;
+  color: red;
+}
+
+input {
+  height: 1.4rem;
+}
+
+.madal {
+  background-color: white;
+  padding: 1.5rem 2rem;
+  border-radius: 0.5rem;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 5;
+}
+
+.modal-header {
+  border-bottom: 1px solid rgb(211, 211, 211);
+  text-align: center;
+  padding: 0.5rem 0;
+}
+
+.modal-context {
+  padding: 0.2rem 0;
+}
+
+.modal-body {
+  min-width: 20rem;
+  text-align: center;
+  padding: 2rem 0;
+}
+
+.modal-footer {
+  padding: 0.5rem 0 1rem 0;
+}
+
+.btn-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.backdrop {
+  width: 100dvw;
+  height: 100dvh;
+  top: 0%;
+  left: 0%;
+  background-color: rgba(120, 120, 120, 0.3);
+  position: fixed;
+  z-index: 4;
+}
+
+.freeBTN {
+  position: fixed;
+  bottom: 5rem;
+  right: 5rem;
+}
+
+.addBTN {
+  margin: 0 auto;
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+  width: fit-content;
+  padding: 0.4rem 0.4rem;
+  background-color: var(--menuColor);
+  border-radius: 0.3rem;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  min-width: 3rem;
+}
+
+.addBTN:hover {
+  background-color: gray;
+  color: white;
+}
+
+.btn {
+  background-color: #f1f1f1;
+  min-width: 5rem;
+  height: 1.75rem;
+  border: none;
+  border-radius: 0.3rem;
+  white-space: nowrap;
+  padding: 0.1rem 0.3rem;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background-color: #6d6d6d;
+}
+
+.btn-red {
+  background-color: #D83F31;
+  color: white;
+}
+
+.btn-blue {
+  background-color: #525FE1;
+  color: white;
+}
+
 .container {
   width: 100%;
   height: 100%;

@@ -412,6 +412,27 @@ app.get("/api/admin/roomstatus", async (req, res) => {
     }
   });
 });
+
+// new backend
+app.post("/api/admin/user/insert", async (req, res) => {
+  try {
+    const receivedData = req.body;
+    con.query(
+      "INSERT INTO user(UserID,UserName,UserPhone,UserAddress) VALUES ('" + receivedData.UserID + "','" + receivedData.UserName + "','" + receivedData.UserPhone + "','" + receivedData.UserAddress + "')",
+      (err, result) => {
+        if (err) {
+          console.error("Error fetching renting data:", err);
+
+        } else {
+          res.send({ status: 'success' });
+        }
+      }
+    );
+  } catch (error) {
+    res.status(500).send("Internal Server Error");
+  }
+});
+
 app.get("/api/admin/renting", async (req, res) => {
   con.query(
     "SELECT * FROM renting INNER JOIN room ON room.RoomID = renting.RoomID INNER JOIN user ON user.UserID = renting.UserID ",
@@ -767,7 +788,7 @@ app.post("/api/user/info", async (req, res) => {
 });
 
 app.get("/api/user/graph", (req, res) => {
-  if(req.session.user.RentingID){
+  if (req.session.user.RentingID) {
     con.query(
       `SELECT SUM(BillTotalPrice) AS Total, BillDate FROM bill WHERE RentingID = ${req.session.user.RentingID} GROUP BY BillDate ORDER BY BillDate DESC LIMIT 6;`,
       (err, result) => {
@@ -779,7 +800,7 @@ app.get("/api/user/graph", (req, res) => {
         }
       }
     );
-  }else{
-    res.send({Total:'',BillDate:''});
+  } else {
+    res.send({ Total: '', BillDate: '' });
   }
 })
