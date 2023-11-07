@@ -38,7 +38,7 @@ const submit = async (event) => {
   event.preventDefault();
   const D = new Date();
   const BillDate = D.getFullYear() + "-" + (D.getMonth() + 1) + "-" + D.getDate()
-  let TotalPrice = props.item.RoomPrice + parseFloat(event.target.BillWaterPrice.value) + parseFloat(event.target.BillElectricPrice.value)
+  let TotalPrice = props.item.RoomPrice + parseFloat(event.target.BillWaterPrice.value|0) + parseFloat(event.target.BillElectricPrice.value|0)
   if (event.target.ExpenPrice?.value) {
     TotalPrice += parseFloat(event.target.ExpenPrice?.value)
   } else {
