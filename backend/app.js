@@ -19,7 +19,7 @@ con.connect((err) => {
 });
 
 const corsOptions = {
-  origin: ["http://localhost:3000", "http://localhost:5173"],
+  origin: ["http://localhost:4000", "http://localhost:4001"],
   optionsSuccessStatus: 200,
   credentials: true,
 };
@@ -443,11 +443,7 @@ app.post("/api/admin/renting/out", async (req, res) => {
 app.get("/api/admin/renting/CreateBill", async (req, res) => {
   const D = new Date();
   con.query(
-    `SELECT * FROM renting
-    INNER JOIN room ON room.RoomID = renting.RoomID
-    INNER JOIN user ON user.UserID = renting.UserID
-    WHERE (SELECT COUNT(*) FROM bill WHERE BillDate LIKE "${D.getFullYear()}-${(D.getMonth() + 1)}-%" AND bill.RentingID=renting.RentingID) = 0 AND RentingEnd IS NULL
-    ORDER BY renting.RoomID;;`,
+    `SELECT * FROM renting INNER JOIN room ON room.RoomID = renting.RoomID INNER JOIN user ON user.UserID = renting.UserID WHERE (SELECT COUNT(*) FROM bill WHERE BillDate LIKE "${D.getFullYear()}-${(D.getMonth() + 1)}-%" AND bill.RentingID=renting.RentingID) = 0 AND RentingEnd IS NULL ORDER BY renting.RoomID;`,
     (err, result) => {
       if (err) {
         console.error("Error fetching data for CreateBill:", err);
@@ -758,12 +754,7 @@ app.post("/api/user/slip", async (req, res) => {
 app.post("/api/user/info", async (req, res) => {
   const receivedData = req.body;
   con.query(
-    `SELECT * FROM renting 
-    INNER JOIN room ON room.RoomID = renting.RoomID
-    INNER JOIN roomtype ON roomtype.RoomTypeID = room.RoomTypeID
-    INNER JOIN user ON renting.UserID = user.UserID
-    WHERE renting.RentingID = ${receivedData.RentingID}
-    `,
+    `SELECT * FROM renting INNER JOIN room ON room.RoomID = renting.RoomID INNER JOIN roomtype ON roomtype.RoomTypeID = room.RoomTypeID INNER JOIN user ON renting.UserID = user.UserID WHERE renting.RentingID = ${receivedData.RentingID}`,
     (err, result) => {
       if (err) {
         console.error("Error fetching expenses:", err);
@@ -778,12 +769,7 @@ app.post("/api/user/info", async (req, res) => {
 app.get("/api/user/graph", (req, res) => {
   if(req.session.user.RentingID){
     con.query(
-      `SELECT SUM(BillTotalPrice) AS Total, BillDate
-      FROM bill
-      WHERE RentingID = ${req.session.user.RentingID}
-      GROUP BY BillDate
-      ORDER BY BillDate DESC
-      LIMIT 6;`,
+      `SELECT SUM(BillTotalPrice) AS Total, BillDate FROM bill WHERE RentingID = ${req.session.user.RentingID} GROUP BY BillDate ORDER BY BillDate DESC LIMIT 6;`,
       (err, result) => {
         if (err) {
           console.error("Error fetching mansion details:", err);
