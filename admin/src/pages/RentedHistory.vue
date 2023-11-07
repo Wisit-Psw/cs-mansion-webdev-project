@@ -171,7 +171,7 @@ onMounted(async () => {
   background-color: #f1f1f1;
   min-width: 5rem;
   height: 1.75rem;
-  box-shadow: 0px 8px 16px 0px rgba(41, 40, 40, 0.404);
+  
   border: none;
   border-radius: 0.3rem;
   white-space: nowrap;
@@ -185,12 +185,12 @@ onMounted(async () => {
 }
 
 .btn-red {
-  background-color: red;
+  background-color: #D83F31;
   color: white;
 }
 
 .btn-blue {
-  background-color: rgb(0, 98, 255);
+  background-color: #525FE1;
   color: white;
 }
 

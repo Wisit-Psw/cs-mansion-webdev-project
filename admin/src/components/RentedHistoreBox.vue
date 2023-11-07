@@ -114,7 +114,7 @@ const onLeaveCLick = () => {
     font-weight: bold;
     width: fit-content;
     padding: 0.2rem 0.5rem;
-    background-color: red;
+    background-color: #D83F31;
     border-radius: 0.3rem;
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -129,7 +129,7 @@ const onLeaveCLick = () => {
     background-color: #f1f1f1;
     min-width: 5rem;
     height: 1.75rem;
-    box-shadow: 0px 8px 16px 0px rgba(41, 40, 40, 0.404);
+    
     border: none;
     border-radius: 0.3rem;
     white-space: nowrap;
@@ -143,12 +143,12 @@ const onLeaveCLick = () => {
 }
 
 .btn-red {
-    background-color: red;
+    background-color: #D83F31;
     color: white;
 }
 
 .btn-blue {
-    background-color: rgb(0, 98, 255);
+    background-color: #525FE1;
     color: white;
 }
 
@@ -157,7 +157,7 @@ const onLeaveCLick = () => {
     background-color: #f1f1f1;
     min-width: 5rem;
     height: 1.75rem;
-    box-shadow: 0px 8px 16px 0px rgba(41, 40, 40, 0.404);
+    
     border: none;
     border-radius: 0.3rem;
     white-space: nowrap;

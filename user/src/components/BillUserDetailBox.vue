@@ -218,7 +218,7 @@ input::file-selector-button {
     background-color: #f1f1f1;
     min-width: 5rem;
     height: 1.75rem;
-    box-shadow: 0px 8px 16px 0px rgba(41, 40, 40, 0.404);
+    
     border: none;
     border-radius: 0.3rem;
     white-space: nowrap;
