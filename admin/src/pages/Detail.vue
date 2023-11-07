@@ -1,5 +1,4 @@
 <script setup>
-// import { MansionDetail } from '../../../Ex-data/data';
 import DetailBox from '../components/DetailBox.vue';
 import {  reactive,onMounted } from "vue";
 import axios from "axios";

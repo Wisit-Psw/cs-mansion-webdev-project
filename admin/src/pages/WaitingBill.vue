@@ -1,5 +1,4 @@
 <script setup>
-import { BillData, RoomData, BillStatus, BillExpensesJoin } from "../../../Ex-data/data.js"
 import WaitingDetailBox from "../components/WaitingDetailBox.vue";
 import { reactive, onMounted } from "vue";
 import axios from "axios"

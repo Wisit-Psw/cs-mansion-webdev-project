@@ -1,6 +1,4 @@
 <script setup>
-// import { RentingData,BillData, RoomData, BillStatus } from "../../../Ex-data/data.js"
-/*เพิ่ม*/
 import { reactive,onMounted } from 'vue';
 import UserDetailBox from "../components/UserDetailBox.vue"
 import axios from "axios"

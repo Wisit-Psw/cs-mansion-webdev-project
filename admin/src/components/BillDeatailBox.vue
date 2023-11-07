@@ -1,5 +1,4 @@
 <script setup>
-// import { BillData, RoomData, BillStatus } from "../../../Ex-data/data.js";
 import { reactive, onMounted } from "vue";
 import axios from "axios";
 const props = defineProps(["item"]);

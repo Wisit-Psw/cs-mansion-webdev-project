@@ -1,6 +1,5 @@
 <script setup>
 import {  reactive,onMounted } from "vue";
-import {  RoomData, RoomStatus } from "../../../Ex-data/data.js"
 import RoomEditBox from "../components/RoomEditBox.vue";
 import axios from "axios"
 const props = defineProps(["dropdownData"]);

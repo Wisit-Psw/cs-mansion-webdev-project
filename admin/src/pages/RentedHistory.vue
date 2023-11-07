@@ -2,7 +2,7 @@
 import { reactive, onMounted } from "vue";
 import RentedHistoreBox from "../components/RentedHistoreBox.vue";
 import axios from "axios";
-// import { BillData, RoomData, BillStatus, BillExpensesJoin } from "../../../Ex-data/data.js";
+
 const emit = defineProps(['dropdownData'])
 const data = reactive({
   Renting: []

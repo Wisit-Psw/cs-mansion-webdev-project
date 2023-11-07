@@ -1,5 +1,4 @@
 <script setup>
-// import { BillData, RoomData, BillStatus, RentingData } from "../../../Ex-data/data.js";
 import { reactive } from "vue";
 import AddIcon from "../icon/AddIcon.vue";
 import axios from "axios";
