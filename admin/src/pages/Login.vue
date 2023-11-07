@@ -17,7 +17,7 @@ const reqLogin = async (event) => {
       username: data.username,
       password: data.password
     }
-    const result = await axios.post("http://cs-mansion.thddns.net:9992/api/admin/authentication", body,{withCredentials:true});
+    const result = await axios.post("http://localhost:3001/api/admin/authentication", body,{withCredentials:true});
     if (result && result.data.status === "success") {
       route.push("/")
     }

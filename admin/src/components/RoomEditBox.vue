@@ -6,7 +6,7 @@ const isEdit = reactive({ state: false });
 const isDetailShow = reactive({ state: false });
 const roomStatus = reactive({ status: [] });
 const queryRoomStatus = async () => {
-    const response = await axios.get("http://cs-mansion.thddns.net:9992/api/admin/roomtype");
+    const response = await axios.get("http://localhost:3001/api/admin/roomtype");
     roomStatus.status = response.data;
 }
 const onDetailBTNClick = () => {
@@ -24,7 +24,7 @@ const submit = async (event) => {
     RoomDetail: event.target.RoomDetail.value,
     RoomTypeID:JSON.parse(event.target.RoomType.value).RoomTypeID
   }
-  const response = await axios.post("http://cs-mansion.thddns.net:9992/api/admin/room/update", body);
+  const response = await axios.post("http://localhost:3001/api/admin/room/update", body);
   if (response.data.status === 'success') {
     props.item.RoomPrice = body.RoomPrice
     props.item.RoomDetail = body.RoomDetail

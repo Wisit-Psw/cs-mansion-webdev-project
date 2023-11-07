@@ -8,7 +8,7 @@ const data = reactive({
 })
 
 const queryRoom = async () => {
-  const response = await axios.get("http://cs-mansion.thddns.net:9992/api/admin/Detail");
+  const response = await axios.get("http://localhost:3001/api/admin/Detail");
   data.Detail = await response.data;
 }
 

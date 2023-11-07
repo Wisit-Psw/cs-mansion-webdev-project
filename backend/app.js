@@ -891,7 +891,7 @@ app.post("/api/user/authentication", async(req, res) => {
 
     const receivedData = req.body;
     try {
-        const query = "SELECT * FROM renting WHERE RoomID = '" + receivedData.RoomID + "' AND UserID = '" + receivedData.UserID + "'";
+        const query = "SELECT * FROM renting WHERE RoomID = '" + receivedData.RoomID + "' AND UserID = '" + receivedData.UserID + "' AND RentingEnd IS NULL";
         con.query(query, (err, result) => {
             if (err) {
                 console.error(err);

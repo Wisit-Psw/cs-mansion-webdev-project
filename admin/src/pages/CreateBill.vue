@@ -8,7 +8,7 @@ const data = reactive({
 })
 
 const queryRoom = async () => {
-  const response = await axios.get("http://cs-mansion.thddns.net:9992/api/admin/renting/CreateBill");
+  const response = await axios.get("http://localhost:3001/api/admin/renting/CreateBill");
   data.Renting = await response.data;
 }
 

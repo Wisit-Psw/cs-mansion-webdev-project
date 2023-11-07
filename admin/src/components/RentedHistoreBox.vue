@@ -16,7 +16,7 @@ const submit = async () => {
         RentingID: props.item.RentingID,
         RoomID:props.item.RoomID,
     }
-    const response = await axios.post("http://cs-mansion.thddns.net:9992/api/admin/renting/out", body);
+    const response = await axios.post("http://localhost:3001/api/admin/renting/out", body);
     if (response.data.status === 'success') {
         isDetailShow.state = false;
         isModalShow.state = false;

@@ -20,7 +20,7 @@ const onMenuIconClick = () => {
     }
 }
 const submit = async () =>{
-    const response = await axios.get("http://cs-mansion.thddns.net:9992/api/admin/removesessions",{withCredentials:true});
+    const response = await axios.get("http://localhost:3001/api/admin/removesessions",{withCredentials:true});
     if(response.data.status==='success'){
         isModalShow.state = !isModalShow.state;
         route.push("/login")

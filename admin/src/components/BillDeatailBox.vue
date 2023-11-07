@@ -24,7 +24,7 @@ const deleteBill = async () => {
   const body = {
     billId: props.item.BillID,
   }
-  const response = await axios.post("http://cs-mansion.thddns.net:9992/api/admin/billdata/delete", body);
+  const response = await axios.post("http://localhost:3001/api/admin/billdata/delete", body);
   if (response.data.status === 'success') {
     emit('queryBill');
     isDetailShow.state = false;
@@ -53,7 +53,7 @@ const submit = async (event) => {
     ExpensesTitle: ExpenTitle,
     ExpensesPrice: ExpenPrice,
   }
-  const response = await axios.post("http://cs-mansion.thddns.net:9992/api/admin/billdata/update", body);
+  const response = await axios.post("http://localhost:3001/api/admin/billdata/update", body);
   if (response.data.status === 'success') {
     props.item.BillWaterPrice = body.BillWaterPrice
     props.item.BillElectricPrice = body.BillElectricPrice
@@ -66,7 +66,7 @@ const submit = async (event) => {
   isEdit.state = false;
 }
 const queryExpenses = async () => {
-  const response = await axios.post("http://cs-mansion.thddns.net:9992/api/admin/billdata/expenses", { billId: props.item.BillID });
+  const response = await axios.post("http://localhost:3001/api/admin/billdata/expenses", { billId: props.item.BillID });
   data.expenses = await response.data;
 }
 onMounted(async () => {

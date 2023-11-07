@@ -21,7 +21,7 @@ const lineData = reactive({
 })
 const queryData = async () => {
   try {
-    const chartData = await axios.get("http://cs-mansion.thddns.net:9992/api/user/graph", { withCredentials: true });
+    const chartData = await axios.get("http://localhost:3001/api/user/graph", { withCredentials: true });
     chartData.data.forEach(element => {
       lineData.data.push(element.Total)
       lineData.label.push(element.BillDate.slice(0, 10))

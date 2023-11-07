@@ -10,7 +10,7 @@ const data = reactive({
 })
 
 const queryRoomtype = async () => {
-  const billstatus = await axios.get("http://cs-mansion.thddns.net:9992/api/admin/roomtype");
+  const billstatus = await axios.get("http://localhost:3001/api/admin/roomtype");
   Roomtype.data = await billstatus.data;
 }
 
@@ -46,7 +46,7 @@ const preQueryRoom = async () => {
   await queryRoom();
 }
 const queryRoom = async () => {
-  let response = await axios.post("http://cs-mansion.thddns.net:9992/api/admin/room", { roomId: queryState.roomId, statusId: queryState.statusId, entries: pagination.entries, page: pagination.page });
+  let response = await axios.post("http://localhost:3001/api/admin/room", { roomId: queryState.roomId, statusId: queryState.statusId, entries: pagination.entries, page: pagination.page });
   data.Bill = response.data.bill;
   pagination.maxPage = Math.ceil(response.data.allRecord / pagination.entries)
   pagination.memory[queryState.statusId][queryState.roomId][pagination.page] = data.Bill;
@@ -121,7 +121,7 @@ const submit = async (event) => {
     RoomTypeID: event.target.RoomTypeID.value,
   }
   try {
-  const response = await axios.post("http://cs-mansion.thddns.net:9992/api/admin/room/insert", body);
+  const response = await axios.post("http://localhost:3001/api/admin/room/insert", body);
   if (response.data.status === 'success') {
     isModalShow.state = false;
     await queryRoom();

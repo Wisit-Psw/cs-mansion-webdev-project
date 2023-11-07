@@ -39,7 +39,7 @@ const preQueryBill = async () => {
   queryBill();
 }
 const queryBill = async () =>{
-  let response = await axios.post("http://cs-mansion.thddns.net:9992/api/admin/billdata", { roomId: queryState.roomId, statusId: queryState.statusId, entries: pagination.entries, page: pagination.page });
+  let response = await axios.post("http://localhost:3001/api/admin/billdata", { roomId: queryState.roomId, statusId: queryState.statusId, entries: pagination.entries, page: pagination.page });
   data.Bill = response.data.bill;
   pagination.maxPage = Math.ceil(response.data.allRecord / pagination.entries)
   pagination.memory[queryState.statusId][queryState.roomId][pagination.page] = data.Bill;

@@ -31,7 +31,7 @@ const convertToBase64 = (files) => {
 };
 
 const submit = async () => {
-    const response = await axios.post("http://cs-mansion.thddns.net:9992/api/user/slip", { billId: props.item.BillID, slip: data.slip });
+    const response = await axios.post("http://localhost:3001/api/user/slip", { billId: props.item.BillID, slip: data.slip });
     data.expenses = await response.data;
     props.item.slip = data.slip
     emit('queryBill')
@@ -45,7 +45,7 @@ const onDetailCLick = () => {
     isModalShow.state = !isModalShow.state;
 }
 const queryExpenses = async () => {
-    const response = await axios.post("http://cs-mansion.thddns.net:9992/api/user/billdata/expenses", { billId: props.item.BillID });
+    const response = await axios.post("http://localhost:3001/api/user/billdata/expenses", { billId: props.item.BillID });
     data.expenses = await response.data;
 }
 onMounted(async () => {
