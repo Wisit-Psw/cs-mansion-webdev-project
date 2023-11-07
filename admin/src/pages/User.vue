@@ -26,7 +26,6 @@ const submit = async (event) => {
     UserPhone: event.target.UserPhone.value,
     UserAddress: event.target.UserAddress.value
   }
-  console.log(body)
   try {
     const response = await axios.post("http://localhost:3001/api/admin/user/insert", body);
     if (response.data.status === 'success') {

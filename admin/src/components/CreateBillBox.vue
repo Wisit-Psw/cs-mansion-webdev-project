@@ -50,7 +50,6 @@ const submit = async (event) => {
 
   }
 
-  console.log(TotalPrice)
   const body = {
     RentingID: props.item.RentingID,
     BillWaterPrice: event.target.BillWaterPrice.value,
@@ -63,7 +62,6 @@ const submit = async (event) => {
     if (response.data.status === 'success') {
       if (event.target?.ExpenPrice?.length) {
         event.target.ExpenPrice?.forEach(async (e, index) => {
-          console.log(e.value)
           if (e.value) {
             await axios.post("http://localhost:3001/api/admin/billdata/expend/insert", {
               BillID: response.data.insertId,

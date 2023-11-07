@@ -23,7 +23,6 @@ const submit = async (event) => {
     RoomID: event.target.RoomID.value,
     UserID: event.target.UserID.value,
   };
-  console.log(body);
   try {
     const response = await axios.post(
       "http://localhost:3001/api/admin/renting/in",
@@ -39,22 +38,6 @@ const submit = async (event) => {
     document.getElementById("responseLog").innerHTML = "มีข้อผิดผลาดเกิดขึ้น";
   }
 };
-// try {
-//   else {
-//       // console.log('มีข้อผิดผลาดเกิดขึ้น')
-//       document.getElementById("responseLog").innerHTML = "มีข้อผิดผลาดเกิดขึ้น";
-//     }
-// } catch (error) {
-//     document.getElementById("responseLog").innerHTML = "มีข้อผิดผลาดเกิดขึ้น";
-//   }
-
-// <div id="responseLog" class="responseLog"></div>
-
-// .responseLog {
-//   width: 100%;
-//   text-align: center;
-//   color: red;
-// }
 
 onMounted(async () => {
   await queryUser();

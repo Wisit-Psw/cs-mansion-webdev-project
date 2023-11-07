@@ -6,7 +6,7 @@ const route = useRouter();
 const menuReactive = reactive({ isShow: false });
 const isModalShow = reactive({ state: false });
 const onMenuIconClick = () => {
-    if (window.innerWidth >= 826){console.log(window.innerWidth); return}
+    if (window.innerWidth >= 826){ return}
     if (menuReactive.isShow) {
         menuReactive.isShow = false;
         document.getElementById("Menu").style.display = "none";

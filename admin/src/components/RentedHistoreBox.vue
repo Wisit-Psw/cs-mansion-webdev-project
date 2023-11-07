@@ -17,7 +17,6 @@ const submit = async () => {
         RoomID:props.item.RoomID,
     }
     const response = await axios.post("http://localhost:3001/api/admin/renting/out", body);
-    console.log(response)
     if (response.data.status === 'success') {
         isDetailShow.state = false;
         isModalShow.state = false;

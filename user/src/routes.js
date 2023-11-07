@@ -17,7 +17,6 @@ export const routes = [{
         component: Bill,
         beforeEnter: async() => {
             const isAuthenticated = await authenticate();
-            console.log(isAuthenticated)
             if (!isAuthenticated) return '/login';
         },
     },
@@ -26,7 +25,6 @@ export const routes = [{
         component: Info,
         beforeEnter: async() => {
             const isAuthenticated = await authenticate();
-            console.log(isAuthenticated)
             if (!isAuthenticated) return '/login';
         },
     },
@@ -35,7 +33,6 @@ export const routes = [{
         component: Login,
         beforeEnter: async() => {
             const isAuthenticated = await authenticate();
-            console.log(isAuthenticated)
             if (isAuthenticated) return '/';
         },
     },
