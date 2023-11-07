@@ -114,7 +114,7 @@ onMounted(async () => {
         <div class="td electricUnit">{{ props.item.BillTotalPrice }}</div>
       </div>
       <div class="alert" style="color:red;" v-if="isDelelte.state">คุณต้องการลบบิลใช่หรือไม่</div>
-      <div class="dataTable tr" style="width: 40%; justify-content:space-around; margin:0 auto;" v-if="!isDelelte.state">
+      <div class="dataTable tr" style="width: 40%; justify-content:space-around; margin:0 auto;" v-if="!isDelelte.state && props.item.BillStatusID!==2">
         <div class="td detail" @click="onEditBTNClick()" v-if="!isEdit.state">
           <div class="detailBTN" style="font-size: 1rem;">แก้ไข</div>
         </div>
@@ -122,7 +122,7 @@ onMounted(async () => {
           <div class="btn-red" style="font-size: 1rem;">ลบ</div>
         </div>
       </div>
-      <div class="dataTable tr" style="width: 40%; justify-content:space-around; margin:0 auto;" v-else>
+      <div class="dataTable tr" style="width: 40%; justify-content:space-around; margin:0 auto;" v-else-if="props.item.BillStatusID!==2">
         <div class="td detail" @click="() => { isDelelte.state = false }">
           <div class="detailBTN" style="font-size: 1rem;">ยกเลิก</div>
         </div>
