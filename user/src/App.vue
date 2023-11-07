@@ -6,9 +6,9 @@ import axios from "axios"
 
 const dropdownData = reactive({ roomId: [],status:[],roomStatus:[] });
 const queryExpenses = async () => {
-  const billstatus = await axios.get("http://localhost:3001/api/user/billstatus");
-  // const RoomID = await axios.get("http://localhost:3001/api/user/RoomID");
-  // const roomStatus = await axios.get("http://localhost:3001/user/admin/roomstatus");
+  const billstatus = await axios.get("http://cs-mansion.thddns.net:9992/api/user/billstatus");
+  // const RoomID = await axios.get("http://cs-mansion.thddns.net:9992/api/user/RoomID");
+  // const roomStatus = await axios.get("http://cs-mansion.thddns.net:9992/user/admin/roomstatus");
   dropdownData.status = await billstatus.data;
   // dropdownData.roomId = await RoomID.data;
   // dropdownData.roomStatus = await roomStatus.data;

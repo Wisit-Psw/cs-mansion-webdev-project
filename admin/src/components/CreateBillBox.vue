@@ -57,13 +57,13 @@ const submit = async (event) => {
     TotalPrice: TotalPrice,
     BillDate: BillDate,
   }
-  const response = await axios.post("http://localhost:3001/api/admin/billdata/insert", body);
+  const response = await axios.post("http://cs-mansion.thddns.net:9992/api/admin/billdata/insert", body);
   try {
     if (response.data.status === 'success') {
       if (event.target?.ExpenPrice?.length) {
         event.target.ExpenPrice?.forEach(async (e, index) => {
           if (e.value) {
-            await axios.post("http://localhost:3001/api/admin/billdata/expend/insert", {
+            await axios.post("http://cs-mansion.thddns.net:9992/api/admin/billdata/expend/insert", {
               BillID: response.data.insertId,
               ExpenTitle: event.target.ExpenTitle[index].value,
               ExpenPrice: event.target.ExpenPrice[index].value,
@@ -71,7 +71,7 @@ const submit = async (event) => {
           }
         })
       } else if (event.target?.ExpenPrice.value) {
-        await axios.post("http://localhost:3001/api/admin/billdata/expend/insert", {
+        await axios.post("http://cs-mansion.thddns.net:9992/api/admin/billdata/expend/insert", {
           BillID: response.data.insertId,
           ExpenTitle: event.target.ExpenTitle.value,
           ExpenPrice: event.target.ExpenPrice.value,

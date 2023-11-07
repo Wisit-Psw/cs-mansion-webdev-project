@@ -9,7 +9,7 @@ const data = reactive({
 });
 const isAddModalShow = reactive({ state: false });
 const queryUser = async () => {
-  const response = await axios.get("http://localhost:3001/api/admin/renting");
+  const response = await axios.get("http://cs-mansion.thddns.net:9992/api/admin/renting");
   data.Renting = await response.data;
 };
 
@@ -25,7 +25,7 @@ const submit = async (event) => {
   };
   try {
     const response = await axios.post(
-      "http://localhost:3001/api/admin/renting/in",
+      "http://cs-mansion.thddns.net:9992/api/admin/renting/in",
       body
     );
     if (response?.data?.status === "success") {

@@ -8,9 +8,9 @@ const user = useUserStore()
 
 const dropdownData = reactive({ roomId: [],status:[],roomStatus:[] });
 const queryExpenses = async () => {
-  const billstatus = await axios.get("http://localhost:3001/api/admin/billstatus");
-  const RoomID = await axios.get("http://localhost:3001/api/admin/RoomID");
-  const roomStatus = await axios.get("http://localhost:3001/api/admin/roomstatus");
+  const billstatus = await axios.get("http://cs-mansion.thddns.net:9992/api/admin/billstatus");
+  const RoomID = await axios.get("http://cs-mansion.thddns.net:9992/api/admin/RoomID");
+  const roomStatus = await axios.get("http://cs-mansion.thddns.net:9992/api/admin/roomstatus");
   dropdownData.status = await billstatus.data;
   dropdownData.roomId = await RoomID.data;
   dropdownData.roomStatus = await roomStatus.data;

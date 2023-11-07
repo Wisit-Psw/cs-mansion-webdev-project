@@ -18,11 +18,11 @@ const onDetailBTNClick = () => {
 };
 
 const queryExpenses = async () => {
-  const response = await axios.post("http://localhost:3001/api/admin/billdata/expenses", { billId: props.item.BillID });
+  const response = await axios.post("http://cs-mansion.thddns.net:9992/api/admin/billdata/expenses", { billId: props.item.BillID });
   data.Expenses = await response.data;
 }
 const updateStatus = async (statusId) => {
-  const response = await axios.post("http://localhost:3001/api/admin/billdata/updateStatus", { statusID: statusId, billID: props.item.BillID });
+  const response = await axios.post("http://cs-mansion.thddns.net:9992/api/admin/billdata/updateStatus", { statusID: statusId, billID: props.item.BillID });
   if (response.data.status === 'success') {
     if (statusId === 2) {
       res.detail = "รับชำระเงินเสร็จสิ้น";

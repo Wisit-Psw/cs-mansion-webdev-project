@@ -8,7 +8,7 @@ const data = reactive({
 const props = defineProps(['dropdownData'])
 const queryUser = async () => {
   try {
-    const response = await axios.get("http://localhost:3001/api/admin/user");
+    const response = await axios.get("http://cs-mansion.thddns.net:9992/api/admin/user");
     data.RentingData = await response.data
   } catch (error) {
     console.error("Error fetching renting data:", error);
@@ -27,7 +27,7 @@ const submit = async (event) => {
     UserAddress: event.target.UserAddress.value
   }
   try {
-    const response = await axios.post("http://localhost:3001/api/admin/user/insert", body);
+    const response = await axios.post("http://cs-mansion.thddns.net:9992/api/admin/user/insert", body);
     if (response.data.status === 'success') {
       await queryUser()
       isModalShow.state = false;

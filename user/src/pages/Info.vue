@@ -9,7 +9,7 @@ const data = reactive({
   RentingData: undefined,
 });
 const queryExpenses = async () => {
-    const response = await axios.post("http://localhost:3001/api/user/info", { RentingID: userstore.data.response.RentingID});
+    const response = await axios.post("http://cs-mansion.thddns.net:9992/api/user/info", { RentingID: userstore.data.response.RentingID});
     data.RentingData = await response.data[0];
 }
 onMounted(async () => {
