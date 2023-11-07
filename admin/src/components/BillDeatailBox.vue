@@ -35,13 +35,23 @@ const deleteBill = async () => {
 
 const submit = async (event) => {
   event.preventDefault();
+  let ExpenID=[],ExpenTitle=[],ExpenPrice=[];
+  if(event.target?.ExpenID?.value && event.target?.ExpenTitle?.value && event.target?.ExpenPrice?.value){
+    ExpenID = [event.target?.ExpenID?.value]
+    ExpenTitle = [event.target?.ExpenTitle?.value]
+    ExpenPrice = [event.target?.ExpenPrice?.value]
+  } else if(event.target?.ExpenID?.length && event.target?.ExpenTitle?.length && event.target?.ExpenPrice?.length){
+    ExpenID = [...event.target?.ExpenID].map((d) => d.value)
+    ExpenTitle = [...event.target?.ExpenTitle].map((d) => d.value)
+    ExpenPrice = [...event.target?.ExpenPrice].map((d) => d.value)
+  }
   const body = {
     billId: props.item.BillID,
     BillWaterPrice: event.target.BillWaterPrice.value,
     BillElectricPrice: event.target.BillElectricPrice.value,
-    ExpensesID: event.target?.ExpenID ? [...event.target?.ExpenID].map((d) => d.value) : [],
-    ExpensesTitle: event.ExpenTitle?.ExpenID ?[...event.target?.ExpenTitle].map((d) => d.value): [],
-    ExpensesPrice: event.ExpenPrice?.ExpenID ?[...event.target?.ExpenPrice].map((d) => d.value): [],
+    ExpensesID: ExpenID,
+    ExpensesTitle: ExpenTitle,
+    ExpensesPrice: ExpenPrice,
   }
   const response = await axios.post("http://localhost:3001/api/admin/billdata/update", body);
   if (response.data.status === 'success') {
