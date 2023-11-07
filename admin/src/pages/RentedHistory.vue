@@ -187,12 +187,12 @@ onMounted(async () => {
 }
 
 .btn-red {
-  background-color: red;
+  background-color: #D83F31;
   color: white;
 }
 
 .btn-blue {
-  background-color: rgb(0, 98, 255);
+  background-color: #525FE1;
   color: white;
 }
 

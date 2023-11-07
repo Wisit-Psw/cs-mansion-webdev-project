@@ -69,9 +69,9 @@ onMounted(async () => {
                         <div class="modal-context">ค่าน้ำ : {{ props.item.BillWaterPrice }}</div>
                         <div class="modal-context">ค่าไฟ : {{ props.item.BillElectricPrice }}</div>
                         <div class="modal-context">ค่าห้องพัก : {{ props.item.RoomPrice }}</div>
-                        <div class="modal-context">ราคารวม: {{ props.item.BillTotalPrice }}</div>
                         <div class="modal-context" v-for="(expen, index) in data.expenses" :key="index">{{ expen.ExpenTitle
                         }}:{{ expen.ExpenPrice }}</div>
+                        <div class="modal-context">ราคารวม: {{ props.item.BillTotalPrice }}</div>
                     </div>
                 </div>
                 <input class="modal-context" type="file" accept="image/*" @change="handleFileChange($event)" v-if="props.item.BillStatusID !== 2">
@@ -218,7 +218,7 @@ input::file-selector-button {
     background-color: #f1f1f1;
     min-width: 5rem;
     height: 1.75rem;
-    box-shadow: 0px 8px 16px 0px rgba(41, 40, 40, 0.404);
+    
     border: none;
     border-radius: 0.3rem;
     white-space: nowrap;

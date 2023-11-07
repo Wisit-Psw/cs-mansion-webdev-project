@@ -198,7 +198,7 @@ onMounted(async () => {
   font-weight: bold;
   width: fit-content;
   padding: 0.1rem 0.3rem;
-  background-color: red;
+  background-color: #D83F31;
   color: white;
   border-radius: 0.3rem;
   white-space: nowrap;
