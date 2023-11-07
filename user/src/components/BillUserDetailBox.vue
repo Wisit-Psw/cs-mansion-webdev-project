@@ -66,20 +66,24 @@ onMounted(async () => {
                         alt="" style="width:18rem;padding: 1rem;">
                     <div class="context-wrap">
                         <div class="modal-context"> วันที่ {{ props.item.BillDate.slice(0, 10) }}</div>
-                        <div class="modal-context">ค่าห้องพัก : {{ props.item.BillTotalPrice }}</div>
                         <div class="modal-context">ค่าน้ำ : {{ props.item.BillWaterPrice }}</div>
                         <div class="modal-context">ค่าไฟ : {{ props.item.BillElectricPrice }}</div>
+                        <div class="modal-context">ค่าห้องพัก : {{ props.item.RoomPrice }}</div>
+                        <div class="modal-context">ราคารวม: {{ props.item.BillTotalPrice }}</div>
                         <div class="modal-context" v-for="(expen, index) in data.expenses" :key="index">{{ expen.ExpenTitle
                         }}:{{ expen.ExpenPrice }}</div>
                     </div>
                 </div>
-                <input class="modal-context" type="file" accept="image/*" @change="handleFileChange($event)">
+                <input class="modal-context" type="file" accept="image/*" @change="handleFileChange($event)" v-if="props.item.BillStatusID !== 2">
 
             </div>
             <div class="modal-footer">
-                <div class="btn-wrap">
+                <div class="btn-wrap" v-if="props.item.BillStatusID !== 2">
                     <button class="btn btn-red" @click="onDetailCLick()">ยกเลิก</button>
                     <button class="btn btn-blue" @click="submit()">ยืนยัน</button>
+                </div>
+                <div class="btn-wrap" v-else>
+                    <button class="btn btn-red" @click="onDetailCLick()">ปิด</button>
                 </div>
             </div>
         </div>

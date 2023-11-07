@@ -3,49 +3,96 @@ import { reactive, onMounted } from "vue";
 import RentedHistoreBox from "../components/RentedHistoreBox.vue";
 import axios from "axios";
 
-const emit = defineProps(['dropdownData'])
+const emit = defineProps(["dropdownData"]);
 const data = reactive({
-  Renting: []
-})
-const isModalShow = reactive({ state: false });
+  Renting: [],
+});
+const isAddModalShow = reactive({ state: false });
 const queryUser = async () => {
   const response = await axios.get("http://localhost:3001/api/admin/renting");
   data.Renting = await response.data;
-}
-const onDetailCLick = () => {
-  isModalShow.state = !isModalShow.state;
-}
+};
+
+const addRentingClick = () => {
+  isAddModalShow.state = !isAddModalShow.state;
+};
+
+const submit = async (event) => {
+  event.preventDefault();
+  const body = {
+    RoomID: event.target.RoomID.value,
+    UserID: event.target.UserID.value,
+  };
+  console.log(body);
+  try {
+    const response = await axios.post(
+      "http://localhost:3001/api/admin/renting/in",
+      body
+    );
+    if (response?.data?.status === "success") {
+      await queryUser();
+      isAddModalShow.state = false;
+    } else {
+      document.getElementById("responseLog").innerHTML = "มีข้อผิดผลาดเกิดขึ้น";
+    }
+  } catch (error) {
+    document.getElementById("responseLog").innerHTML = "มีข้อผิดผลาดเกิดขึ้น";
+  }
+};
+// try {
+//   else {
+//       // console.log('มีข้อผิดผลาดเกิดขึ้น')
+//       document.getElementById("responseLog").innerHTML = "มีข้อผิดผลาดเกิดขึ้น";
+//     }
+// } catch (error) {
+//     document.getElementById("responseLog").innerHTML = "มีข้อผิดผลาดเกิดขึ้น";
+//   }
+
+// <div id="responseLog" class="responseLog"></div>
+
+// .responseLog {
+//   width: 100%;
+//   text-align: center;
+//   color: red;
+// }
+
 onMounted(async () => {
-  await queryUser()
-})
+  await queryUser();
+});
 </script>
 
 <template>
-  <div class="modal" v-if="isModalShow.state">
-    <div class="backdrop" @click="onDetailCLick()"></div>
+  <div class="modal" v-if="isAddModalShow.state">
+    <div class="backdrop" @click="addRentingClick()"></div>
     <div class="madal">
-      <div class="modal-header">
-        ห้องพัก {{ props.item.RoomID }}
-      </div>
-      <div class="modal-body">
-        <div class="modal-context"> วันที่ {{ props.item.BillDate }}</div>
-        <div class="modal-context">ค่าห้องพัก : {{ props.item.BillTotalPrice }}</div>
-        <div class="modal-context">ค่าน้ำ : {{ props.item.BillWaterPrice }}</div>
-        <div class="modal-context">ค่าไฟ : {{ props.item.BillElectricPrice }}</div>
-        <input class="modal-context" type="file" accept="image/*">
-      </div>
-      <div class="modal-footer">
-        <div class="btn-wrap">
-          <button class="btn btn-red" @click="onDetailCLick()">ยกเลิก</button>
-          <button class="btn btn-blue" @click="submit()">ยืนยัน</button>
+      <div class="modal-header">เพิ่มรายการเช่าผู้ใช้</div>
+      <form @submit="submit">
+        <div class="modal-body">
+          <table>
+            <tr>
+              <tn>เลขห้อง:</tn>
+              <tn><input type="number" name="RoomID" /></tn>
+            </tr>
+            <tr>
+              <tn>รหัสบัตรประชาชน: </tn>
+              <tn><input type="text" name="UserID" /></tn>
+            </tr>
+          </table>
         </div>
-      </div>
+        <div id="responseLog" class="responseLog"></div>
+        <div class="modal-footer">
+          <div class="btn-wrap">
+            <button class="btn btn-red" @click="addRentingClick()">
+              ยกเลิก
+            </button>
+            <input type="submit" class="btn btn-blue" value="ยืนยัน" />
+          </div>
+        </div>
+      </form>
     </div>
   </div>
   <section class="container">
-    <header class="header">
-      รายการเช่าห้องพัก:
-    </header>
+    <header class="header">รายการเช่าห้องพัก:</header>
     <div class="table">
       <div class="thead">
         <div class="tr">
@@ -60,15 +107,17 @@ onMounted(async () => {
       </div>
       <div class="tbody">
         <div v-for="(item, index) in data.Renting" :key="index" class="dataTable tr">
-          <RentedHistoreBox :item="item" @queryUser="queryUser"/>
+          <RentedHistoreBox :item="item" @queryUser="queryUser" />
         </div>
       </div>
+    </div>
+    <div class="freeBTN">
+      <div class="addBTN" @click="addRentingClick()">เพิ่มรายการเช่าผู้ใช้</div>
     </div>
   </section>
 </template>
 
 <style scoped>
-
 .madal {
   background-color: white;
   padding: 1.5rem 2rem;
@@ -95,11 +144,7 @@ onMounted(async () => {
 }
 
 .modal-context {
-  align-items: center;
-  margin: 0 auto;
-  width: fit-content;
-  width: 60%;
-  padding: 1% 0;
+  padding: 0.1rem 0;
 }
 
 .modal-footer {
@@ -121,6 +166,34 @@ onMounted(async () => {
   position: fixed;
   z-index: 4;
 }
+
+.btn {
+  background-color: #f1f1f1;
+  min-width: 5rem;
+  height: 1.75rem;
+  box-shadow: 0px 8px 16px 0px rgba(41, 40, 40, 0.404);
+  border: none;
+  border-radius: 0.3rem;
+  white-space: nowrap;
+  padding: 0.1rem 0.3rem;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background-color: #6d6d6d;
+}
+
+.btn-red {
+  background-color: red;
+  color: white;
+}
+
+.btn-blue {
+  background-color: rgb(0, 98, 255);
+  color: white;
+}
+
 .container {
   width: 100%;
   height: 100%;
@@ -147,14 +220,9 @@ onMounted(async () => {
   box-shadow: 0px 3px 2px var(--menuSelectedColor);
 }
 
-
-
-
-
 .filter-wrap {
   padding: 0.2rem;
 }
-
 
 .filter-wrap>label {
   margin-right: 0rem;
@@ -201,8 +269,32 @@ onMounted(async () => {
   justify-content: space-around;
 }
 
+.freeBTN {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+}
 
-.tbody>:nth-child(even) {
+.addBTN {
+  margin: 0 auto;
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+  width: fit-content;
+  padding: 0.1rem 0.3rem;
+  background-color: var(--menuColor);
+  border-radius: 0.3rem;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  min-width: 3rem;
+}
+
+.addBTN:hover {
+  background-color: gray;
+  color: white;
+}
+
+.tbody> :nth-child(even) {
   background-color: rgb(233, 232, 232);
 }
 
@@ -221,7 +313,13 @@ onMounted(async () => {
   width: 20%;
 }
 
-@media screen and (min-width:826px) {
+.responseLog {
+  width: 100%;
+  text-align: center;
+  color: red;
+}
+
+@media screen and (min-width: 826px) {
   .header {
     display: block;
   }
@@ -262,7 +360,7 @@ onMounted(async () => {
   }
 }
 
-@media screen and (min-width:1200px) {
+@media screen and (min-width: 1200px) {
   .filterBar {
     width: 60%;
     min-width: 800px;

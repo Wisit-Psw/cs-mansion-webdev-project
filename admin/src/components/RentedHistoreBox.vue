@@ -13,7 +13,8 @@ const submit = async () => {
     const D = new Date();
     const body = {
         RentingEnd: D.getFullYear() + "-" + (D.getMonth() + 1) + "-" + D.getDate(),
-        RentingID: props.item.RentingID
+        RentingID: props.item.RentingID,
+        RoomID:props.item.RoomID,
     }
     const response = await axios.post("http://localhost:3001/api/admin/renting/out", body);
     console.log(response)
