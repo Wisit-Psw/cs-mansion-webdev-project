@@ -1,11 +1,19 @@
 <script setup>
-import {  reactive,onMounted } from "vue";
+import { reactive, onMounted } from "vue";
 import RoomEditBox from "../components/RoomEditBox.vue";
 import axios from "axios"
+const isModalShow = reactive({ state: false });
+const Roomtype = reactive({ data: [] });
 const props = defineProps(["dropdownData"]);
 const data = reactive({
-  Room : []
+  Room: []
 })
+
+const queryRoomtype = async () => {
+  const billstatus = await axios.get("http://localhost:3001/api/admin/roomtype");
+  Roomtype.data = await billstatus.data;
+}
+
 const pagination = reactive({
   page: 1,
   pageBar: [],
@@ -19,7 +27,7 @@ const queryState = reactive({
   statusId: 'All'
 })
 
-const queryRoom = async () => {
+const preQueryRoom = async () => {
   if (!pagination.memory[queryState.statusId]) {
     pagination.memory[queryState.statusId] = {}
     pagination.memory[queryState.statusId][queryState.roomId] = {}
@@ -35,6 +43,9 @@ const queryRoom = async () => {
       }
     }
   }
+  await queryRoom();
+}
+const queryRoom = async () => {
   let response = await axios.post("http://localhost:3001/api/admin/room", { roomId: queryState.roomId, statusId: queryState.statusId, entries: pagination.entries, page: pagination.page });
   data.Bill = response.data.bill;
   pagination.maxPage = Math.ceil(response.data.allRecord / pagination.entries)
@@ -43,21 +54,18 @@ const queryRoom = async () => {
   pagination.render = data.Bill
   generatePageBar();
 }
-
 const filterRoomId = (event) => {
   event.preventDefault();
   queryState.roomId = event.target.value;
-  pagination.page=1;
-  queryRoom();
+  pagination.page = 1;
+  preQueryRoom();
 }
 const filterStatus = (event) => {
   event.preventDefault();
   queryState.statusId = event.target.value;
-  pagination.page=1;
-  queryRoom();
+  pagination.page = 1;
+  preQueryRoom();
 }
-
-
 
 const generatePageBar = () => {
   pagination.pageBar = []
@@ -72,7 +80,7 @@ const generatePageBar = () => {
 const onPageBarClick = (pnum) => {
   pagination.page = pnum;
   if (pagination.memory[queryState.statusId][queryState.roomId][pagination.page] === undefined || pagination.showAdmin) {
-    queryRoom()
+    preQueryRoom()
   } else {
     pagination.render = pagination.memory[queryState.statusId][queryState.roomId][pagination.page];
     generatePageBar();
@@ -81,7 +89,7 @@ const onPageBarClick = (pnum) => {
 const prevPage = () => {
   pagination.page--;
   if (pagination.memory[queryState.statusId][queryState.roomId][pagination.page] === undefined || pagination.showAdmin) {
-    queryRoom()
+    preQueryRoom()
   } else {
     pagination.render = pagination.memory[queryState.statusId][queryState.roomId][pagination.page];
     generatePageBar();
@@ -90,15 +98,45 @@ const prevPage = () => {
 const nextPage = () => {
   pagination.page++;
   if (pagination.memory[queryState.statusId][queryState.roomId][pagination.page] === undefined || pagination.showAdmin) {
-    queryRoom()
+    preQueryRoom()
   } else {
     pagination.render = pagination.memory[queryState.statusId][queryState.roomId][pagination.page];
     generatePageBar();
   }
 }
-onMounted( async ()=>{
-  await queryRoom()
+onMounted(async () => {
+  await preQueryRoom()
+  await queryRoomtype()
 })
+
+
+
+const submit = async (event) => {
+  event.preventDefault();
+  const body = {
+    RoomID: event.target.RoomID.value,
+    RoomPrice: event.target.RoomPrice.value,
+    RoomDetail: event.target.RoomDetail.value,
+    RoomSize: event.target.RoomSize.value,
+    RoomTypeID: event.target.RoomTypeID.value,
+  }
+  try {
+  const response = await axios.post("http://localhost:3001/api/admin/room/insert", body);
+  if (response.data.status === 'success') {
+    isModalShow.state = false;
+    await queryRoom();
+  } else {
+      document.getElementById("responseLog").innerHTML = "มีข้อผิดผลาดเกิดขึ้น";
+    }
+  } catch (error) {
+    document.getElementById("responseLog").innerHTML = "มีข้อผิดผลาดเกิดขึ้น";
+  }
+}
+
+const onLeaveCLick = () => {
+  isModalShow.state = !isModalShow.state;
+}
+
 </script>
 
 <template>
@@ -111,14 +149,16 @@ onMounted( async ()=>{
         <label for="RoomID">เลขห้อง: </label>
         <select name="RoomID" id="RoomIDFilter" @change="filterRoomId($event)">
           <option value="All">ทั้งหมด</option>
-          <option v-for="(item, index) in dropdownData.roomId" :key="index" :value="item.RoomID">{{ item.RoomID }}</option>
+          <option v-for="(item, index) in dropdownData.roomId" :key="index" :value="item.RoomID">{{ item.RoomID }}
+          </option>
         </select>
       </div>
       <div class="filter-wrap">
-        <label for="RoomID">สถานะ: </label>
-        <select name="RoomID" id="RoomIDFilter"  @change="filterStatus($event)">
+        <label for="RoomStatus">สถานะ: </label>
+        <select name="RoomID" id="RoomStatusID" @change="filterStatus($event)">
           <option value="All">ทั้งหมด</option>
-          <option v-for="(item, index) in dropdownData.roomStatus" :key="index" :value="item.RoomStatusID">{{ item.RoomStatusName }}
+          <option v-for="(item, index) in dropdownData.roomStatus" :key="index" :value="item.RoomStatusID">{{
+            item.RoomStatusName }}
           </option>
         </select>
       </div>
@@ -142,6 +182,9 @@ onMounted( async ()=>{
           </div>
         </div>
       </div>
+      <div class="filter-wrap">
+        <div class="addBTN" @click="isModalShow.state = true">เพิ่มห้องพัก</div>
+      </div>
     </div>
     <!-- {{ BillData }} -->
     <div class="table">
@@ -157,15 +200,65 @@ onMounted( async ()=>{
       </div>
       <div class="tbody">
         <div class="Trow" v-for="(item, index) in pagination.render" :key="index">
-          <RoomEditBox :item="item"/>
+          <RoomEditBox :item="item" />
         </div>
       </div>
     </div>
-
   </section>
+
+  <div class="modal" v-if="isModalShow.state">
+    <div class="backdrop" @click="onLeaveCLick()"></div>
+    <div class="madal">
+      <div class="modal-header">
+        เพิ่มห้องพัก
+      </div>
+      <form @submit="submit">
+        <div class="modal-body">
+          <div class="tr" style="width: 80%; justify-content:space-between; margin:0 auto;">
+            <div class="td">เลขห้อง</div>
+            <input name="RoomID" type="number" class="td" style="height: 70%; width: 60%; font-size: 1rem;" required>
+          </div>
+          <div class="tr" style="width: 80%; justify-content:space-between; margin:0 auto;">
+            <div class="td">ราคาห้อง</div>
+            <input name="RoomPrice" type="number" class="td" style="height: 70%; width: 60%; font-size: 1rem;" required>
+          </div>
+          <div class="tr" style="width: 80%; justify-content:space-between; margin:0 auto;">
+            <div class="td">รายละเอียด</div>
+            <input name="RoomDetail" class="td" style="height: 70%; width: 60%; font-size: 1rem;" required>
+          </div>
+          <div class="tr" style="width: 80%; justify-content:space-between; margin:0 auto;">
+            <div class="td">ขนาดห้อง</div>
+            <input name="RoomSize" class="td" style="height: 70%; width: 60%; font-size: 1rem;" required>
+          </div>
+          <div class="tr" style="width: 80%; justify-content:space-between; margin:0 auto;">
+            <div class="td">ประเภท</div>
+            <select name="RoomTypeID">
+              <option v-for="(item, index) in Roomtype.data" :key="index" :value="item.RoomTypeID">{{
+                item.RoomTypeName }}
+              </option>
+            </select>
+            
+          </div>
+        </div>
+        <div id="responseLog" class="responseLog"></div>
+        <div class="modal-footer">
+          <div class="btn-wrap">
+            <button class="btn btn-blue" @click="onLeaveCLick()">ยกเลิก</button>
+            <input type="submit" class="btn btn-red" value="ยืนยัน">
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
 </template>
 
 <style scoped>
+
+.responseLog{
+  width: 100%;
+  text-align: center;
+  color: red;
+}
 .pagination-container {
   width: fit-content;
   display: flex;
@@ -234,7 +327,7 @@ onMounted( async ()=>{
   width: fit-content;
   display: flex;
   flex-wrap: wrap;
-  margin:0 auto;
+  margin: 0 auto;
   font-size: 1rem;
   align-items: center;
   color: var(--bgColor);
@@ -330,9 +423,101 @@ onMounted( async ()=>{
 .detail {
   width: 20%;
 }
+
 .edit {
   width: 20%;
 }
+
+.addBTN {
+  margin: 0 auto;
+  color: var(--menuColor);
+  cursor: pointer;
+  font-weight: bold;
+  width: fit-content;
+  padding: 0.1rem 0.3rem;
+  background-color: white;
+  border-radius: 0.3rem;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  min-width: 3rem;
+}
+
+.addBTN:hover {
+  background-color: gray;
+  color: white;
+}
+
+.madal {
+  background-color: white;
+  padding: 1.5rem 2rem;
+  border-radius: 0.5rem;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 5;
+}
+
+.modal-header {
+  border-bottom: 1px solid rgb(211, 211, 211);
+  text-align: center;
+  padding: 0.5rem 0;
+}
+
+.modal-body {
+  min-width: 20rem;
+  text-align: center;
+  padding: 2rem 0;
+}
+
+.modal-footer {
+  padding: 0.5rem 0 1rem 0;
+}
+
+.btn-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.backdrop {
+  width: 100dvw;
+  height: 100dvh;
+  top: 0%;
+  left: 0%;
+  background-color: rgba(120, 120, 120, 0.3);
+  position: fixed;
+  z-index: 4;
+}
+
+.btn {
+  background-color: #f1f1f1;
+  min-width: 5rem;
+  height: 1.75rem;
+  /* box-shadow: 0px 8px 16px 0px rgba(154, 153, 153, 0.404); */
+  border: none;
+  border-radius: 0.3rem;
+  white-space: nowrap;
+  padding: 0.1rem 0.3rem;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background-color: #6d6d6d;
+}
+
+.btn-red {
+  background-color: #D83F31;
+  color: white;
+}
+
+.btn-blue {
+  background-color: #525FE1;
+  color: white;
+}
+
+
 /* กลาง */
 @media screen and (min-width: 826px) {
   .header {

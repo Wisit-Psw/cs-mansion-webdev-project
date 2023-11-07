@@ -121,7 +121,7 @@ onMounted(async () => {
       </div>
       <div class="filter-wrap">
         <label for="status">สถานะ: </label>
-        <select name="status" id="RoomIDFilter" @change="filterStatus($event)">
+        <select name="status" id="RoomStatusID" @change="filterStatus($event)">
           <option value="All">ทั้งหมด</option>
           <option v-for="(item, index) in dropdownData.status" :key="index" :value="item.BillStatusID">{{
             item.BillStatusName }}

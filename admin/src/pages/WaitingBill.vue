@@ -119,15 +119,6 @@ onMounted(async () => {
           </option>
         </select>
       </div>
-      <!-- <div class="filter-wrap">
-        <label for="status">สถานะ: </label>
-        <select name="status" id="RoomIDFilter" @change="filterStatus($event)">
-          <option value="All">ทั้งหมด</option>
-          <option v-for="(item, index) in dropdownData.status" :key="index" :value="item.BillStatusID">{{
-            item.BillStatusName }}
-          </option>
-        </select>
-      </div> -->
       <div class="filter-wrap">
         <div class="pagination-controller">
           <div class="pagination-container bg-white text-blue">

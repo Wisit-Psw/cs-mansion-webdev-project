@@ -503,6 +503,27 @@ app.get("/api/admin/graph", (req, res) => {
     }
   );
 })
+//new backend
+app.post("/api/admin/room/insert", async (req, res) => {
+  try{
+  const receivedData = req.body;
+  con.query(`INSERT INTO room (RoomID,RoomPrice,RoomDetail,RoomSize,RoomTypeID, RoomStatusID)  VALUES ('${receivedData.RoomID}','${receivedData.RoomPrice}','${receivedData.RoomDetail}','${receivedData.RoomSize}','${receivedData.RoomTypeID}','1')`, (err, result) => {
+    if (err) {
+      console.error("Error Insert Room data:", err);
+      res.status(500).send("Internal Server Error");
+    } else {
+      res.send({ response: result, status: "success" });
+    }
+  });
+} catch (error) {
+  res.status(500)
+    .send({
+      response: "Internal Server Error",
+      status: "Error"
+    });
+}
+});
+
 
 app.listen(port, () => {
   console.log(`Listening at http://localhost:${port}`);
