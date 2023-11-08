@@ -18,6 +18,7 @@ const isModalShow = reactive({ state: false });
 const onDetailCLick = () => {
   isModalShow.state = !isModalShow.state;
 }
+
 const submit = async (event) => {
   event.preventDefault()
   const body = {
